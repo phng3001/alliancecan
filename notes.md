@@ -50,7 +50,13 @@ git diff
 * Show difference of what is staged but not yet committed<br>
 git diff --staged
 
-## Synchronizing repositories
+## Remote repositories
+* Lists the names of the remotes<br>
+git remote
+* Lists remote names + URLs for fetch and push<br>
+git remote -v
+
+
 
 
 
