@@ -68,7 +68,8 @@ git push [remote] [branch]<br>
 E.g. git push origin main
 * Retrieves change from a remote repository<br>
 git fetch
-
+* Fetches changes from the remote repository and merges them into the current branch<br>
+git pull
 
 
 
