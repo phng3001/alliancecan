@@ -55,7 +55,8 @@ git diff --staged
 git remote
 * Lists remote names + URLs for fetch and push<br>
 git remote -v
-
+* Pushes local commits to the remote repository<br>
+git push
 
 
 
