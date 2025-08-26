@@ -71,7 +71,8 @@ git fetch
 * Fetches changes from the remote repository and merges them into the current branch<br>
 git pull
 
-
+## More info
+https://www.geeksforgeeks.org/git/git-cheat-sheet/
 
 
 
