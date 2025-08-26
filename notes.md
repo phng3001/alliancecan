@@ -36,5 +36,15 @@ git init
 * Retrieve an entire repository from a hosted location via URL<br>
 git clone [url]
 
+## Stage
+* Show modified files in working directory<br>
+git status
+* Add a file as it looks now to your next commit (stage)<br>
+git add [file]
+* Add all changed files from the current directory to your next commit (stage)<br>
+git add .
+
+
+
 
 
