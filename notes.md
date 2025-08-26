@@ -13,15 +13,15 @@ https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generati
 ## Setup
 
 * Set the name that will be attached to your commits and tags<br>
-git config --global user.name "[your_username]"
+git config --global user.name "your_username"
 * Set the e-mail address that will be attached to your commits and tags<br>
-git config --global user.email "[your_email]"
+git config --global user.email "your_email"
 * Set automatic command line coloring for Git<br>
 git config --global color.ui auto
 * Set git's default editor (e.g. vim, nano, notepad etc)<br>
 git config --global core.editor "nano"
 * Local directory, single project (default)<br>
-git config --local user.email "[your_email]"
+git config --local user.email "your_email"
 * List all global configurations set<br>
 git config --global --list
 * Check a specific global setting<br>
@@ -31,20 +31,24 @@ cat ~/.gitconfig
 
 ## Init
 
-* Initialize an existing directory as a Git repository<br>
+* Initializes a new Git repository in the current directory<br>
 git init
+* Creates a new Git repository in the specified directory<br>
+git init [directory]
 * Retrieve an entire repository from a hosted location via URL<br>
-git clone [url]
+git clone [repository_url]
+* Clones a specific branch from a remote repository<br>
+git clone --branch [branch_name] [repository_url]
 
 ## Stage
 * Show modified files in working directory<br>
 git status
-* Add a file as it looks now to your next commit (stage)<br>
+* Adds a specific file to the staging area<br>
 git add [file]
-* Add all changed files from the current directory to your next commit (stage)<br>
+* Adds all modified and new files to the staging area.<br>
 git add .
 * Commit your staged content<br>
-git commit -m "[message]"
+git commit -m "your_message"
 * Show difference of what is changed but not staged<br>
 git diff
 * Show difference of what is staged but not yet committed<br>
@@ -57,6 +61,13 @@ git remote
 git remote -v
 * Pushes local commits to the remote repository<br>
 git push
+* Pushes local commits to the specified remote repository<br>
+git push [remote]
+* Pushes local commits to the specified branch of the remote repository<br>
+git push [remote] [branch]<br>
+E.g. git push origin main
+
+
 
 
 
