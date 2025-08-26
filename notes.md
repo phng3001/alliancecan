@@ -43,7 +43,12 @@ git status
 git add [file]
 * Add all changed files from the current directory to your next commit (stage)<br>
 git add .
-
+* Commit your staged content<br>
+git commit -m "[message]"
+* Show difference of what is changed but not staged<br>
+git diff
+* Show difference of what is staged but not yet committed<br>
+git diff --staged
 
 
 
