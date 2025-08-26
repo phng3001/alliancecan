@@ -50,6 +50,8 @@ git diff
 * Show difference of what is staged but not yet committed<br>
 git diff --staged
 
+## Synchronizing repositories
+
 
 
 
