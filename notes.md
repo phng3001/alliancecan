@@ -66,6 +66,8 @@ git push [remote]
 * Pushes local commits to the specified branch of the remote repository<br>
 git push [remote] [branch]<br>
 E.g. git push origin main
+* Retrieves change from a remote repository<br>
+git fetch
 
 
 
