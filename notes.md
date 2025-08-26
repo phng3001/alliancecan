@@ -29,6 +29,12 @@ git config --global user.name
 * View git global config file<br>
 cat ~/.gitconfig
 
+## Init
+
+* Initialize an existing directory as a Git repository<br>
+git init
+* Retrieve an entire repository from a hosted location via URL<br>
+git clone [url]
 
 
 
