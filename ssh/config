@@ -1,0 +1,58 @@
+Host *
+    User phng3001
+
+Host narval
+    HostName narval.alliancecan.ca
+    ForwardAgent yes
+
+Host narval-interactive
+    HostName nc31140
+    ProxyJump narval.alliancecan.ca
+    ForwardAgent yes
+
+Host nibi
+    HostName nibi.sharcnet.ca
+    ForwardAgent yes
+
+Host graham
+    HostName graham.alliancecan.ca
+    ForwardAgent yes
+
+Host graham-interactive
+    HostName gra797
+    ProxyJump graham.alliancecan.ca
+    ForwardAgent yes
+
+Host rorqual
+    HostName rorqual.alliancecan.ca
+    ForwardAgent yes
+
+Host beluga
+    HostName beluga.alliancecan.ca
+    ForwardAgent yes
+
+Host beluga-interactive
+    HostName bc11335
+    ProxyJump beluga.calculcanada.ca
+    ForwardAgent yes
+
+Host fir
+    HostName fir.alliancecan.ca
+    ForwardAgent yes
+
+Host cedar
+    HostName cedar.alliancecan.ca
+    ForwardAgent yes
+
+Host trillium
+    HostName trillium.alliancecan.ca
+    ForwardAgent yes
+
+Host niagara
+    HostName niagara.calculcanada.ca
+    ForwardAgent yes
+
+Host *
+    ControlPath ~/.ssh/cm-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 1440m
