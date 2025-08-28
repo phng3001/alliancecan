@@ -28,7 +28,7 @@ bash GenerateScripts_fastq_screen.sh [template.sh] [sample_list] [scheduler] [co
 bash run_apptainer_fastq_screen.template.sh-Launch.sh
 
 # Note
-These scripts were tested on Nibi using Leishmania sequencing run 20240506_LEPP048. It took less than 5 minutes per sample
+These scripts were tested on Nibi using *Leishmania* sequencing run 20240506_LEPP048. It took less than 5 minutes per sample
 
 # More info
 https://stevenwingett.github.io/FastQ-Screen/
