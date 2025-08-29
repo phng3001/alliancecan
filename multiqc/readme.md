@@ -7,7 +7,7 @@ MultiQC aggregates bioinformatics results across many samples into a single repo
 # Container
 multiqc_v1.25.1.sif
 
-# Run MultiQC
+# Usage
 ```bash
 bash run_apptainer_multiqc.sh <container> <input_dir_path> <output_dir_path>
 ```
