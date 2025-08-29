@@ -14,18 +14,23 @@ fastq-screen_v0.16.0.sif
 - Editing the configuration file to reflect the actual set up databases
 > **Note:** The current configuration file (fastq_screen.conf) has been set up to scan for Human, Mouse, *E. coli*, PhiX, common adapters, common vectors, *Leishmania* (*L. major*, *L. infantum* and *L. tarentolae*) and *S. pneumoniae* genomes
 
-# Run FastQ-Screen
+# Usage
 ## 1 sample
-bash run_apptainer_fastq_screen.sh [container] [conf_file] [fastq_file]
+```bash
+bash run_apptainer_fastq_screen.sh <container> <conf_file> <fastq_file>
+```
 > **Note:** By default sample is subsampled at 100000 reads.
 
 ## Multiple samples
 ### Generate scripts
-bash GenerateScripts_fastq_screen.sh [template.sh] [sample_list] [scheduler] [container]
-[conf_file] [fastq_dir_path]
+```bash
+bash GenerateScripts_fastq_screen.sh <template.sh> <sample_list> <scheduler> <container> <conf_file> <fastq_dir_path>
+```
 > **Template script:** run_apptainer_fastq_screen.template.sh
 ### Launch scripts
+```bash
 bash run_apptainer_fastq_screen.template.sh-Launch.sh
+```
 
 # Note
 These scripts were tested on Nibi using *Leishmania* sequencing run 20240506_LEPP048. It took less than 5 minutes per sample
