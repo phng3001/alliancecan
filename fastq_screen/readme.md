@@ -26,7 +26,7 @@ bash run_apptainer_fastq_screen.sh <container> <conf_file> <fastq_file>
 ```bash
 bash GenerateScripts_fastq_screen.sh <template.sh> <sample_list> <scheduler> <container> <conf_file> <fastq_dir_path>
 ```
-> **Template script:** run_apptainer_fastq_screen.template.sh
+* template script: run_apptainer_fastq_screen.template.sh
 ### Launch scripts
 ```bash
 bash run_apptainer_fastq_screen.template.sh-Launch.sh
