@@ -5,16 +5,9 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=4G
-#SBATCH --job-name=run_download_sra
+#SBATCH --job-name=__SAMPLE___download_sra
 
 ######### Preprocessing #########
-
-# Check if the correct number of arguments is provided
-if [ "$#" -ne 1 ]; then
-    echo "Usage on terminal: bash $0 <run_id>"
-    echo "Usage on cluster: sbatch $0 <run_id>"
-    exit 1
-fi
 
 # Load modules
 module purge
@@ -25,6 +18,7 @@ run_id="$1"
 
 # Declare variables
 tmp_dir=$HOME/scratch/sra
+run_id=__SAMPLE__
 
 # Check if the temporary directory exists, if not create it
 if [ -d "$tmp_dir" ]; then
@@ -62,6 +56,6 @@ if [[ -n "$SLURM_JOB_ID" && "$SLURM_JOB_ID" -ne 0 ]]; then
     sacct -j $SLURM_JOB_ID --format=JobID%16,Submit,Start,Elapsed,NCPUS,ExitCode,NodeList%8
     #sacct -j $SLURM_JOB_ID --format=JobID%16,Submit,Start,Elapsed,NCPUS,ExitCode,NodeList%8,MaxRSS    
     if [[ -f "slurm-${SLURM_JOB_ID}.out" ]]; then
-        mv slurm-${SLURM_JOB_ID}.out run_download_sra-${SLURM_JOB_ID}.out
+        mv slurm-${SLURM_JOB_ID}.out __SAMPLE___download_sra-${SLURM_JOB_ID}.out
     fi
 fi
