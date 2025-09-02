@@ -25,6 +25,6 @@ for i in $(cat $sample_list)
 do
     item=$template-$i.sh
     sed "s/__SAMPLE__/$i/g" $template > $item
-    echo $scheduler $item $ref_fasta_path $fastq_dir_path $output_dir_path >> $massiveSubmit
+    echo $scheduler $item $fastq_dir_path $output_dir_path >> $massiveSubmit
 done
 
