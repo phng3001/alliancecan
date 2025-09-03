@@ -56,9 +56,9 @@ sra/
 ├── ERR065289
 │   ├── ERR065289_1.fastq.gz
 │   └── ERR065289_2.fastq.gz
-└── ERR065291
-    ├── ERR065291_1.fastq.gz
-    └── ERR065291_2.fastq.gz
+└── ERR065290
+    ├── ERR065290_1.fastq.gz
+    └── ERR065290_2.fastq.gz
 ```
 
 #### Launch scripts
