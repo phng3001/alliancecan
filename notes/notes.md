@@ -49,6 +49,8 @@ git add [file]
 git add .
 * Commit your staged content<br>
 git commit -m "your_message"
+* Correct a git commit message if the commit has not been pushed yet<br>
+git commit --amend
 * Show difference of what is changed but not staged<br>
 git diff
 * Show difference of what is staged but not yet committed<br>
