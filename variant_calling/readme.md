@@ -85,8 +85,8 @@ Answer yes to continue.
 This file must list the name of the samples to analyse, one sample per line.
 
 #### 2. Generate scripts
+To display usage instructions for the script:
 ```bash
-# To display usage instructions for the script
 bash GenerateScripts_AlignAndCall.sh
 ```
 Then you will see:
@@ -137,25 +137,27 @@ Extension | Description
 ## II. SNP analysis
 ### Usage
 #### 0. Preparation
-* Create your working directory
+* Create your working directory for this step and navigate into it
 ```bash
 mkdir SNP_analysis
+cd SNP_analysis
 ```
-* Copy the scripts in the **SNP_analysis** directory to your working directory
+* Copy the scripts from the `SNP_analysis` subdirectory to your working directory
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/SNP_analysis/* .
 ```
-* Copy or create symbolic links of the snpEff container (snpeff_v5.2.sif) to your working directory
+* Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
 ```bash
 ln -s /project/def-mouellet/Scripts_MOU/PNP/containers/snpeff_v5.2.sif
 ```
 
 #### 1. Remove WT variants & N-stretch-containing variants
-For each lineage of mutants:
+For **each lineage** of mutants:
 ##### a. Create a lineage mutant list file
 This file must list the name of the mutants of this lineage, one sample per line.
 
-##### b. Run the script remove_WT_variant.sh
+##### b. Run the script `remove_WT_variant.sh`
+
 ```bash
 bash remove_WT_variant.sh <calling_folder> <wt_sample_name> <mutant_list>
 ```
