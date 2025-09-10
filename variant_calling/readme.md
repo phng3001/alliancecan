@@ -11,9 +11,9 @@ This pipeline consists of 3 main steps:
 
 # Organisation
 This directory contains 3 sub-directories corresponding to 3 main steps of this pipeline, and a readme.md file.
-```bash
+```
 variant_calling/
-├── CNV_analysis
+├── cnv_analysis
 │   ├── add_gene_information.py
 │   ├── compute_log2_ratio.py
 │   ├── count_read_by_window.py
@@ -23,17 +23,19 @@ variant_calling/
 │   ├── GenerateScripts_AlignAndCall.sh
 │   └── run_bwa_gatk_freebayes_bcftools.template.sh
 ├── readme.md
-└── SNP_analysis
-    ├── add_allele_frequency.py
-    ├── add_gene_description.py
-    ├── aggregate_variant.py
-    ├── build_presence_absence_matrix.py
-    ├── calculate_allele_frequency.py
-    ├── combine_variant.py
-    ├── compare_variant.py
-    ├── remove_WT_variant.py
-    ├── remove_WT_variant.sh
-    └── run_snp_analysis.sh
+└── snp_analysis
+    └── tritrypdb
+        ├── add_allele_frequency.py
+        ├── add_gene_description.py
+        ├── aggregate_variant.py
+        ├── build_presence_absence_matrix.py
+        ├── calculate_allele_frequency.py
+        ├── combine_variant.py
+        ├── compare_variant.py
+        ├── filter_out_tsv.py
+        ├── remove_WT_variant.py
+        ├── remove_WT_variant.sh
+        └── run_snp_analysis.sh
 ```
 
 # Preparation
@@ -51,18 +53,18 @@ R1 read file must be named as `SampleName_R1_paired.fastq.gz` and R2 read file m
 ## I. Read mapping and variant calling
 ### Usage
 #### 0. Preparation
-* Create your working directory for this step and navigate into it
+a. Create your working directory for this step and navigate into it
 ```bash
 mkdir read_mapping
 cd read_mapping
 ```
 
-* Copy the scripts from the `read_mapping_variant_calling` subdirectory into your working directory
+b. Copy the scripts from the `read_mapping_variant_calling` subdirectory into your working directory
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/read_mapping_variant_calling/* .
 ```
 
-* If it is your first time using GATK, run this command on a login node:
+c. If it is your first time using GATK, run this command on a login node:
 ```bash
 module load StdEnv/2023 gatk/4.4.0.0
 ```
@@ -137,16 +139,21 @@ Extension | Description
 ## II. SNP analysis
 ### Usage
 #### 0. Preparation
-* Create your working directory for this step and navigate into it
+a. Create your working directory for this step and navigate into it
 ```bash
 mkdir SNP_analysis
 cd SNP_analysis
 ```
-* Copy the scripts from the `SNP_analysis` subdirectory to your working directory
+
+b. Copy the appropriate scripts from the `snp_analysis` subdirectory to your working directory
+* If your reference genome is from TriTrypDB
 ```bash
-cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/SNP_analysis/* .
+cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/tritrypdb/* .
 ```
-* Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
+* If your reference genome is from NCBI
+# TO DO
+
+c. Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
 ```bash
 ln -s /project/def-mouellet/Scripts_MOU/PNP/containers/snpeff_v5.2.sif
 ```
@@ -157,29 +164,58 @@ For **each lineage** of mutants:
 This file must list the name of the mutants of this lineage, one sample per line.
 
 ##### b. Run the script `remove_WT_variant.sh`
-
+To display usage instructions for the script:
 ```bash
-bash remove_WT_variant.sh <calling_folder> <wt_sample_name> <mutant_list>
+bash remove_WT_variant.sh
 ```
-* calling_folder: path to directory where you performed the first step "Read mapping and variant calling" for the WT and its mutants
+Then you will see:
+```
+Usage: bash remove_WT_variant.sh <calling_folder> <wt_sample_name> <mutant_list>
+```
+In which: 
+* `calling_folder`: path to directory where you performed the first step "Read mapping and variant calling" for the WT and its mutants
+* `wt_sample_name`: the name of the WT of this lineage
+* `mutant_list`: the lineage mutant list file
+
+Example:
+```bash
+bash remove_WT_variant.sh ../read_mapping_variant_calling/ ldi263WT_cl1_FF mutant_list.txt
+```
+
 
 #### 2. Run SNP analysis
 ##### a. Create a mutant list file
 This file must list the name of the mutants to analyse, one sample per line.
 
-##### b. Run the script run_snp_analysis.sh
+##### b. Run the script `run_snp_analysis.sh`
+To display usage instructions for the script:
 ```bash
-bash run_snp_analysis.sh <path_to_snpEff_container> <genome_name> <path_to_ref_fasta> <path_to_ref_gff> <mutant_list>
+bash run_snp_analysis.sh
 ```
-E.g.
+Then you will see:
+```
+Usage: bash run_snp_analysis.sh <snpEff_container_path> <genome_name> <ref_fasta_path> <ref_gff_path> <mutant_list>
+```
+In which:
+* `snpEff_container_path`: path to the snpEff container, in this case `snpeff_v5.2.sif`
+* `genome_name`: name of your reference genome
+* `ref_fasta_path`: path to your reference fasta file
+* `ref_gff_path`: path to your reference gff file
+* `mutant_list`: your mutant list file
+
+Example
 ```bash
 bash run_snp_analysis.sh snpeff_v5.2.sif TriTrypDB-68_LinfantumJPCM5 ../ref/TriTrypDB-68_LinfantumJPCM5_Genome.fasta ../ref/TriTrypDB-68_LinfantumJPCM5.gff mutant_list.txt
 ```
 
 ### Output
-Two main output files are: all_variant_nosyn.tsv and all_variant_nosyn_matrix.tsv
-#### 1. all_variant_nosyn.tsv
-This file list all filtered, non synonymous variants detected by one of the three algorithms: gatk (GATK HaplotypeCaller), freebayes (FreeBayes) and bcftools (Bcftools mpileup). The columns are:
+#### Main output
+Four main output files are: 
+* SNP list: `all_variant_nosyn.tsv`
+* SNP matrix: `all_variant_nosyn_matrix.tsv`
+
+##### 1. `all_variant_nosyn.tsv`
+This file lists all filtered, non synonymous variants detected by one of the three algorithms: gatk (GATK HaplotypeCaller), freebayes (FreeBayes) and bcftools (Bcftools mpileup). The columns are:
 * #CHROM
 * POS
 * GENOTYPE
@@ -196,7 +232,7 @@ This file list all filtered, non synonymous variants detected by one of the thre
 * SAMPLE
 * CALLED_BY
 
-#### 2. all_variant_nosyn_matrix.tsv
+##### 2. `all_variant_nosyn_matrix.tsv`
 This file is a matrix of presence/absence of SNP in genes. The columns are:
 * #CHROM
 * GENE_ID
@@ -207,6 +243,32 @@ This file is a matrix of presence/absence of SNP in genes. The columns are:
 * CALLED_BY
 
 Samples start from the 8th column, one sample per column.
+
+#### Other
+# TO DO
+
+### Optional
+If you want to filter out intergenic variants:
+
+```python
+# Variant list
+python filter_out_tsv.py \
+  -i all_variant_nosyn.tsv \
+  -c VARIANT_TYPE \
+  -f intergenic_region \
+  -o all_variant_nosyn_noig.tsv
+```
+
+```python
+# Variant matrix
+python filter_out_tsv.py \
+  -i all_variant_nosyn_matrix.tsv \
+  -c VARIANT_TYPE \
+  -f intergenic_region \
+  -o all_variant_nosyn_noig_matrix.tsv
+```
+
+
 
 ## III. CNV analysis 
 
