@@ -7,7 +7,7 @@ This pipeline consists of 3 main steps:
 2. SNP analysis
 3. CNV analysis
 
-> **Notes**: SNP and CNV analyses are based on mutant/WT comparison.
+> **Notes:** SNP and CNV analyses are based on mutant/WT comparison.
 
 # Organisation
 This directory contains 3 sub-directories corresponding to 3 main steps of this pipeline, and a readme.md file.
@@ -40,18 +40,24 @@ variant_calling/
 ## 1. Prepare your reference genome
 * Sequence file: fasta format 
 * Annotation file: gff format
-## 2. Prepare your FASTQ files
+## 2. Prepare your FASTQ directory
+The FASTQ directory should be organized so that each sample has its own folder containing the corresponding R1 and R2 read files. 
+
+R1 read file must be named as `SampleName_R1_paired.fastq.gz` and R2 read file must be named as `SampleName_R2_paired.fastq.gz`, where `SampleName` matches the name of the sample.
+
+> **Notes:** The FASTQ directory structure and FASTQ file naming pattern can be modified by updating the `R1_path` and `R2_path` variables in the script `run_bwa_gatk_freebayes_bcftools.template.sh`
 
 # Pipeline
 ## I. Read mapping and variant calling
 ### Usage
 #### 0. Preparation
-* Create your working directory
+* Create your working directory for this step and navigate into it
 ```bash
-mkdir read_mapping_variant_calling
+mkdir read_mapping
+cd read_mapping
 ```
 
-* Copy the scripts in the **read_mapping_variant_calling** directory to your working directory
+* Copy the scripts from the `read_mapping_variant_calling` subdirectory into your working directory
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/read_mapping_variant_calling/* .
 ```
@@ -76,22 +82,29 @@ https://software.broadinstitute.org/gatk/download/licensing.php
 Answer yes to continue.
 
 #### 1. Create a sample list file
-This file must list the name of the samples to analyse, one sample per line
+This file must list the name of the samples to analyse, one sample per line.
 
 #### 2. Generate scripts
+```bash
+# To display usage instructions for the script
+bash GenerateScripts_AlignAndCall.sh
 ```
-bash GenerateScripts_AlignAndCall.sh <template.sh> <sample_list> <scheduler> <ref_fasta_path> <fastq_dir_path>
+Then you will see:
 ```
-* template script: run_bwa_gatk_freebayes_bcftools.template.sh
-* scheduler: sbatch
-* ref_fasta_path: path to the reference fasta file
-* fastq_dir_path: path to directory containing FASTQ reads
+Usage: bash GenerateScripts_AlignAndCall.sh <template.sh> <sample_list> <scheduler> <ref_fasta_path> <fastq_dir_path>
+```
+In which:
+* `template.sh`: the template script, in this case `run_bwa_gatk_freebayes_bcftools.template.sh`
+* `sample_list`: your sample list file (e.g. `sample_list.txt`)
+* `scheduler`: sbatch
+* `ref_fasta_path`: path to your reference fasta file
+* `fastq_dir_path`: path to your FASTQ directory
 
-E.g. 
+Example: 
 ```bash
 bash GenerateScripts_AlignAndCall.sh run_bwa_gatk_freebayes_bcftools.template.sh sample_list.txt sbatch ../ref/TriTrypDB-68_LinfantumJPCM5_Genome.fasta ../fastqFiles/
 ```
-A launch script to submit simultaneously all the scripts generated from the template script will be created. This script is named after the template script with a "-Launch.sh" suffix.
+A launch script to submit simultaneously all the scripts generated from the template script will be created. This script is named after the template script with a "-Launch.sh" suffix. In this case, it will be `run_bwa_gatk_freebayes_bcftools.template.sh-Launch.sh`.
 
 #### 3. Run the launch script
 ```bash
@@ -99,6 +112,8 @@ bash run_bwa_gatk_freebayes_bcftools_filter.template.sh-Launch.sh
 ```
 
 ### Output
+Output files for each sample will be saved in a folder named after the sample.
+
 Extension | Description
 ----------|--------------
 *_sorted_dedup_reads.bam | Alignment in BAM format. BAM file is sorted by coordinate and duplicates are marked
@@ -114,6 +129,10 @@ Extension | Description
 *_filtered_variants.gatk.vcf | GATK HaplotypeCaller variants filtered according to https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering
 *_filtered_variants.freebayes.vcf | FreeBayes variants filtered by quality score (QUAL>=20, i.e. 99% confidence or 1% error probability) and depth (DP>=10)
 *_filtered_variants.bcftools.vcf | Bcftools mpileup variants filtered by quality score (QUAL>=20, i.e. 99% confidence or 1% error probability) and depth (DP>=10)
+
+> **Notes:** For debugging purpose, intermediate files are placed in your scratch in a folder named `SampleName_bwa_gatk_freebayes_bcftools`, where SampleName is the name of the sample. If the script completes successfully, you can safely delete these files.
+
+
 
 ## II. SNP analysis
 ### Usage
