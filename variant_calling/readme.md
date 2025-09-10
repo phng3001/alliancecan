@@ -1,7 +1,46 @@
 # Synopsis
-This pipeline aligns paired-end FASTQ reads against a reference genome using BWA then calls variants using GATK, FreeBayes and BCFtools.
+This pipeline aligns **paired-end** FASTQ reads against a reference genome using **BWA** then calls variants using **GATK**, **FreeBayes** and **BCFtools**.
+
+This pipeline consists of 3 main steps:
+
+1. Read mapping and variant calling
+2. SNP analysis
+3. CNV analysis
+
+> **Notes**: SNP and CNV analyses are based on mutant/WT comparison.
+
+# Organisation
+This directory contains 3 sub-directories corresponding to 3 main steps of this pipeline, and a readme.md file.
+```bash
+variant_calling/
+├── CNV_analysis
+│   ├── add_gene_information.py
+│   ├── compute_log2_ratio.py
+│   ├── count_read_by_window.py
+│   └── plot_log2_ratio.py
+├── read_mapping_variant_calling
+│   ├── combine_vcf_columns.py
+│   ├── GenerateScripts_AlignAndCall.sh
+│   └── run_bwa_gatk_freebayes_bcftools.template.sh
+├── readme.md
+└── SNP_analysis
+    ├── add_allele_frequency.py
+    ├── add_gene_description.py
+    ├── aggregate_variant.py
+    ├── build_presence_absence_matrix.py
+    ├── calculate_allele_frequency.py
+    ├── combine_variant.py
+    ├── compare_variant.py
+    ├── remove_WT_variant.py
+    ├── remove_WT_variant.sh
+    └── run_snp_analysis.sh
+```
 
 # Preparation
+## 1. Prepare your reference genome
+* Sequence file: fasta format 
+* Annotation file: gff format
+## 2. Prepare your FASTQ files
 
 # Pipeline
 ## I. Read mapping and variant calling
@@ -153,6 +192,7 @@ Samples start from the 8th column, one sample per column.
 
 
 # Dependencies
+## Modules
 * gcc/12.3
 * bwa/0.7.18
 * samtools/1.20
@@ -160,6 +200,6 @@ Samples start from the 8th column, one sample per column.
 * freebayes/1.3.7
 * bcftools/1.19
 * r/4.4.0
-
-# Containers
+## Containers
 * snpeff_v5.2.sif
+* python_3.11.5.sif
