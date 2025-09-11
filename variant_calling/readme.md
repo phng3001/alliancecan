@@ -151,7 +151,9 @@ b. Copy the appropriate scripts from the `snp_analysis` subdirectory to your wor
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/tritrypdb/* .
 ```
 * If your reference genome is from NCBI
-# TO DO
+```bash
+cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/ncbi/* .
+```
 
 c. Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
 ```bash
@@ -179,7 +181,7 @@ In which:
 
 Example:
 ```bash
-bash remove_WT_variant.sh ../read_mapping_variant_calling/ ldi263WT_cl1_FF mutant_list.txt
+bash remove_WT_variant.sh ../read_mapping/ ldi263WT_cl1_FF mutant_list.txt
 ```
 
 
@@ -211,11 +213,11 @@ bash run_snp_analysis.sh snpeff_v5.2.sif TriTrypDB-68_LinfantumJPCM5 ../ref/TriT
 ### Output
 #### Main output
 Four main output files are: 
-* SNP list: `all_variant_nosyn.tsv`
-* SNP matrix: `all_variant_nosyn_matrix.tsv`
+* Variant list: `all_variant.tsv`
+* Variant matrix: `all_variant_matrix.tsv`
 
-##### 1. `all_variant_nosyn.tsv`
-This file lists all filtered, non synonymous variants detected by one of the three algorithms: gatk (GATK HaplotypeCaller), freebayes (FreeBayes) and bcftools (Bcftools mpileup). The columns are:
+##### 1. `all_variant.tsv`
+This file lists all filtered variants detected by one of the three algorithms: gatk (GATK HaplotypeCaller), freebayes (FreeBayes) and bcftools (Bcftools mpileup). The columns are:
 * #CHROM
 * POS
 * GENOTYPE
@@ -232,7 +234,7 @@ This file lists all filtered, non synonymous variants detected by one of the thr
 * SAMPLE
 * CALLED_BY
 
-##### 2. `all_variant_nosyn_matrix.tsv`
+##### 2. `all_variant_matrix.tsv`
 This file is a matrix of presence/absence of SNP in genes. The columns are:
 * #CHROM
 * GENE_ID
@@ -247,25 +249,52 @@ Samples start from the 8th column, one sample per column.
 #### Other
 # TO DO
 
-### Optional
-If you want to filter out intergenic variants:
+### Optional: Filter out variants with `filter_out_tsv.py`
+In this example we will use the script `filter_out_tsv.py` to filter out some variant types from the output variant list `all_variant.tsv`.
+
+To display usage instructions for the script:
+```python
+python filter_out_tsv.py -h
+```
+Then you will see:
+```
+usage: filter_out_tsv.py [-h] -i INPUT -c COLUMN -f FILTER -o OUTPUT
+
+Remove rows from a TSV file where the specified column matches a given value.
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        Input TSV file
+  -c COLUMN, --column COLUMN
+                        Column name to filter on
+  -f FILTER, --filter FILTER
+                        Value to filter out (i.e., exclude rows with this value)
+  -o OUTPUT, --output OUTPUT
+                        Output TSV file
+```
+The column for filtering in this example is `VARIANT_TYPE`. Pass this to the `-c` argument of the script.
+
+#### Filter out synonymous variants
+SnpEff annotates synonymous variants with the value `synonymous_variant`. Pass this to the `-f` argument of the script.
 
 ```python
-# Variant list
+python filter_out_tsv.py \
+  -i all_variant.tsv \
+  -c VARIANT_TYPE \
+  -f synonymous_variant \
+  -o all_variant_nosyn.tsv
+```
+
+#### Filter out intergenic variants
+SnpEff annotates intergenic variants with the value `intergenic_region`. Pass this to the `-f` argument of the script.
+
+```python
 python filter_out_tsv.py \
   -i all_variant_nosyn.tsv \
   -c VARIANT_TYPE \
   -f intergenic_region \
   -o all_variant_nosyn_noig.tsv
-```
-
-```python
-# Variant matrix
-python filter_out_tsv.py \
-  -i all_variant_nosyn_matrix.tsv \
-  -c VARIANT_TYPE \
-  -f intergenic_region \
-  -o all_variant_nosyn_noig_matrix.tsv
 ```
 
 
