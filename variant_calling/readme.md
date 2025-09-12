@@ -1,7 +1,7 @@
 # Synopsis
 This pipeline aligns **paired-end** FASTQ reads against a reference genome using **BWA** then calls variants using **GATK**, **FreeBayes** and **BCFtools**.
 
-This pipeline consists of 3 main steps:
+This pipeline consists of 3 main parts:
 
 1. Read mapping and variant calling
 2. SNP analysis
@@ -10,7 +10,10 @@ This pipeline consists of 3 main steps:
 > **Notes:** SNP and CNV analyses are based on mutant/WT comparison.
 
 # Organisation
-This directory contains 3 sub-directories corresponding to 3 main steps of this pipeline, and a readme.md file.
+This directory contains:
+* 3 sub-directories corresponding to 3 main parts of this pipeline: `read_mapping_variant_calling`, `snp_analysis` and `cnv_analysis`.
+* A container subdirectory `containers` containing the necessary containers to run this pipeline.
+* A readme.md file.
 ```
 variant_calling/
 ├── cnv_analysis
@@ -18,12 +21,30 @@ variant_calling/
 │   ├── compute_log2_ratio.py
 │   ├── count_read_by_window.py
 │   └── plot_log2_ratio.py
+├── containers
+│   ├── python_3.11.5.def
+│   ├── python_3.11.5.sha256
+│   ├── python_3.11.5.sif
+│   ├── snpeff_v5.2.sha256
+│   └── snpeff_v5.2.sif
 ├── read_mapping_variant_calling
 │   ├── combine_vcf_columns.py
 │   ├── GenerateScripts_AlignAndCall.sh
 │   └── run_bwa_gatk_freebayes_bcftools.template.sh
 ├── readme.md
 └── snp_analysis
+    ├── ncbi
+    │   ├── add_allele_frequency.py
+    │   ├── add_gene_description.py
+    │   ├── aggregate_variant.py
+    │   ├── build_presence_absence_matrix.py
+    │   ├── calculate_allele_frequency.py
+    │   ├── combine_variant.py
+    │   ├── compare_variant.py
+    │   ├── filter_out_tsv.py
+    │   ├── remove_WT_variant.py
+    │   ├── remove_WT_variant.sh
+    │   └── run_snp_analysis.sh
     └── tritrypdb
         ├── add_allele_frequency.py
         ├── add_gene_description.py
@@ -51,8 +72,8 @@ R1 read file must be named as `SampleName_R1_paired.fastq.gz` and R2 read file m
 
 # Pipeline
 ## I. Read mapping and variant calling
-### Usage
-#### 0. Preparation
+### Protocol
+#### Step 0. Preparation
 a. Create your working directory for this step and navigate into it
 ```bash
 mkdir read_mapping
@@ -83,10 +104,10 @@ https://software.broadinstitute.org/gatk/download/licensing.php
 ```
 Answer yes to continue.
 
-#### 1. Create a sample list file
+#### Step 1. Create a sample list file
 This file must list the name of the samples to analyse, one sample per line.
 
-#### 2. Generate scripts
+#### Step 2. Generate scripts
 To display usage instructions for the script:
 ```bash
 bash GenerateScripts_AlignAndCall.sh
@@ -108,7 +129,7 @@ bash GenerateScripts_AlignAndCall.sh run_bwa_gatk_freebayes_bcftools.template.sh
 ```
 A launch script to submit simultaneously all the scripts generated from the template script will be created. This script is named after the template script with a "-Launch.sh" suffix. In this case, it will be `run_bwa_gatk_freebayes_bcftools.template.sh-Launch.sh`.
 
-#### 3. Run the launch script
+#### Step 3. Run the launch script
 ```bash
 bash run_bwa_gatk_freebayes_bcftools_filter.template.sh-Launch.sh
 ```
@@ -137,8 +158,7 @@ Extension | Description
 
 
 ## II. SNP analysis
-### Usage
-#### 0. Preparation
+### Step 0. Preparation
 a. Create your working directory for this step and navigate into it
 ```bash
 mkdir SNP_analysis
@@ -146,26 +166,27 @@ cd SNP_analysis
 ```
 
 b. Copy the appropriate scripts from the `snp_analysis` subdirectory to your working directory
-* If your reference genome is from TriTrypDB
+* If your reference genome annotation is from TriTrypDB:
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/tritrypdb/* .
 ```
-* If your reference genome is from NCBI
+* If your reference genome annotation is from NCBI or Prokka: 
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/ncbi/* .
 ```
 
 c. Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
 ```bash
-ln -s /project/def-mouellet/Scripts_MOU/PNP/containers/snpeff_v5.2.sif
+ln -s /project/def-mouellet/Scripts_MOU/PNP/variant_calling/containers/snpeff_v5.2.sif
 ```
 
-#### 1. Remove WT variants & N-stretch-containing variants
+### Step 1. Remove WT variants & N-stretch-containing variants
 For **each lineage** of mutants:
-##### a. Create a lineage mutant list file
+#### a. Create a lineage mutant list file
 This file must list the name of the mutants of this lineage, one sample per line.
 
-##### b. Run the script `remove_WT_variant.sh`
+#### b. Run the script `remove_WT_variant.sh`
+##### Usage
 To display usage instructions for the script:
 ```bash
 bash remove_WT_variant.sh
@@ -184,12 +205,15 @@ Example:
 bash remove_WT_variant.sh ../read_mapping/ ldi263WT_cl1_FF mutant_list.txt
 ```
 
+##### Output
+# TO DO
 
-#### 2. Run SNP analysis
-##### a. Create a mutant list file
+### Step 2. Run SNP analysis
+#### a. Create a mutant list file
 This file must list the name of the mutants to analyse, one sample per line.
 
-##### b. Run the script `run_snp_analysis.sh`
+#### b. Run the script `run_snp_analysis.sh`
+##### Usage
 To display usage instructions for the script:
 ```bash
 bash run_snp_analysis.sh
@@ -209,14 +233,12 @@ Example
 ```bash
 bash run_snp_analysis.sh snpeff_v5.2.sif TriTrypDB-68_LinfantumJPCM5 ../ref/TriTrypDB-68_LinfantumJPCM5_Genome.fasta ../ref/TriTrypDB-68_LinfantumJPCM5.gff mutant_list.txt
 ```
-
-### Output
-#### Main output
-Four main output files are: 
+##### Output
+Two main output files are: 
 * Variant list: `all_variant.tsv`
 * Variant matrix: `all_variant_matrix.tsv`
 
-##### 1. `all_variant.tsv`
+1. `all_variant.tsv`
 This file lists all filtered variants detected by one of the three algorithms: gatk (GATK HaplotypeCaller), freebayes (FreeBayes) and bcftools (Bcftools mpileup). The columns are:
 * #CHROM
 * POS
@@ -234,7 +256,7 @@ This file lists all filtered variants detected by one of the three algorithms: g
 * SAMPLE
 * CALLED_BY
 
-##### 2. `all_variant_matrix.tsv`
+2. `all_variant_matrix.tsv`
 This file is a matrix of presence/absence of SNP in genes. The columns are:
 * #CHROM
 * GENE_ID
@@ -246,10 +268,7 @@ This file is a matrix of presence/absence of SNP in genes. The columns are:
 
 Samples start from the 8th column, one sample per column.
 
-#### Other
-# TO DO
-
-### Optional: Filter out variants with `filter_out_tsv.py`
+### Step 3. Filter out variants with `filter_out_tsv.py` (optional)
 In this example we will use the script `filter_out_tsv.py` to filter out some variant types from the output variant list `all_variant.tsv`.
 
 To display usage instructions for the script:
@@ -300,6 +319,7 @@ python filter_out_tsv.py \
 
 
 ## III. CNV analysis 
+### Step 0. Preparation
 
 
 
