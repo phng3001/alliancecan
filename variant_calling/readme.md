@@ -166,11 +166,11 @@ cd SNP_analysis
 ```
 
 #### b. Copy the appropriate scripts from the `snp_analysis` subdirectory to your working directory
-* If your reference genome annotation is from TriTrypDB:
+* If your reference genome annotation gff file is from TriTrypDB:
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/tritrypdb/* .
 ```
-* If your reference genome annotation is from NCBI or Prokka: 
+* If your reference genome annotation gff file is from NCBI or Prokka: 
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/ncbi/* .
 ```
@@ -181,9 +181,8 @@ ln -s /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/containe
 ```
 
 ### Step 1. Remove WT variants & N-stretch-containing variants
-For **each lineage** of mutants:
-#### a. Create a lineage mutant list file
-This file must list the name of the mutants of this lineage, one sample per line.
+#### a. Create mutant list file(s)
+For **each lineage** of mutants, create a mutant list file. This file must list the name of the mutants of this lineage, one sample per line.
 
 #### b. Run the script `remove_WT_variant.sh`
 ##### Usage
@@ -206,7 +205,7 @@ bash remove_WT_variant.sh ../read_mapping/ ldi263WT_cl1_FF mutant_list.txt
 ```
 
 ##### Output
-# TO DO
+###### TO DO
 
 ### Step 2. Run SNP analysis
 #### a. Create a mutant list file
@@ -233,6 +232,7 @@ Example
 ```bash
 bash run_snp_analysis.sh snpeff_v5.2.sif TriTrypDB-68_LinfantumJPCM5 ../ref/TriTrypDB-68_LinfantumJPCM5_Genome.fasta ../ref/TriTrypDB-68_LinfantumJPCM5.gff mutant_list.txt
 ```
+
 ##### Output
 Two main output files are: 
 * Variant list: `all_variant.tsv`
@@ -268,7 +268,7 @@ This file is a matrix of presence/absence of SNP in genes. The columns are:
 
 Samples start from the 8th column, one sample per column.
 
-### Step 3. Filter out variants with `filter_out_tsv.py` (optional)
+### Step 3. Filter out variants with the script `filter_out_tsv.py` (optional)
 In this example we will use the script `filter_out_tsv.py` to filter out some variant types from the output variant list `all_variant.tsv`.
 
 To display usage instructions for the script:
@@ -336,6 +336,11 @@ cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/cnv_analysi
 ln -s /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/containers/python_3.11.5.sif
 ```
 
+#### d. Load Apptainer
+```bash
+module load apptainer
+```
+
 ### Step 1. Create a sample list file
 This file must list the name of the samples to analyse, one sample per line.
 
@@ -351,6 +356,197 @@ done
 ```
 
 ### Step 3. Copy or make symbolic links of the reference fasta and gff files to your working directory
+
+### Step 4. Count mapped reads by genomic windows for each sample
+#### a. Load Samtools
+```bash
+module load samtools
+```
+#### b. Run the script `count_read_by_window.py`
+##### Usage
+To display usage instructions for the script:
+```python
+python count_read_by_window.py -h
+```
+Then you will see:
+```
+usage: count_read_by_window.py [-h] -i BAM_FILE -r FASTA_FILE -w WINDOW_SIZE -o OUTPUT_FILE
+
+Count reads in BAM file by genomic windows.
+
+options:
+  -h, --help            show this help message and exit
+  -i BAM_FILE, --bam_file BAM_FILE
+                        Input BAM file path
+  -r FASTA_FILE, --fasta_file FASTA_FILE
+                        Reference FASTA file path
+  -w WINDOW_SIZE, --window_size WINDOW_SIZE
+                        Size of each genomic window (e.g., 5000).
+  -o OUTPUT_FILE, --output_file OUTPUT_FILE
+                        Output TSV file path
+```
+Example:
+```bash
+for X in $(cat sample_list.txt); 
+do 
+  python count_read_by_window.py \
+  -i ${X}.bam \
+  -r TriTrypDB-68_LinfantumJPCM5_Genome.fasta \
+  -w 5000 \
+  -o ${X}_cov.tsv;
+done
+```
+
+##### Output
+This script outputs TSV file showing the number of reads mapped to each genomic window. The columns are:
+* #CHROM
+* START
+* END
+* NB_READS
+
+### Step 5. Compute the normalized log2 mutant/WT read ratio
+#### a. Create mutant list file(s)
+For **each lineage** of mutants, create a mutant list file. This file must list the name of the mutants of this lineage, one sample per line.
+
+#### b. Run the script `compute_log2_ratio.py`
+##### Usage
+To display usage instructions for the script:
+```python
+python compute_log2_ratio.py -h
+```
+Then you will see:
+```
+usage: compute_log2_ratio.py [-h] -i MUTANT_FILE -r WT_FILE -o OUTPUT_FILE
+
+Compute the mutant/wild type read ratio in log2 for each corresponding genomic window. Read counts are normalized by the total read count per sample.
+
+options:
+  -h, --help            show this help message and exit
+  -i MUTANT_FILE, --mutant_file MUTANT_FILE
+                        Mutant read counts file path
+  -r WT_FILE, --wt_file WT_FILE
+                        Wild type read counts file path
+  -o OUTPUT_FILE, --output_file OUTPUT_FILE
+                        Output file path
+```
+The `MUTANT_FILE` and `WT_FILE` are outputs generated by the script `count_read_by_window.py` in step 4. Pass these to the `-i` and `-r` arguments of the script, respectively.
+
+Example:
+```bash
+for X in $(cat mutant_list.txt);
+do
+  apptainer run python_3.11.5.sif \
+  python compute_log2_ratio.py \
+  -i ${X}_cov.tsv \
+  -r ldi263WT_cl1_FF_cov.tsv \
+  -o ${X}_vs_ldi263WT_cl1_FF.tsv;
+  echo "$X done";
+done
+```
+
+##### Output
+This script outputs TSV file showing normalized log2 mutant/wt read ratio for each genomic window. The columns are:
+* #CHROM
+* START
+* END
+* NB_READS_MUTANT
+* NB_READS_WT
+* NB_READS_RATIO_MUTANT/WT
+* TOTAL_READS_MUTANT
+* TOTAL_READS_WT
+* TOTAL_READS_RATIO_MUTANT/WT
+* NORMALIZED_LOG2_READS_RATIO_MUTANT/WT
+
+### Step 6. Add gene information with the script `add_gene_information`
+#### Usage
+To display usage instructions for the script:
+```python
+python add_gene_information.py -h
+```
+Then you will see:
+```
+usage: add_gene_information.py [-h] -i INPUT_FILE -r GFF_FILE [-f FEATURE] -o OUTPUT_FILE
+
+Annotate genomic regions with gene information retrieved from a GFF file. Input file must contain these columns: '#CHROM', 'START', and 'END'. Gene information will be written to a new column named 'GENE'.
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT_FILE, --input_file INPUT_FILE
+                        Input TSV file path
+  -r GFF_FILE, --gff_file GFF_FILE
+                        Input GFF file path
+  -f FEATURE, --feature FEATURE
+                        Feature type to annotate (e.g., 'gene', 'CDS'). Default is 'gene'
+  -o OUTPUT_FILE, --output_file OUTPUT_FILE
+                        Output TSV file path
+```
+In which:
+* `INPUT_FILE`: Output generated by the script `compute_log2_ratio.py` in step 5. Pass this to the `-i` argument of the script.
+* `GFF_FILE`: The reference annotation gff file. Pass this to the `-r` argument of the script.
+* `FEATURE`: Feature type in gff file to be used for annotation. Pass this to the `-f` argument of the script.
+>**Notes:** Inspect your gff file to choose the appropriate feature type (3rd column). These following tags in the 9th column will be retrieved: `ID` or `locus_tag`, `Name` or `gene`, `product` or `description`.  
+
+Example:
+```bash
+for X in $(cat mutant_list.txt);
+do
+  apptainer run python_3.11.5.sif \
+  python add_gene_information.py \
+  -i ${X}_vs_ldi263WT_cl1_FF.tsv \
+  -r TriTrypDB-68_LinfantumJPCM5.gff \
+  -f protein_coding_gene \
+  -o ${X}_vs_ldi263WT_cl1_FF.annot.tsv;
+  echo "$X done";
+done
+```
+#### Output
+This script adds a new column named `GENE` containing information about gene(s) found in the corresponding genomic window in the following format: 
+* Unique gene: (gene_locus_tag,gene_name,gene_description)
+* Multiple genes: (gene1_locus_tag,gene1_name,gene1_description); (gene2_locus_tag,gene2_name,gene2_description)
+
+### Step 7. Make plots
+#### a. Create a list of files to plot
+These files are outputs generated by the script `add_gene_information` in step 6. List the names of these files, one per line.
+
+#### b. Run the script `plot_log2_ratio.py`
+##### Usage
+To display usage instructions for the script:
+```python
+python plot_log2_ratio.py -h
+```
+Then you will see:
+```
+usage: plot_log2_ratio.py [-h] -i INPUT [INPUT ...] -o OUTDIR [--ylim YLIM YLIM]
+                          [--gridstep GRIDSTEP] [--dpi DPI] [--width WIDTH] [--height HEIGHT]
+
+Generate interactive plots of the normalized log2 mutant/wild type read ratio for each chromosome.
+
+options:
+  -h, --help            show this help message and exit
+  -i INPUT [INPUT ...], --input INPUT [INPUT ...]
+                        Input TSV files (one per sample)
+  -o OUTDIR, --outdir OUTDIR
+                        Output directory to save plots
+  --ylim YLIM YLIM      y-axis limits as min max (e.g., --ylim -2 2)
+  --gridstep GRIDSTEP   Step size for y-axis gridlines. Default is 1
+  --dpi DPI             Plot resolution in dpi (dots per inch). Default is 96
+  --width WIDTH         Figure width in inches. Default is 12
+  --height HEIGHT       Figure height in inches. Default is 3
+```
+
+Example:
+```bash
+apptainer run python_3.11.5.sif \
+python plot_log2_ratio.py \
+-i $(paste -s -d ' ' mutant_file.txt) \
+-o interactive_plots \
+--ylim -4 4 \
+--width 16 \
+--height 4
+```
+
+##### Output
+This script generates an interactive plot for each chromosome, showing the normalized log2 ratio of mutant to WT read coverage across genomic coordinates.
 
 
 
