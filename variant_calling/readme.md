@@ -74,7 +74,7 @@ R1 read file must be named as `SampleName_R1_paired.fastq.gz` and R2 read file m
 ## I. Read mapping and variant calling
 ### Protocol
 #### Step 0. Preparation
-a. Create your working directory for this step and navigate into it
+a. Create your working directory for this part and navigate into it
 ```bash
 mkdir read_mapping
 cd read_mapping
@@ -159,13 +159,13 @@ Extension | Description
 
 ## II. SNP analysis
 ### Step 0. Preparation
-a. Create your working directory for this step and navigate into it
+#### a. Create your working directory for this part and navigate into it
 ```bash
 mkdir SNP_analysis
 cd SNP_analysis
 ```
 
-b. Copy the appropriate scripts from the `snp_analysis` subdirectory to your working directory
+#### b. Copy the appropriate scripts from the `snp_analysis` subdirectory to your working directory
 * If your reference genome annotation is from TriTrypDB:
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/tritrypdb/* .
@@ -175,9 +175,9 @@ cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysi
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/ncbi/* .
 ```
 
-c. Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
+#### c. Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
 ```bash
-ln -s /project/def-mouellet/Scripts_MOU/PNP/variant_calling/containers/snpeff_v5.2.sif
+ln -s /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/containers/snpeff_v5.2.sif
 ```
 
 ### Step 1. Remove WT variants & N-stretch-containing variants
@@ -320,6 +320,26 @@ python filter_out_tsv.py \
 
 ## III. CNV analysis 
 ### Step 0. Preparation
+#### a. Create your working directory for this part and navigate into it
+```bash
+mkdir CNV_analysis
+cd CNV_analysis
+```
+
+#### b. Copy the scripts from the `cnv_analysis` subdirectory to your working directory
+```bash
+cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/cnv_analysis/* .
+```
+
+#### c. Copy or create symbolic links of the python container `python_3.11.5.sif` to your working directory
+```bash
+ln -s /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/containers/python_3.11.5.sif
+```
+
+### Step 1. Create a sample list file
+This file must list the name of the samples to analyse, one sample per line.
+
+### Step 2. Make symbolic links of BAM files to your working directory
 
 
 
