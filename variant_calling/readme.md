@@ -196,7 +196,7 @@ Then you will see:
 Usage: bash remove_WT_variant.sh <calling_folder> <wt_sample_name> <mutant_list>
 ```
 In which: 
-* `calling_folder`: path to directory where you performed the first step "Read mapping and variant calling" for the WT and its mutants
+* `calling_folder`: path to directory where you performed the first part of this pipeline "Read mapping and variant calling" for the WT and its mutants
 * `wt_sample_name`: the name of the WT of this lineage
 * `mutant_list`: the lineage mutant list file
 
@@ -340,6 +340,17 @@ ln -s /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/containe
 This file must list the name of the samples to analyse, one sample per line.
 
 ### Step 2. Make symbolic links of BAM files to your working directory
+>**Notes:** BAM files were generated at the first part of this pipeline "Read mapping and variant calling"
+
+Example:
+```bash
+for X in $(cat sample_list.txt); 
+do 
+  ln -s ../read_mapping/$X/${X}_sorted_dedup_reads.bam ${X}.bam; 
+done
+```
+
+### Step 3. Copy or make symbolic links of the reference fasta and gff files to your working directory
 
 
 
