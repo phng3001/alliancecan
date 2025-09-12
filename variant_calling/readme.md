@@ -13,7 +13,7 @@ This pipeline consists of 3 main parts:
 This directory contains:
 * 3 sub-directories corresponding to 3 main parts of this pipeline: `read_mapping_variant_calling`, `snp_analysis` and `cnv_analysis`.
 * A container subdirectory `containers` containing the necessary containers to run this pipeline.
-* A readme.md file.
+* A `readme.md` file.
 ```
 variant_calling/
 ├── cnv_analysis
@@ -63,6 +63,7 @@ variant_calling/
 ## 1. Prepare your reference genome
 * Sequence file: fasta format 
 * Annotation file: gff format
+
 ## 2. Prepare your FASTQ directory
 The FASTQ directory should be organized so that each sample has its own folder containing the corresponding R1 and R2 read files. 
 
@@ -71,21 +72,21 @@ R1 read file must be named as `SampleName_R1_paired.fastq.gz` and R2 read file m
 > **Notes:** The FASTQ directory structure and FASTQ file naming pattern can be modified by updating the `R1_path` and `R2_path` variables in the script `run_bwa_gatk_freebayes_bcftools.template.sh`
 
 # Pipeline
-## I. Read mapping and variant calling
+## Part I. Read mapping and variant calling
 ### Protocol
 #### Step 0. Preparation
-a. Create your working directory for this part and navigate into it
+##### a. Create your working directory for this part and navigate into it
 ```bash
 mkdir read_mapping
 cd read_mapping
 ```
 
-b. Copy the scripts from the `read_mapping_variant_calling` subdirectory into your working directory
+##### b. Copy the scripts from the subdirectory `read_mapping_variant_calling` into your working directory
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/read_mapping_variant_calling/* .
 ```
 
-c. If it is your first time using GATK, run this command on a login node:
+##### c. If it is your first time using GATK, run this command on a login node:
 ```bash
 module load StdEnv/2023 gatk/4.4.0.0
 ```
@@ -108,7 +109,7 @@ Answer yes to continue.
 This file must list the name of the samples to analyse, one sample per line.
 
 #### Step 2. Generate scripts
-To display usage instructions for the script:
+To display usage instructions for the script `GenerateScripts_AlignAndCall.sh`:
 ```bash
 bash GenerateScripts_AlignAndCall.sh
 ```
@@ -127,11 +128,11 @@ Example:
 ```bash
 bash GenerateScripts_AlignAndCall.sh run_bwa_gatk_freebayes_bcftools.template.sh sample_list.txt sbatch ../ref/TriTrypDB-68_LinfantumJPCM5_Genome.fasta ../fastqFiles/
 ```
-A launch script to submit simultaneously all the scripts generated from the template script will be created. This script is named after the template script with a "-Launch.sh" suffix. In this case, it will be `run_bwa_gatk_freebayes_bcftools.template.sh-Launch.sh`.
+A launch script to submit simultaneously all the scripts generated from the template script will be created. This script is named after the template script with a "-Launch.sh" suffix. In this case, the launch script is `run_bwa_gatk_freebayes_bcftools.template.sh-Launch.sh`.
 
 #### Step 3. Run the launch script
 ```bash
-bash run_bwa_gatk_freebayes_bcftools_filter.template.sh-Launch.sh
+bash run_bwa_gatk_freebayes_bcftools.template.sh-Launch.sh
 ```
 
 ### Output
@@ -165,7 +166,7 @@ mkdir SNP_analysis
 cd SNP_analysis
 ```
 
-#### b. Copy the appropriate scripts from the `snp_analysis` subdirectory to your working directory
+#### b. Copy the appropriate scripts from the subdirectory `snp_analysis` to your working directory
 * If your reference genome annotation gff file is from TriTrypDB:
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/tritrypdb/* .
@@ -205,7 +206,11 @@ bash remove_WT_variant.sh ../read_mapping/ ldi263WT_cl1_FF mutant_list.txt
 ```
 
 ##### Output
-###### TO DO
+Extension | Description
+----------|--------------
+*_filtered_variants.noWT.gatk.vcf | Filtered GATK HaplotypeCaller variants, excluding variants found in WT
+*_filtered_variants.noWT.freebayes.vcf | Filtered FreeBayes variants, excluding variants found in WT
+*_filtered_variants.noWT.bcftools.vcf | Filtered Bcftools mpileup variants, excluding variants found in WT
 
 ### Step 2. Run SNP analysis
 #### a. Create a mutant list file
