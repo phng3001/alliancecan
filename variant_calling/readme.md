@@ -158,7 +158,7 @@ Extension | Description
 
 
 
-## II. SNP analysis
+## Part II. SNP analysis
 ### Step 0. Preparation
 #### a. Create your working directory for this part and navigate into it
 ```bash
@@ -187,7 +187,7 @@ For **each lineage** of mutants, create a mutant list file. This file must list 
 
 #### b. Run the script `remove_WT_variant.sh`
 ##### Usage
-To display usage instructions for the script:
+To display usage instructions for this script:
 ```bash
 bash remove_WT_variant.sh
 ```
@@ -206,6 +206,7 @@ bash remove_WT_variant.sh ../read_mapping/ ldi263WT_cl1_FF mutant_list.txt
 ```
 
 ##### Output
+For each sample: 
 Extension | Description
 ----------|--------------
 *_filtered_variants.noWT.gatk.vcf | Filtered GATK HaplotypeCaller variants, excluding variants found in WT
@@ -218,7 +219,7 @@ This file must list the name of the mutants to analyse, one sample per line.
 
 #### b. Run the script `run_snp_analysis.sh`
 ##### Usage
-To display usage instructions for the script:
+To display usage instructions for this script:
 ```bash
 bash run_snp_analysis.sh
 ```
@@ -239,11 +240,11 @@ bash run_snp_analysis.sh snpeff_v5.2.sif TriTrypDB-68_LinfantumJPCM5 ../ref/TriT
 ```
 
 ##### Output
-Two main output files are: 
-* Variant list: `all_variant.tsv`
-* Variant matrix: `all_variant_matrix.tsv`
+###### Main outputs
+Two main output files are `all_variant.tsv` and `all_variant_matrix.tsv`
 
 1. `all_variant.tsv`
+
 This file lists all filtered variants detected by one of the three algorithms: gatk (GATK HaplotypeCaller), freebayes (FreeBayes) and bcftools (Bcftools mpileup). The columns are:
 * #CHROM
 * POS
@@ -262,6 +263,7 @@ This file lists all filtered variants detected by one of the three algorithms: g
 * CALLED_BY
 
 2. `all_variant_matrix.tsv`
+
 This file is a matrix of presence/absence of SNP in genes. The columns are:
 * #CHROM
 * GENE_ID
@@ -273,10 +275,23 @@ This file is a matrix of presence/absence of SNP in genes. The columns are:
 
 Samples start from the 8th column, one sample per column.
 
+###### Other outputs
+* For each sample:
+
+Extension | Description
+----------|--------------
+*_filtered_variants.noWT.snpEff.gatk.vcf | Filtered GATK HaplotypeCaller variants, excluding variants found in WT, annotated by SnpEff
+*_filtered_variants.noWT.snpEff.freebayes.vcf | Filtered FreeBayes variants, excluding variants found in WT, annotated by SnpEff
+*_filtered_variants.noWT.snpEff.bcftools.vcf | Filtered Bcftools mpileup variants, excluding variants found in WT, annotated by SnpEff
+
+* `all_variant.gatk.tsv`: lists all filtered variants detected by gatk
+* `all_variant.freebayes.tsv`: lists all filtered variants detected by freebayes
+* `all_variant.bcftools.tsv`: lists all filtered variants detected by bcftools
+
 ### Step 3. Filter out variants with the script `filter_out_tsv.py` (optional)
 In this example we will use the script `filter_out_tsv.py` to filter out some variant types from the output variant list `all_variant.tsv`.
 
-To display usage instructions for the script:
+To display usage instructions for this script:
 ```python
 python filter_out_tsv.py -h
 ```
@@ -323,7 +338,7 @@ python filter_out_tsv.py \
 
 
 
-## III. CNV analysis 
+## Part III. CNV analysis 
 ### Step 0. Preparation
 #### a. Create your working directory for this part and navigate into it
 ```bash
@@ -331,7 +346,7 @@ mkdir CNV_analysis
 cd CNV_analysis
 ```
 
-#### b. Copy the scripts from the `cnv_analysis` subdirectory to your working directory
+#### b. Copy the scripts from the subdirectory `cnv_analysis` to your working directory
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/cnv_analysis/* .
 ```
@@ -350,7 +365,7 @@ module load apptainer
 This file must list the name of the samples to analyse, one sample per line.
 
 ### Step 2. Make symbolic links of BAM files to your working directory
->**Notes:** BAM files were generated at the first part of this pipeline "Read mapping and variant calling"
+>**Notes:** BAM files were generated at Part I of this pipeline "Read mapping and variant calling"
 
 Example:
 ```bash
@@ -369,7 +384,7 @@ module load samtools
 ```
 #### b. Run the script `count_read_by_window.py`
 ##### Usage
-To display usage instructions for the script:
+To display usage instructions for this script:
 ```python
 python count_read_by_window.py -h
 ```
@@ -415,7 +430,7 @@ For **each lineage** of mutants, create a mutant list file. This file must list 
 
 #### b. Run the script `compute_log2_ratio.py`
 ##### Usage
-To display usage instructions for the script:
+To display usage instructions for this script:
 ```python
 python compute_log2_ratio.py -h
 ```
@@ -450,7 +465,7 @@ done
 ```
 
 ##### Output
-This script outputs TSV file showing normalized log2 mutant/wt read ratio for each genomic window. The columns are:
+This script outputs a TSV file showing the normalized log2 mutant/WT read ratio for each genomic window. The columns are:
 * #CHROM
 * START
 * END
@@ -464,7 +479,7 @@ This script outputs TSV file showing normalized log2 mutant/wt read ratio for ea
 
 ### Step 6. Add gene information with the script `add_gene_information`
 #### Usage
-To display usage instructions for the script:
+To display usage instructions for this script:
 ```python
 python add_gene_information.py -h
 ```
@@ -489,7 +504,7 @@ In which:
 * `INPUT_FILE`: Output generated by the script `compute_log2_ratio.py` in step 5. Pass this to the `-i` argument of the script.
 * `GFF_FILE`: The reference annotation gff file. Pass this to the `-r` argument of the script.
 * `FEATURE`: Feature type in gff file to be used for annotation. Pass this to the `-f` argument of the script.
->**Notes:** Inspect your gff file to choose the appropriate feature type (3rd column). These following tags in the 9th column will be retrieved: `ID` or `locus_tag`, `Name` or `gene`, `product` or `description`.  
+>**Notes:**  Check your GFF file to select the appropriate feature type in the 3rd column to pass. The script will extract from the 9th column the following tags: `ID` or `locus_tag`, `Name` or `gene`, `product` or `description`.
 
 Example:
 ```bash
@@ -504,6 +519,7 @@ do
   echo "$X done";
 done
 ```
+
 #### Output
 This script adds a new column named `GENE` containing information about gene(s) found in the corresponding genomic window in the following format: 
 * Unique gene: (gene_locus_tag,gene_name,gene_description)
@@ -511,11 +527,11 @@ This script adds a new column named `GENE` containing information about gene(s) 
 
 ### Step 7. Make plots
 #### a. Create a list of files to plot
-These files are outputs generated by the script `add_gene_information` in step 6. List the names of these files, one per line.
+These files are outputs generated by the script `add_gene_information` in step 6. List the names of the files that you want to plot, one per line.
 
 #### b. Run the script `plot_log2_ratio.py`
 ##### Usage
-To display usage instructions for the script:
+To display usage instructions for this script:
 ```python
 python plot_log2_ratio.py -h
 ```
@@ -564,6 +580,7 @@ This script generates an interactive plot for each chromosome, showing the norma
 * freebayes/1.3.7
 * bcftools/1.19
 * r/4.4.0
+
 ## Containers
 * snpeff_v5.2.sif
 * python_3.11.5.sif
