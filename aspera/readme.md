@@ -28,7 +28,9 @@ bash run_aspera_4+.sh <aspera_key_path> <upload_dir_path>
 
 # More info
 https://docs.alliancecan.ca/wiki/Transferring_files_with_Aspera_Connect/ascp
+
 https://www.ncbi.nlm.nih.gov/sra/docs/submitfiles/#aspera-connect
+
 https://submit.ncbi.nlm.nih.gov/subs/sra/#files_upload_aspera_cmd
 
 # Notes
