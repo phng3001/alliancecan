@@ -2,7 +2,7 @@
 > **Notes:** This only needs to be done once per server.
 ## Run the setup script
 ```bash
-bash ibm-aspera-connect_4.2.13.820_linux_x86_64.sh
+bash ibm-aspera-connect_4.2.16.884-HEAD_linux_x86_64.sh
 ```
 ## Make the library files executable
 ```bash
