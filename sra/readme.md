@@ -77,7 +77,7 @@ bash GenerateScriptsBySubsamples.sh <template.sh> <sample_list> <batch_size> <sc
 bash run_rename_sra_read.subsample.template.sh-Launch.sh
 ```
 
-# Note
+# Notes
 > 2025-08-29
 * Nibi: worked on login node and compute node
 * Fir: worked on login node and compute node
