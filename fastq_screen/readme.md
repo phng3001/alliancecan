@@ -12,7 +12,7 @@ fastq-screen_v0.16.0.sif
 - Build Bowtie2 indexes for the genomes we want to screen
 > **Note:** FastQ Screen can process up to a maximum of 32 reference genomes
 - Editing the configuration file to reflect the actual set up databases
-> **Note:** The current configuration file (fastq_screen.conf) has been set up to scan for Human, Mouse, *E. coli*, PhiX, common adapters, common vectors, *Leishmania* (*L. major*, *L. infantum* and *L. tarentolae*) and *S. pneumoniae* genomes
+> **Note:** The current configuration file (fastq_screen.conf) has been set up to scan for Human, Mouse, *E. coli*, PhiX, common adapters, common vectors, *Leishmania* (*L. major*, *L. infantum*, *L. tarentolae* and *L. guyanensis*) and *S. pneumoniae* genomes
 
 # Usage
 ## 1 sample
