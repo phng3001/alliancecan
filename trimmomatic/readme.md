@@ -11,7 +11,7 @@ bash GenerateScripts_trimmomatic.sh <template.sh> <sample_list> <scheduler> <fas
 * `sample_list`: list of sample, one per line 
 * `scheduler`: sbatch
 * `fastq_dir_path`: path to directory containing fastq reads
-* `adapter_file_path`: path to the adapter fasta file
+* `adapter_file_path`: path to the adapter fasta file (e.g. `TruSeq3-PE-2.fa`)
 
 ### 3. Launch scripts
 ```bash
