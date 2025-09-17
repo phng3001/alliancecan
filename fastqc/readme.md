@@ -1,7 +1,7 @@
 # Usage
 ## Multiple samples
 ### 1. Check the FASTQ directory structure and FASTQ file naming pattern 
-Modify R1_path and R2_path variables in the template script run_fastqc.template.sh if necessary.
+Modify the `R1_path` and `R2_path` variables in the template script `run_fastqc.template.sh` if necessary.
 
 ### 2. Create a directory to save fastqc output files 
 ```bash
