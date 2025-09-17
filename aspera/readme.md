@@ -22,7 +22,7 @@ export PATH=~/.aspera/connect/bin:$PATH
 bash run_aspera_4+.sh <aspera_key_path> <upload_dir_path>
 ```
 * `aspera_key_path`: path to aspera ssh key
-> **Notes:** aspera ssh key is regularly updated by NCBI. **Be sure to have the lastest version of the key**.
+> **Notes:** aspera ssh key is regularly updated by NCBI. **Be sure to have the latest version of the key**.
 * `upload_dir_path`: path to the local folder that contains all of the files to upload
 > **Notes:** Sequence files for one submission should be in one directory. Do not create complex directory structures *i.e.* directories within directories.
 
@@ -32,6 +32,16 @@ https://docs.alliancecan.ca/wiki/Transferring_files_with_Aspera_Connect/ascp
 https://www.ncbi.nlm.nih.gov/sra/docs/submitfiles/#aspera-connect
 
 https://submit.ncbi.nlm.nih.gov/subs/sra/#files_upload_aspera_cmd
+
+# Debugging
+While getting this error:
+```
+ascp: failed to authenticate, exiting.
+
+Session Stop  (Error: failed to authenticate)
+```
+1. Check the aspera ssh key: Get the latest version
+2. Check the aspera version: Try a newer version 
 
 # Notes
 > 2025-09-16
