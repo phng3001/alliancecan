@@ -37,6 +37,11 @@ scp dest/file.ext user@server:/folder
 scp user1@server1:/folder/file.ext user2@server2:/folder
 ```
 
+### `rsync`: Copy files securely between servers, preserving file attributes
+```bash
+rsync -av -e ssh user@source:/path/to/dir/ user@dest:/path/to/dir/
+```
+
 ## More info
 https://www.stationx.net/ssh-commands-cheat-sheet/
 
