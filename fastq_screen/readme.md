@@ -32,7 +32,7 @@ bash GenerateScripts_fastq_screen.sh <template.sh> <sample_list> <scheduler> <co
 * `template.sh`: the template script `run_apptainer_fastq_screen.template.sh`
 * `sample_list`: list of sample, one per line
 * `scheduler`: sbatch
-* `container`: the FastQ Screen container `fastq-screen_v0.16.0.sif`
+* `container`: the FastQ Screen container, in this case `fastq-screen_v0.16.0.sif`
 * `conf_file`: the FastQ Screen configuration file (e.g. `fastq_screen.conf`)
 * `fastq_dir_path`: path to directory containing fastq reads
 
