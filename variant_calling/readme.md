@@ -77,8 +77,7 @@ R1 read file must be named as `SampleName_R1_paired.fastq.gz` and R2 read file m
 #### Step 0. Preparation
 ##### a. Create your working directory for this part and navigate into it
 ```bash
-mkdir read_mapping
-cd read_mapping
+mkdir read_mapping && cd read_mapping
 ```
 
 ##### b. Copy the scripts from the subdirectory `read_mapping_variant_calling` into your working directory
@@ -162,8 +161,7 @@ Extension | Description
 ### Step 0. Preparation
 #### a. Create your working directory for this part and navigate into it
 ```bash
-mkdir SNP_analysis
-cd SNP_analysis
+mkdir SNP_analysis && cd SNP_analysis
 ```
 
 #### b. Copy the appropriate scripts from the subdirectory `snp_analysis` to your working directory
@@ -342,8 +340,7 @@ python filter_out_tsv.py \
 ### Step 0. Preparation
 #### a. Create your working directory for this part and navigate into it
 ```bash
-mkdir CNV_analysis
-cd CNV_analysis
+mkdir CNV_analysis && cd CNV_analysis
 ```
 
 #### b. Copy the scripts from the subdirectory `cnv_analysis` to your working directory
