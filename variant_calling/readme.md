@@ -159,12 +159,14 @@ Extension | Description
 
 ## Part II. SNP analysis
 ### Step 0. Preparation
-#### a. Create your working directory for this part and navigate into it
+#### a. Put all output folders from Part I - `Read mapping and variant calling` into a single directory
+
+#### b. Create your working directory for this part and navigate into it
 ```bash
 mkdir SNP_analysis && cd SNP_analysis
 ```
 
-#### b. Copy the appropriate scripts from the subdirectory `snp_analysis` to your working directory
+#### c. Copy the appropriate scripts from the subdirectory `snp_analysis` to your working directory
 * If your reference genome annotation gff file is from TriTrypDB:
 ```bash
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/tritrypdb/* .
@@ -174,7 +176,7 @@ cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysi
 cp /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/snp_analysis/ncbi/* .
 ```
 
-#### c. Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
+#### d. Copy or create symbolic links of the snpEff container `snpeff_v5.2.sif` to your working directory
 ```bash
 ln -s /project/def-mouellet/Scripts_MOU/PNP/alliancecan/variant_calling/containers/snpeff_v5.2.sif
 ```
@@ -194,7 +196,7 @@ Then you will see:
 Usage: bash remove_WT_variant.sh <calling_folder> <wt_sample_name> <mutant_list>
 ```
 In which: 
-* `calling_folder`: path to directory where you performed the first part of this pipeline "Read mapping and variant calling" for the WT and its mutants
+* `calling_folder`: path to directory containing the outputs of Part I - `Read mapping and variant calling` of the WT and its mutants
 * `wt_sample_name`: the name of the WT of this lineage
 * `mutant_list`: the lineage mutant list file
 
