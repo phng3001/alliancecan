@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --account=def-mouellet
-#SBATCH --time=3:00:00
+#SBATCH --time=23:00:00
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=4G
-#SBATCH --job-name=run_tar
+#SBATCH --job-name=run_tar_gz
 
 # Check for the correct number of arguments
 if [ "$#" -ne 1 ]; then
@@ -28,6 +28,6 @@ if [[ -n "$SLURM_JOB_ID" && "$SLURM_JOB_ID" -ne 0 ]]; then
     sacct -j $SLURM_JOB_ID --format=JobID%16,Submit,Start,Elapsed,NCPUS,ExitCode,NodeList%8
     #sacct -j $SLURM_JOB_ID --format=JobID%16,Submit,Start,Elapsed,NCPUS,ExitCode,NodeList%8,MaxRSS    
     if [[ -f "slurm-${SLURM_JOB_ID}.out" ]]; then
-        mv slurm-${SLURM_JOB_ID}.out ${dir_to_archive}_tar-${SLURM_JOB_ID}.out
+        mv slurm-${SLURM_JOB_ID}.out ${dir_to_archive}_tar_gz-${SLURM_JOB_ID}.out
     fi
 fi
