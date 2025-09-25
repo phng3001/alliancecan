@@ -159,7 +159,7 @@ Extension | Description
 
 ## Part II. SNP analysis
 ### Step 0. Preparation
-#### a. Put all output folders from Part I - `Read mapping and variant calling` into a single directory
+#### a. Put all output folders from Part I - `Read mapping and variant calling` into a single directory, if it is not already the case
 
 #### b. Create your working directory for this part and navigate into it
 ```bash
