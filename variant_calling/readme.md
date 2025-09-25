@@ -69,7 +69,7 @@ The FASTQ directory should be organized so that each sample has its own folder c
 
 R1 read file must be named as `SampleName_R1_paired.fastq.gz` and R2 read file must be named as `SampleName_R2_paired.fastq.gz`, where `SampleName` matches the name of the sample.
 
-> **Notes:** The FASTQ directory structure and FASTQ file naming pattern can be modified by updating the `R1_path` and `R2_path` variables in the script `run_bwa_gatk_freebayes_bcftools.template.sh`
+> **Notes:** The FASTQ directory structure and FASTQ file naming pattern can be modified by updating the `R1_path` and `R2_path` variables in the script `run_bwa_gatk_freebayes_bcftools.template.sh`.
 
 # Pipeline
 ## Part I. Read mapping and variant calling
@@ -291,6 +291,12 @@ Extension | Description
 ### Step 3. Filter out variants with the script `filter_out_tsv.py` (optional)
 In this example we will use the script `filter_out_tsv.py` to filter out some variant types from the output variant list `all_variant.tsv`.
 
+This script requires the `pandas` Python package to run.
+```bash
+# On the Alliance's clusters, pandas is available in the scipy-stack module
+module load StdEnv/2023 scipy-stack/2025a
+```
+
 To display usage instructions for this script:
 ```python
 python filter_out_tsv.py -h
@@ -364,7 +370,7 @@ module load apptainer
 This file must list the name of the samples to analyse, one sample per line.
 
 ### Step 2. Make symbolic links of BAM files to your working directory
->**Notes:** BAM files were generated at Part I of this pipeline "Read mapping and variant calling"
+>**Notes:** BAM files were generated at Part I of this pipeline "Read mapping and variant calling".
 
 Example:
 ```bash
@@ -377,6 +383,8 @@ done
 ### Step 3. Copy or make symbolic links of the reference fasta and gff files to your working directory
 
 ### Step 4. Count mapped reads by genomic windows for each sample
+> **Notes:** This step might take a while to complete. If you're processing a large number of samples, consider writing an `sbatch` script to submit the job to the `SLURM` scheduler.
+
 #### a. Load Samtools
 ```bash
 module load samtools
