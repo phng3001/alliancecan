@@ -55,9 +55,9 @@ tar -xvzf archive.tar.gz -C <path_to_directory>
 tar -tzf archive.tar.gz
 ```
 
-### Extract a single file or directory form an archive
+### Extract a single file or directory from an archive
 ```bash
-tar -xzf archive.tar.gz "file1"
+tar -xzf archive.tar.gz "file_name"
 ```
 
 ### Decompress an archive
