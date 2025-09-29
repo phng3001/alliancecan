@@ -34,6 +34,16 @@ R2_path=$(realpath $fastq_dir_path/__SAMPLE___2.fq.gz)
 adapter_file=$(realpath $adapter_file_path)
 tmp_dir=$HOME/scratch/${output_dir}_trimmomatic
 
+# Check if the file paths are correct
+file_paths=("$R1_path" "$R2_path" "$adapter_file")
+for file in "${file_paths[@]}"
+do
+    if [ ! -f "$file" ]; then
+    echo "Error: $file does not exist"
+    exit 1
+    fi
+done
+
 # Check if the temporary directory exists and reset it
 if [ -d "$tmp_dir" ]; then
     rm -rf "$tmp_dir"
@@ -47,16 +57,6 @@ if [ -d "$output_dir" ]; then
     echo "Pre-existed folder $output_dir has been moved to $tmp_dir"
 fi
 mkdir $output_dir
-
-# Check if the file paths are correct
-file_paths=("$R1_path" "$R2_path" "$adapter_file")
-for file in "${file_paths[@]}"
-do
-    if [ ! -f "$file" ]; then
-    echo "Error: $file does not exist"
-    exit 1
-    fi
-done
 
 
 
