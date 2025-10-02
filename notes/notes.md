@@ -186,3 +186,16 @@ setfacl -R -m g::rwx shared_dir_name
 setfacl -d -m g::rwx shared_dir_name
 setfacl -d -m o::r-x shared_dir_name
 ```
+
+# Google Colab
+## Upload
+```python
+from google.colab import files
+upload = files.upload()
+```
+
+## Download
+```python
+from google.colab import files
+download = files.download('output.csv')
+```
