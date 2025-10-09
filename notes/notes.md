@@ -174,7 +174,7 @@ git fetch
 ```bash
 git fetch
 # then
-git log HEAD..origin/main 
+git log HEAD..origin/main
 # or
 git log HEAD..origin/main --oneline
 # or
@@ -182,6 +182,8 @@ git log HEAD..origin/main --pretty=format:"%h %an %s"
 ```
 * See difference between your branch and the remote repository
 ```bash
+git fetch
+# then
 # single combined diff
 git diff HEAD..origin/main
 # full commit history
