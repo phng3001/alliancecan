@@ -106,6 +106,10 @@ git clone <repository_url>
 ```bash
 git clone --branch <branch_name> <repository_url>
 ```
+* Show your current local branch
+```bash
+git branch
+```
 
 ## Stage
 * Show modified files in working directory
@@ -165,6 +169,23 @@ git push origin main
 * Retrieves change from a remote repository
 ```bash
 git fetch
+```
+* See commit messages from a remote repository
+```bash
+git fetch
+# then
+git log HEAD..origin/main 
+# or
+git log HEAD..origin/main --oneline
+# or
+git log HEAD..origin/main --pretty=format:"%h %an %s"
+```
+* See difference between your branch and the remote repository
+```bash
+# single combined diff
+git diff HEAD..origin/main
+# full commit history
+git log HEAD..origin/main -p
 ```
 * Fetches changes from the remote repository and merges them into the current branch
 ```bash
