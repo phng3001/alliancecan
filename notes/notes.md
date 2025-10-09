@@ -50,7 +50,6 @@ https://www.stationx.net/ssh-commands-cheat-sheet/
 # git
 
 ## Setup
-
 * Set the name that will be attached to your commits and tags
 ```bash
 git config --global user.name "your_username"
@@ -89,7 +88,6 @@ git config --get <key>
 ```
 
 ## Init
-
 * Initializes a new Git repository in the current directory
 ```bash
 git init
@@ -106,9 +104,27 @@ git clone <repository_url>
 ```bash
 git clone --branch <branch_name> <repository_url>
 ```
+
+## Branch
 * Show your current local branch
 ```bash
 git branch
+```
+* Create a new branch
+```bash
+git branch <new_branch_name>
+```
+* Create and switch to a new branch
+```bash
+git checkout -b <new_branch_name>
+# or
+git switch -c <new_branch_name>
+```
+* Switch branches
+```bash
+git checkout <branch_name>
+# or
+git switch <branch_name>
 ```
 
 ## Stage
