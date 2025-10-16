@@ -27,7 +27,7 @@ Modify the `R1_path` and `R2_path` variables in the template script `run_apptain
 
 ### 2. Generate scripts
 ```bash
-bash GenerateScripts_fastq_screen.sh <template.sh> <sample_list> <scheduler> <container> <conf_file> <fastq_dir_path>
+bash GenerateScripts_apptainer_fastq_screen.sh <template.sh> <sample_list> <scheduler> <container> <conf_file> <fastq_dir_path>
 ```
 * `template.sh`: the template script `run_apptainer_fastq_screen.template.sh`
 * `sample_list`: list of sample, one per line
