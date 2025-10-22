@@ -103,6 +103,7 @@ Veuillez confirmer que vous vous êtes enregistrés sur le site web ci-dessous (
 https://software.broadinstitute.org/gatk/download/licensing.php
 ```
 Answer yes to continue.
+> **Notes:**  This only needs to be done once per server.
 
 #### Step 1. Create a sample list file
 This file must list the name of the samples to analyse, one sample per line.
