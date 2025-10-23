@@ -138,7 +138,62 @@ awk 'NR>1 {x+=$2; n++} END {if(n>0) print x/n}' file.txt # skip the first line
 
 ## Calculate the length of each sequence in a fasta file
 ```bash
-awk 'BEGIN {OFS="\t"} /^>/ {if (seqlen) print seqid, seqlen; seqid = substr($1, 2); seqlen = 0; next} {seqlen += length($0)} END {if (seqlen) print seqid, seqlen}' file.fasta
+awk 'BEGIN {OFS="\t"} 
+     /^>/ {if (seqlen) print seqid, seqlen; seqid = substr($1, 2); seqlen = 0; next} 
+     {seqlen += length($0)} 
+     END {if (seqlen) print seqid, seqlen}' file.fasta
+```
+or
+```bash
+awk '$0 ~ ">" {if(NR>1) print c; c=0; printf substr($0,2,100) "\t"} $0 !~ ">" {c+=length($0)} END {print c}' file.fasta
+```
+
+### Example
+#### Input `file.fasta`
+```bash
+>seq1
+ATGCATGC
+>seq2
+GATTACATTGG
+>seq3
+A
+```
+#### Output
+```bash
+seq1    8
+seq2	11
+seq3	1
+```
+
+## Split a multi fasta file into individual fasta files 
+```bash
+awk '/^>/{s=substr($1,2) ".fasta"} {print > s}' multi.fasta
+```
+### Example
+#### Input `multi.fasta`
+```bash
+>seq1 description 1
+ATGC
+>seq2 description 2
+GATTACA
+>seq3 description 3
+TTGGAA
+```
+#### Output
+* `seq1.fasta`
+```bash
+>seq1 description 1
+ATGC
+```
+* `seq2.fasta`
+```bash
+>seq2 description 2
+GATTACA
+```
+* `seq3.fasta`
+```bash
+>seq3 description 3
+TTGGAA
 ```
 
 
