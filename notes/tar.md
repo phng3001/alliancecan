@@ -80,11 +80,11 @@ xz -d archive.tar.xz
 ## Append files to an existing archive
 > **Notes:** This only works with uncompressed `.tar` archives
 ```bash
-# only update newer files
+# Only update newer files
 tar -uf archive.tar file1.txt dir2/ script3.sh
 ```
 ```bash
-# append files regardless of whether they exist
+# Append files regardless of whether they exist
 tar -rf archive.tar file1.txt dir2/ script3.sh
 ```
 
