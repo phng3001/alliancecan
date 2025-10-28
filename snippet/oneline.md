@@ -136,6 +136,20 @@ awk '{x+=$2} END {print x/NR}' file.txt # no header
 awk 'NR>1 {x+=$2; n++} END {if(n>0) print x/n}' file.txt # skip the first line
 ```
 
+## Merge files with the same header
+### Basic
+```bash
+awk 'FNR==1 && NR!=1{next;}{print}' *.csv
+```
+or
+```bash
+awk 'NR==1 || FNR > 1' *.txt
+```
+### Check headers matching first
+```bash
+awk 'FNR==1{if(!hdr){hdr=$0; print; next} if($0!=hdr){print "Headers differ!" > "/dev/stderr"; exit}} FNR>1' *.tsv > merged.tsv
+```
+
 ## Calculate the length of each sequence in a fasta file
 ```bash
 awk 'BEGIN {OFS="\t"} 
@@ -160,9 +174,9 @@ A
 ```
 #### Output
 ```bash
-seq1    8
-seq2	11
-seq3	1
+seq1 8
+seq2 11
+seq3 1
 ```
 
 ## Split a multi fasta file into individual fasta files 
@@ -223,3 +237,7 @@ for f in *genes*; do mv -- "$f" "${f//genes/features}"; done
 for f in *genes*; do echo mv -- "$f" "${f//genes/features}"; done
 ```
 
+## Extract FASTA entries longer than 1000 bases
+```bash
+grep -A1 '^>' sequences.fasta | awk 'NR%2==0 {if(length($0)>1000) print prev"\n"$0} {prev=$0}'
+```
