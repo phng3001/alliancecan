@@ -156,6 +156,12 @@ grep: dir_name: Is a directory
 grep -F -w -f gene_list.txt annotation.gff
 ```
 
+## Show lines in one file that are absent in the other
+```bash
+# Show lines in file1.txt that are not in file2.txt
+grep -Fxv -f file2.txt file1.txt
+```
+
 ## Detect lines containing ambiguous bases in FASTA file
 ```bash
 grep -E '[^ATGCNatgcn]' sequences.fasta
