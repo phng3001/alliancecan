@@ -9,6 +9,19 @@ setfacl -d -m g::rwx shared_dir_name
 setfacl -d -m o::r-x shared_dir_name
 ```
 
+# Data stream
+Operator | Function | Syntax
+---------|----------|-------
+`>` | Redirect stdout | `command > file.txt` or `command 1> file.txt`
+`2>` | Redirect stderr | `command 2> error.txt`
+`&>` | Redirect all | `command &> log.txt`
+`>>` | Append stdout | `command >> files.txt`
+`2>>` | Append stderr | `command 2>> errors.txt`
+`&>>` | Append all | `command &> log.txt`
+
+> **Notes:** Redirect to `/dev/null` to hide the corresponding stream (E.g. `command &> /dev/null`)
+
+
 # Google Colab
 ## Upload
 ```python
