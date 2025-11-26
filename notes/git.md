@@ -95,6 +95,19 @@ git add .
 ```bash
 git commit -m "your_message"
 ```
+* Undo the last commit but keep the changes
+```bash
+git reset --soft HEAD~1
+```
+* Undo the last commit and unstage the changes
+```bash
+git reset HEAD~1
+```
+* Undo the last commit and discard all changes
+> **Notes:** Be careful as this is irreversible
+```bash
+git reset --hard HEAD~1
+```
 * Correct a git commit message if the commit has not been pushed yet
 ```bash
 git commit --amend
