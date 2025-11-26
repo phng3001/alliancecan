@@ -21,6 +21,25 @@ Operator | Function | Syntax
 
 > **Notes:** Redirect to `/dev/null` to hide the corresponding stream (E.g. `command &> /dev/null`)
 
+# Task status marks
+Symbol | Code | Meaning
+-------|------|--------
+ ✅ | "\u2705" | Success / Done
+ ❌ | "\u274C" | Failure
+ ⚠ | "\u26A0" | Warning
+ ☐ | "\u2610" | Pending / Not done
+
+Color | Code
+------|-----
+Green | "\e[32m"
+Red | "\e[31m"
+Yellow | "\e[33m"
+
+E.g.
+```bash
+# ⚠ in yellow
+echo -e "\e[33m\u26A0" 
+```
 
 # Google Colab
 ## Upload
