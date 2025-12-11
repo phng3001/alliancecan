@@ -210,7 +210,22 @@ GATTACA
 TTGGAA
 ```
 
-
+## Convert wrapped/unwrapped fasta file
+### Wrapped → unwrapped
+```bash
+awk '/^>/ {print; next} {printf "%s", $0} END {print ""}' input.fa > unwrapped.fa
+```
+### Unwrapped → wrapped
+```bash
+# wrap at 60 characters
+awk '
+  /^>/ {print; next}
+  {
+    for (i=1; i<=length($0); i+=60)
+      print substr($0, i, 60)
+  }
+' input_unwrapped.fa > wrapped.fa
+```
 
 # gff
 ## gff to gtf
