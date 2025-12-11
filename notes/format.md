@@ -108,8 +108,9 @@ Column | Name | Description
 12 | blockStarts | Comma-separated list of block starts relative to `chromStart`. The number of items in this list should correspond to `blockCount`
 
 > **Notes:**
-* BED is **0-based, half-open**: `chromStart` is included, `chromEnd` is excluded
+* Coordinates are **0-based, half-open**: `chromStart` is included, `chromEnd` is excluded
 * Must be **tab-delimited**; columns cannot be skipped (i.e. BED6 requires columns 1–6, not 1–5 + 7)
+* BED has **no required header**. Optional UCSC `track`/`browser` lines or comment lines `#` may appear
 * Many tools expect **sorted** BED files (by `chrom`, then by `chromStart`)
 
 #### Example
@@ -124,6 +125,56 @@ chr1    1000    2000    transcript1    900    +
 ##### BED12
 ```
 chr1    1000    2000    transcript1    900    +    1000    2000    0,128,255    2    200,300    0,700
+```
+
+
+
+### GFF3 (General Feature Format)
+#### Purpose
+Describe genomic features and annotations (genes, transcripts, exons, CDS, ncRNAs, repeats, regulatory regions, etc)
+
+#### Common file extensions
+* `.gff3`: recommended standard
+* `.gff`: sometimes GFF3, sometimes older GFF2
+
+#### Description
+A GFF3 file includes:
+* Optional directives (header lines start with `##`, e.g. `##gff-version 3`, `##sequence-region`)
+* Features lines: exactly 9 tab-delimited columns
+* Optional FASTA section start with `##FASTA`
+```
+##FASTA
+>scaffold1.1
+ACAGCGCTGTCTTTGTGGCCTGCAGGG
+```
+
+**GFF3 columns**
+Column | Name | Description
+-------|------|------------
+1 | seqid | Sequence name (chromosome/contig ID)
+2 | source | Annotation source (e.g. `RefSeq`, `Ensembl`, `Prokka`)
+3 | type | Feature type (e.g. `gene`, `exon`, `CDS`, `tRNA`, `ncRNA`)
+4 | start | Start position (1-based, inclusive)
+5 | end | End position (1-based, inclusive)
+6 | score | Numeric score or `.` (no score)
+7 | strand | `+`, `-` or `.` (no strand)
+8 | phase | For CDS: `0`/`1`/`2` (reading frame). For non-CDS: `.`
+9 | attributes | Semicolon-separated `key=value` pairs (e.g. `ID=gene1;Parent=transcript1`)
+
+> **Notes:**
+* Coordinates are `1-based, fully closed`: both `start` and `end` are included
+* Must be `tab-delimited`, all 9 columns required
+* Supports multi-level hierarchies using `ID=` and `Parent=` attributes. E.g. gene → mRNA → exon/CDS
+
+#### Example
+```
+##gff-version 3
+chr1    Ensembl    gene        1000    5000    .    +    .    ID=gene1;Name=GeneA
+chr1    Ensembl    mRNA        1000    5000    .    +    .    ID=transcript1;Parent=gene1
+chr1    Ensembl    exon        1000    1200    .    +    .    Parent=transcript1
+chr1    Ensembl    exon        2000    2200    .    +    .    Parent=transcript1
+chr1    Ensembl    CDS         1050    1200    .    +    0    Parent=transcript1
+chr1    Ensembl    CDS         2000    2150    .    +    2    Parent=transcript1
 ```
 
 
