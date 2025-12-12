@@ -33,7 +33,7 @@ export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
 
 # Load modules
 module purge
-module load StdEnv/2023 star/2.7.11b
+module load StdEnv/2023 star/2.7.11b samtools/1.22.1
 
 # Make temporary directory
 ## Check if the temporary directory exists and reset it
@@ -57,6 +57,7 @@ mkdir $output_dir
 
 cd $output_dir
 
+# Mapping
 # --alignIntronMax 1: disable spliced alignment
 # --outFilterMismatchNmax: mismatch limit
 # --outFilterMultimapNmax: multimapping limit, if a read maps to more locations than threshold -> unmapped
@@ -74,6 +75,10 @@ STAR \
 --outFilterMismatchNmax 3 \
 --outFilterMultimapNmax 30 \
 --limitBAMsortRAM 4000000000 \
+
+# Indexing
+samtools index \
+${prefix}Aligned.sortedByCoord.out.bam
 
 cd ..
 
