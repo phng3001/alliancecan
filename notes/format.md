@@ -92,6 +92,7 @@ A BED file is a **tab-separated** text file describing genomic intervals
 * Column 1-3 are mandatory (BED3)
 * Up to 12 columns are defined (BED12, commonly used for exon/intron structure)
 
+**BED columns**
 Column | Name | Description
 -------|------|------------
 1 | chrom | Chromosome name
@@ -140,8 +141,8 @@ Describe genomic features and annotations (genes, transcripts, exons, CDS, ncRNA
 #### Description
 A GFF3 file includes:
 * Optional directives (header lines start with `##`, e.g. `##gff-version 3`, `##sequence-region`)
-* Features lines: exactly 9 tab-delimited columns
-* Optional FASTA section start with `##FASTA`
+* Feature lines: exactly 9 tab-delimited columns
+* Optional FASTA section starts with `##FASTA`
 ```
 ##FASTA
 >scaffold1.1
@@ -153,7 +154,7 @@ Column | Name | Description
 -------|------|------------
 1 | seqid | Sequence name (chromosome/contig ID)
 2 | source | Annotation source (e.g. `RefSeq`, `Ensembl`, `Prokka`)
-3 | type | Feature type (e.g. `gene`, `exon`, `CDS`, `tRNA`, `ncRNA`)
+3 | type | Feature type (typically Sequence Ontology terms, e.g. `gene`, `exon`, `CDS`, `tRNA`, `ncRNA`)
 4 | start | Start position (1-based, inclusive)
 5 | end | End position (1-based, inclusive)
 6 | score | Numeric score or `.` (no score)
@@ -162,19 +163,73 @@ Column | Name | Description
 9 | attributes | Semicolon-separated `key=value` pairs (e.g. `ID=gene1;Parent=transcript1`)
 
 > **Notes:**
-* Coordinates are `1-based, fully closed`: both `start` and `end` are included
-* Must be `tab-delimited`, all 9 columns required
-* Supports multi-level hierarchies using `ID=` and `Parent=` attributes. E.g. gene → mRNA → exon/CDS
+* Coordinates are **1-based, fully closed**: both `start` and `end` are included
+* Must be **tab-delimited**, all 9 columns required
+* Supports **multi-level hierarchies** using `ID=` and `Parent=` attributes. E.g. gene → mRNA → exon/CDS
+* Attribute values must be URL-encoded if they contain special characters (e.g. spaces → `%20`, `;` → `%3B`, `=` → `%3D`)
+* Different databases and annotation pipelines (e.g. NCBI, Ensembl, Prokka) also have their **own conventions**, e.g. in feature types, attribute keys
 
 #### Example
 ```
 ##gff-version 3
 chr1    Ensembl    gene        1000    5000    .    +    .    ID=gene1;Name=GeneA
 chr1    Ensembl    mRNA        1000    5000    .    +    .    ID=transcript1;Parent=gene1
-chr1    Ensembl    exon        1000    1200    .    +    .    Parent=transcript1
-chr1    Ensembl    exon        2000    2200    .    +    .    Parent=transcript1
-chr1    Ensembl    CDS         1050    1200    .    +    0    Parent=transcript1
-chr1    Ensembl    CDS         2000    2150    .    +    2    Parent=transcript1
+chr1    Ensembl    exon        1000    1200    .    +    .    ID=exon1;Parent=transcript1
+chr1    Ensembl    exon        2000    2200    .    +    .    ID=exon2;Parent=transcript1
+chr1    Ensembl    CDS         1050    1200    .    +    0    ID=cds1;Parent=transcript1
+chr1    Ensembl    CDS         2000    2150    .    +    2    ID=cds2;Parent=transcript1
+```
+
+
+
+### GTF (Gene Transfer Format)
+#### Purpose
+Describe gene structure and annotations (e.g. genes, transcripts, exons, UTRs, CDS), primarily for gene-centric analysis like RNA-seq and gene quantification
+
+#### Common file extensions
+* `.gtf`: recommended standard
+* `.gff`: sometimes used, but ambiguous (may also be GFF3)
+
+#### Description
+A GTF file is very similar to GFF3 but uses a **different attribute syntax** (column 9) and follows a **GFF2-derived specification**
+
+A GTF file includes:
+* Optional header lines (start with `#`)
+* Feature lines: exactly 9 tab-delimited columns
+
+**GTF columns**
+Column | Name | Description
+-------|------|------------
+1 | seqname | Sequence name (chromosome/contig ID)
+2 | source | Annotation source (e.g. `RefSeq`, `Ensembl`, `StringTie`)
+3 | feature | Feature type (e.g. `gene`, `transcript`, `exon`, `CDS`, `UTR`)
+4 | start | Start position (1-based, inclusive)
+5 | end | End position (1-based, inclusive)
+6 | score | Numeric score or `.` (no score)
+7 | strand | `+`, `-` or `.` (no strand)
+8 | frame | For CDS: `0`/`1`/`2` (reading frame). For non-CDS: `.`
+9 | attributes | Semicolon-separated `key "value"` pairs (e.g. `gene_id "G1"; transcript_id "T1"`)
+
+> **Notes:**
+* Coordinates are **1-based, fully closed**: both `start` and `end` are included
+* Must be **tab-delimited**, all 9 columns required
+* GTF does **not support embedded FASTA** section
+* Hierarchies are **implicit** using `gene_id` and `transcript_id` attributes
+* Attribute values are **quoted** strings
+* Common attributes: 
+    - `gene_id` (required)
+    - `transcript_id` (required for transcript-level features)
+    - `gene_name`, `gene_type`, `gene_biotype`, `transcript_name`, `exon_number` (optional)
+* Most RNA-seq tools expect GTF, not GFF3
+
+#### Example
+```
+chr1    Ensembl    gene        1000    5000    .    +    .    gene_id "gene1"; gene_name "GeneA";
+chr1    Ensembl    transcript  1000    5000    .    +    .    gene_id "gene1"; transcript_id "transcript1";
+chr1    Ensembl    exon        1000    1200    .    +    .    gene_id "gene1"; transcript_id "transcript1"; exon_number "1";
+chr1    Ensembl    exon        2000    2200    .    +    .    gene_id "gene1"; transcript_id "transcript1"; exon_number "2";
+chr1    Ensembl    CDS         1050    1200    .    +    0    gene_id "gene1"; transcript_id "transcript1";
+chr1    Ensembl    CDS         2000    2150    .    +    2    gene_id "gene1"; transcript_id "transcript1";
 ```
 
 
