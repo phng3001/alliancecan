@@ -1,7 +1,6 @@
 # File formats
 
 ## Sequence format
-
 ### FASTA
 #### Purpose
 Store DNA, RNA, or protein sequences
@@ -50,7 +49,7 @@ Each record contains 4 lines:
 4. Quality string, ASCII-encoded
 > **Notes:**
 * Quality string must match sequence length (1 character per base)
-* In paired-end sequencing FASTQ files are distributed in pairs: `R1` (forward) and `R2` (reverse)
+* In paired-end sequencing, FASTQ files are distributed in pairs: `R1` (forward) and `R2` (reverse)
 * Quality scores represent the probability of sequencing error for each base:
 ```
 Q = -10 × log10(P_error)
@@ -79,7 +78,6 @@ F#FFFFFFFFFFFFFFFFFFFFF:F:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,FFFFFFFFFFF:FFFFFFFFFF
 
 
 ## Annotation format 
-
 ### BED (Browser Extensible Data)
 #### Purpose
 Define genomic regions of interest as coordinates (e.g. features, coverage windows, capture regions)
@@ -141,7 +139,7 @@ Describe genomic features and annotations (genes, transcripts, exons, CDS, ncRNA
 #### Description
 A GFF3 file includes:
 * Optional directives (header lines start with `##`, e.g. `##gff-version 3`, `##sequence-region`)
-* Feature lines: exactly 9 tab-delimited columns
+* Feature lines: exactly 9 **tab-delimited** columns
 * Optional FASTA section starts with `##FASTA`
 ```
 ##FASTA
@@ -195,7 +193,7 @@ A GTF file is very similar to GFF3 but uses a **different attribute syntax** (co
 
 A GTF file includes:
 * Optional header lines (start with `#`)
-* Feature lines: exactly 9 tab-delimited columns
+* Feature lines: exactly 9 **tab-delimited** columns
 
 **GTF columns**
 Column | Name | Description
@@ -234,5 +232,47 @@ chr1    Ensembl    CDS         2000    2150    .    +    2    gene_id "gene1"; t
 
 
 
+## Alignment format 
+### SAM / BAM / CRAM
+#### Purpose
+Store read-to-reference alignments produced by sequence aligners, including alignment position, mapping quality, CIGAR operations, and optional tags
+
+#### Common file extensions
+* `.sam`: plain text, human-readable
+* `.bam`: binary, compressed version of SAM
+* `.cram`: reference-based, highly compressed format (smaller than BAM)
+
+#### Description
+SAM (Sequence Alignment Map), BAM (Binary Alignment Map), and CRAM (Compressed Reference-oriented Alignment Map) represent the same alignment information in different encodings: SAM is text-based, while BAM and CRAM are binary formats optimized for storage and performance
+
+A SAM file includes:
+* Optional header lines (start with `@`)
+* Alignment records: one per read, with 11 mandatory columns plus optional fields
+
+SAM is **tab-delimited** and designed to represent how sequencing reads align to **a reference genome**
+
+##### SAM header section
+* Each line begins with `@` followed by a two-letter header record type
+* Each line is tab-delimited
+* Except `@CO` lines, each data field follows a `TAG:VALUE` format
+
+**Common record types and tags**
+Record type | Description | Tags
+------------|-------------|-----
+`@HD` | File-level metadata (e.g. format version, sorting order) | `VN` (format), `SO` (sorting order)
+`@SQ` | Reference sequence dictionary | `SN` (reference sequence name), `LN` (reference sequence length)
+`RG` | Read group | `ID` (read group identifier), `PL` (platform/technology), `SM` (sample)
+`PG` | Program information | `ID` (program record identifier), `PN` (program name), `VN` (program version)
+`CO` | Free-text comment
+
+
+
+> **Notes:**
+* All lines in SAM are **tab-delimited**, including header lines
+
+
+
 ## More info
 https://genome.ucsc.edu/FAQ/FAQformat.html
+
+https://samtools.github.io/hts-specs/SAMv1.pdf
