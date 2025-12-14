@@ -271,6 +271,7 @@ Record type | Description | Tags
     - The first 11 fields are mandatory
     - Optional fields start at column 12 and follow the format `TAG:TYPE:VALUE`
 
+**SAM columns**
 Column | Name | Description
 -------|------|------------
 1 | QNAME | Query/read name
@@ -287,12 +288,12 @@ Column | Name | Description
 
 > **Notes:**
 * All lines in SAM are **tab-delimited**, including header lines
-* Coordinates are 1-based
+* Coordinates are **1-based**
 * A read may occupy multiple alignment lines (secondary or supplementary alignments)
 * Unmapped reads have `RNAME` set as `*` and `POS` as `0`
-* BAM and CRAM require an index (`.bai`, `.csi`, `.crai`) for random access
+* BAM and CRAM require an **index** (`.bai`, `.csi`, `.crai`) for random access
 * CRAM files require access to the reference genome used for compression
-* Some tools require coordinate-sorted BAM/CRAM
+* Some tools require **coordinate-sorted** BAM/CRAM
 
 #### Example
 ```
@@ -304,8 +305,119 @@ r001	147	ref	37	30	9M	=	7	-39	CAGCGGCAT	*	NM:i:1
 ```
 
 
+### VCF / BCF
+#### Purpose
+Store genomic variants (SNPs, indels, and structural variants) relative to a reference genome, together with quality metrics, filters, annotations, and per-sample genotypes
+
+#### Common file extensions
+* `.vcf`: plain text, human-readable
+* `.vcf.gz`: bgzip-compressed VCF
+* `.bcf`: binary version of VCF
+
+#### Description
+VCF (Variant Call Format) represents genomic variation at specific genomic positions relative to **a reference genome**. BCF (Binary Variant Call Format) stores the same information in a compact binary form
+
+A VCF file includes:
+* Meta-information lines (start with `##`)
+* A header line: starts with `#CHROM`, **tab-delimited**
+* Variant records: one variant per line, **tab-delimited**
+
+##### Meta-information lines
+* Start with `##`
+* May be unstructured `##key=value` or structured `##key=<key1=value1,key2=value2,key3=value3>`
+
+##### Header line
+* Is tab-delimited
+* Contains 8 mandatory columns:
+```
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+```
+* If genotype data is present, the 9th column is `FORMAT`, followed by one or more sample IDs (duplicate sample IDs are not allowed)
+
+##### Data lines
+* Are tab-delimited
+* Missing values are specified with a `.`
+
+**VCF columns**
+Column | Name | Description
+-------|------|------------
+1 | CHROM | Chromosome/contig reference sequence name
+2 | POS | 1-based variant position
+3 | ID | Variant identifier
+4 | REF | Reference allele
+5 | ALT | Alternate allele(s), comma-separated
+6 | QUAL | Variant quality score (Phred-scaled)
+7 | FILTER | Filter status (`PASS`, or a semicolon-separated list of filters that fail)
+8 | INFO | Semicolon-separated `key=value` annotations
+9 | FORMAT | Colon-separated genotype field keys
+10+ | Samples | Per-sample genotype data, following the `FORMAT` layout
+
+###### `INFO` (Column 8)
+* Describes **variant-level (site-level)** information shared by all samples
+* Common keys:
+    - `DP`: Total read depth across samples
+    - `AF`: Allele frequency
+    - `AC`: Allele count
+    - `AN`: Total number of alleles
+    - `MQ`: Mapping quality
+    - `ANN`: Functional annotation (gene, effect)
+
+###### `FORMAT` (Column 9)
+* Describes the structure of per-sample fields
+* Combines with sample column(s) (Column 10+) to store **sample-level** information
+* Common keys:
+    - `GT`: Genotype
+    - `DP`: Read depth
+    - `AD`: Allelic depths
+    - `GQ`: Genotype quality
+    - `PL`: Phred-scaled genotype likelihoods
+* `GT`:
+    - Encodes the alleles carried by a sample at a variant site
+    - Interpreted together with the `REF` and `ALT` columns
+    - Alleles are encoded as integers: `0` → reference allele (`REF`), `1` → first alternate allele, `2` → second alternate allele, etc
+    - Alleles are separated by `/` (unphased) or `|` (phased)
+    - The number of alleles reflects sample ploidy (e.g. `0` → haploid, `0/1` → diploid, `0/0/1` → triploid)
+
+**Common diploid genotypes**
+GT | Interpretation
+---|---------------
+`0/0` | Homozygous reference
+`0/1` | Heterozygous (REF / ALT1)
+`1/1` | Homozygous alternate (ALT1 / ALT1)
+`1/2` | Heterozygous with two different alternate alleles (ALT1 / ALT2)
+`./.` | Missing genotype: both alleles unknown
+`0/.` | Partially missing genotype: One REF allele, one unknown
+
+> **Notes:**
+* Coordinates are **1-based**
+* File must be **tab-delimited**
+* **Multiallelic variants** are represented in a **single record** (e.g. `ALT=A,C`)
+* `INFO` and `FORMAT` fields must be declared in meta-information lines
+* `INFO` fields are variant-centric, while `FORMAT` fields are sample-centric
+* **Structural variants** may use **symbolic alleles** (e.g. `<DEL>`, `<INS>`, `<DUP>`, `<INV>`, `<CNV>`)
+* Indexed `.vcf.gz` files (`.tbi` or `.csi`) enable random access; only **bgzip** compression (not gzip) is compatible with indexing
+* BCF files typically use `.csi` indexes for random access
+
+#### Example
+```
+##fileformat=VCFv4.3
+##contig=<ID=chr1,length=248956422>
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the variant">
+##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Length of structural variant">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	sample1
+chr1	1050	rs123	A	G	60	PASS	DP=35	GT	0/1
+chr1	2000	.	CT	C	50	PASS	DP=20	GT	1/1
+chr1	5000	.	N	<DEL>	40	PASS	SVTYPE=DEL;END=6200;SVLEN=-1200	GT	0/1
+```
+
+
 
 ## More info
 https://genome.ucsc.edu/FAQ/FAQformat.html
 
 https://samtools.github.io/hts-specs/SAMv1.pdf
+
+https://samtools.github.io/hts-specs/VCFv4.3.pdf
