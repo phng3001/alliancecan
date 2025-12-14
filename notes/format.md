@@ -251,7 +251,7 @@ A SAM file includes:
 
 SAM is **tab-delimited** and designed to represent how sequencing reads align to **a reference genome**
 
-##### SAM header section
+##### The header section
 * Each line begins with `@` followed by a two-letter header record type
 * Each line is tab-delimited
 * Except `@CO` lines, each data field follows a `TAG:VALUE` format
@@ -261,14 +261,47 @@ Record type | Description | Tags
 ------------|-------------|-----
 `@HD` | File-level metadata (e.g. format version, sorting order) | `VN` (format), `SO` (sorting order)
 `@SQ` | Reference sequence dictionary | `SN` (reference sequence name), `LN` (reference sequence length)
-`RG` | Read group | `ID` (read group identifier), `PL` (platform/technology), `SM` (sample)
-`PG` | Program information | `ID` (program record identifier), `PN` (program name), `VN` (program version)
-`CO` | Free-text comment
+`@RG` | Read group | `ID` (read group identifier), `PL` (platform/technology), `SM` (sample)
+`@PG` | Program information | `ID` (program record identifier), `PN` (program name), `VN` (program version)
+`@CO` | Free-text comment
 
+##### The alignment section
+* Each line typically represents the linear alignment of a read to the reference genome
+* Each line consists of 11 or more tab-delimited fields
+    - The first 11 fields are mandatory
+    - Optional fields start at column 12 and follow the format `TAG:TYPE:VALUE`
 
+Column | Name | Description
+-------|------|------------
+1 | QNAME | Query/read name
+2 | FLAG | Bitwise flag describing read properties
+3 | RNAME | Reference sequence name
+4 | POS | 1-based leftmost alignment position
+5 | MAPQ | Mapping quality (Phred-scaled)
+6 | CIGAR | Alignment operations (e.g. matches, insertions, deletions)
+7 | RNEXT | Mate reference name (`=` if same as RNAME)
+8 | PNEXT | Mate alignment position
+9 | TLEN | Template length
+10 | SEQ | Read sequence (`*` if not stored)
+11 | QUAL | Base quality string (same as the quality string in FASTQ format)
 
 > **Notes:**
 * All lines in SAM are **tab-delimited**, including header lines
+* Coordinates are 1-based
+* A read may occupy multiple alignment lines (secondary or supplementary alignments)
+* Unmapped reads have `RNAME` set as `*` and `POS` as `0`
+* BAM and CRAM require an index (`.bai`, `.csi`, `.crai`) for random access
+* CRAM files require access to the reference genome used for compression
+* Some tools require coordinate-sorted BAM/CRAM
+
+#### Example
+```
+@HD VN:1.6  SO:coordinate
+@SQ SN:ref  LN:45
+r001    99  ref 7   30  8M2I4M1D3M  =   37  39  TTAGATAAAGGATACTG   *
+r002    0   ref 9   30  3S6M1P1I4M  *   0   0   AAAAGATAAGGATA      *
+r001    147 ref 37  30  9M          =   7   -39 CAGCGGCAT           *   NM:i:1
+```
 
 
 
