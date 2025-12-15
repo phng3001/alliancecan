@@ -1,4 +1,59 @@
-# File formats
+---
+title:  "File formats"
+excerpt: "Common file formats used in bioinformatics"
+collection: cheatsheets
+---
+
+- [Sequence format](#sequence-format)
+  - [FASTA](#fasta)
+    - [Purpose](#purpose)
+    - [Common file extensions](#common-file-extensions)
+    - [Description](#description)
+    - [Example](#example)
+  - [FASTQ](#fastq)
+    - [Purpose](#purpose-1)
+    - [Common file extensions](#common-file-extensions-1)
+    - [Description](#description-1)
+    - [Example](#example-1)
+- [Annotation format](#annotation-format)
+  - [BED (Browser Extensible Data)](#bed-browser-extensible-data)
+    - [Purpose](#purpose-2)
+    - [Common file extensions](#common-file-extensions-2)
+    - [Description](#description-2)
+    - [Example](#example-2)
+      - [BED3](#bed3)
+      - [BED6](#bed6)
+      - [BED12](#bed12)
+  - [GFF3 (General Feature Format)](#gff3-general-feature-format)
+    - [Purpose](#purpose-3)
+    - [Common file extensions](#common-file-extensions-3)
+    - [Description](#description-3)
+    - [Example](#example-3)
+  - [GTF (Gene Transfer Format)](#gtf-gene-transfer-format)
+    - [Purpose](#purpose-4)
+    - [Common file extensions](#common-file-extensions-4)
+    - [Description](#description-4)
+    - [Example](#example-4)
+- [Alignment format](#alignment-format)
+  - [SAM / BAM / CRAM](#sam--bam--cram)
+    - [Purpose](#purpose-5)
+    - [Common file extensions](#common-file-extensions-5)
+    - [Description](#description-5)
+      - [The header section](#the-header-section)
+      - [The alignment section](#the-alignment-section)
+    - [Example](#example-5)
+  - [VCF / BCF](#vcf--bcf)
+    - [Purpose](#purpose-6)
+    - [Common file extensions](#common-file-extensions-6)
+    - [Description](#description-6)
+      - [Meta-information lines](#meta-information-lines)
+      - [Header line](#header-line)
+      - [Data lines](#data-lines)
+        - [`INFO` (Column 8)](#info-column-8)
+        - [`FORMAT` (Column 9)](#format-column-9)
+    - [Example](#example-6)
+- [More info](#more-info)
+
 
 ## Sequence format
 ### FASTA
@@ -91,6 +146,7 @@ A BED file is a **tab-separated** text file describing genomic intervals
 * Up to 12 columns are defined (BED12, commonly used for exon/intron structure)
 
 **BED columns**
+
 Column | Name | Description
 -------|------|------------
 1 | chrom | Chromosome name
@@ -148,6 +204,7 @@ ACAGCGCTGTCTTTGTGGCCTGCAGGG
 ```
 
 **GFF3 columns**
+
 Column | Name | Description
 -------|------|------------
 1 | seqid | Sequence name (chromosome/contig ID)
@@ -196,6 +253,7 @@ A GTF file includes:
 * Feature lines: exactly 9 **tab-delimited** columns
 
 **GTF columns**
+
 Column | Name | Description
 -------|------|------------
 1 | seqname | Sequence name (chromosome/contig ID)
@@ -257,6 +315,7 @@ SAM is **tab-delimited** and designed to represent how sequencing reads align to
 * Except `@CO` lines, each data field follows a `TAG:VALUE` format
 
 **Common record types and tags**
+
 Record type | Description | Tags
 ------------|-------------|-----
 `@HD` | File-level metadata (e.g. format version, sorting order) | `VN` (format), `SO` (sorting order)
@@ -272,6 +331,7 @@ Record type | Description | Tags
     - Optional fields start at column 12 and follow the format `TAG:TYPE:VALUE`
 
 **SAM columns**
+
 Column | Name | Description
 -------|------|------------
 1 | QNAME | Query/read name
@@ -339,6 +399,7 @@ A VCF file includes:
 * Missing values are specified with a `.`
 
 **VCF columns**
+
 Column | Name | Description
 -------|------|------------
 1 | CHROM | Chromosome/contig reference sequence name
@@ -379,6 +440,7 @@ Column | Name | Description
     - The number of alleles reflects sample ploidy (e.g. `0` → haploid, `0/1` → diploid, `0/0/1` → triploid)
 
 **Common diploid genotypes**
+
 GT | Interpretation
 ---|---------------
 `0/0` | Homozygous reference
