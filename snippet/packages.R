@@ -14,7 +14,7 @@ cran_pkgs <- c(
   "pheatmap",
   "ashr",
   "ggrepel",
-  "tidyverse"
+  "tidyverse",
 )
 
 # Helper: Install missing packages once
