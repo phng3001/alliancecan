@@ -3,7 +3,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
 }
 
-# Define packages
+# Define packages (can be empty, length 1, or many)
 bioc_pkgs <- c(
   "DESeq2",
   "apeglm",
@@ -19,15 +19,36 @@ cran_pkgs <- c(
 
 # Helper: Install missing packages once
 install_if_missing <- function(pkgs, install_fun, pkg_type = "CRAN") {
+
+  # Handle NULL, empty, or invalid input
+  if (is.null(pkgs) || length(pkgs) == 0) {
+    message(sprintf("No %s packages specified. Skipping.", pkg_type))
+    return(invisible(NULL))
+  }
+
+  pkgs <- as.character(pkgs)
+  pkgs <- pkgs[nzchar(pkgs)]  # remove empty strings
+
+  if (length(pkgs) == 0) {
+    message(sprintf("No valid %s packages specified. Skipping.", pkg_type))
+    return(invisible(NULL))
+  }
+
   installed <- rownames(installed.packages())
   to_install <- setdiff(pkgs, installed)
-  
+
   if (length(to_install) > 0) {
-    message(sprintf("Installing %s package(s): %s", pkg_type, paste(to_install, collapse = ", ")))
+    message(sprintf(
+      "Installing %s package(s): %s",
+      pkg_type,
+      paste(to_install, collapse = ", ")
+    ))
     install_fun(to_install)
   } else {
     message(sprintf("All %s packages are already installed.", pkg_type))
   }
+
+  invisible(NULL)
 }
 
 # Install Bioconductor packages
