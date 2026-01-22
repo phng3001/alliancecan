@@ -7,14 +7,14 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 bioc_pkgs <- c(
   "DESeq2",
   "apeglm",
-  "clusterProfiler",
+  "clusterProfiler"
 )
 
 cran_pkgs <- c(
   "pheatmap",
   "ashr",
   "ggrepel",
-  "tidyverse",
+  "tidyverse"
 )
 
 # Helper: Install missing packages once
