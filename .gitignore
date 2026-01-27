@@ -4,3 +4,6 @@
 
 # ssh key
 *.openssh
+
+# R
+.Rproj.user
