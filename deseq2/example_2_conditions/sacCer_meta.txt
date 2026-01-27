@@ -1,0 +1,7 @@
+id	condition
+WT_C_1	C
+WT_C_2	C
+WT_C_3	C
+WT_E_1	E
+WT_E_2	E
+WT_E_3	E
