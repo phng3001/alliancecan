@@ -14,6 +14,8 @@ library(tidyverse)
 library(pheatmap)
 library(RColorBrewer)
 library(ggrepel)
+library(clusterProfiler)
+library(org.Sc.sgd.db)
 
 # Set seed
 set.seed(42)
@@ -490,5 +492,127 @@ ggplot(
   ) +
   theme_light()
 ggsave("example_2_conditions/treatment_vs_control_DE_volcano.pdf", width = 8, height = 6, dpi = 300)
+
+
+
+
+
+# ############# Functional analysis #############
+
+## ########### Gene lists ###########
+
+resLFC_df <- read.table("example_2_conditions/treatment_vs_control_result.tsv", 
+                        sep = "\t", header = T)
+
+# Set thresholds
+padj.cutoff <- 0.05
+lfc.cutoff <- log2(2)
+
+# Background dataset (all genes tested for significance)
+all_genes <- as.character(resLFC_df$gene)
+str(all_genes)
+
+# Significant DE genes
+sig_genes <- as.character(
+  resLFC_df %>%
+  filter(padj < padj.cutoff & abs(log2FoldChange) > lfc.cutoff) %>%
+  pull(gene)
+)
+
+# Up & down regulated genes
+up_genes <- as.character(
+  resLFC_df %>%
+    filter(padj < padj.cutoff & log2FoldChange > lfc.cutoff) %>%
+    pull(gene)
+)
+
+down_genes <- as.character(
+  resLFC_df %>%
+    filter(padj < padj.cutoff & log2FoldChange < -lfc.cutoff) %>%
+    pull(gene)
+)
+
+
+
+## ########### Over-representation analysis (ORA) ###########
+
+### ######### Up regulated genes #########
+ora_bp_up <- enrichGO(
+  gene = up_genes,        # gene list in SGD ORF IDs
+  universe = all_genes,
+  OrgDb = org.Sc.sgd.db,  # OrgDb for S. cerevisiae
+  keyType = "ORF",        # Key type of gene identifiers
+  ont = "BP",             # Ontology: BP (Biological Process)
+  pAdjustMethod = "BH",   # Multiple testing correction
+  pvalueCutoff  = 0.05,   # P-value cutoff
+  qvalueCutoff  = 0.2     # Q-value cutoff
+)
+
+# Output results to a dataframe
+ora_bp_up_df <- data.frame(ora_bp_up)
+range(ora_bp_up_df$p.adjust, na.rm = TRUE)
+
+# Save to file
+write.table(ora_bp_up_df, 
+            file = "example_2_conditions/treatment_vs_control_result_DE_up_ORA_BP.tsv", 
+            sep = "\t", quote = FALSE, row.names = FALSE)
+
+# Top n terms by p.adjust
+# Display gene ratio (number of genes related to GO term / total number of significant genes)
+dotplot(ora_bp_up, showCategory = 10, title="GO Biological Processes Enrichment in Up-regulated genes")
+# Display gene count
+png("example_2_conditions/treatment_vs_control_result_DE_up_ORA_BP_top10.png", width = 8, height = 6, units = "in", res = 300)
+barplot(ora_bp_up, showCategory = 10, title="GO Biological Processes Enrichment in Up-regulated genes")
+dev.off()
+
+ora_bp_up_df %>%
+  arrange(p.adjust) %>%
+  head(n=10) %>%
+  pull(Description)
+
+
+
+### ######### Down regulated genes #########
+ora_bp_down <- enrichGO(
+  gene = down_genes,        # gene list in SGD ORF IDs
+  universe = all_genes,
+  OrgDb = org.Sc.sgd.db,  # OrgDb for S. cerevisiae
+  keyType = "ORF",        # Key type of gene identifiers
+  ont = "BP",             # Ontology: BP (Biological Process)
+  pAdjustMethod = "BH",   # Multiple testing correction
+  pvalueCutoff  = 0.05,   # P-value cutoff
+  qvalueCutoff  = 0.2     # Q-value cutoff
+)
+
+# Output results to a dataframe
+ora_bp_down_df <- data.frame(ora_bp_down)
+range(ora_bp_down_df$p.adjust, na.rm = TRUE)
+
+# Save to file
+write.table(ora_bp_down_df, 
+            file = "example_2_conditions/treatment_vs_control_result_DE_down_ORA_BP.tsv", 
+            sep = "\t", quote = FALSE, row.names = FALSE)
+
+# Top n terms by p.adjust
+# Display gene ratio (number of genes related to GO term / total number of significant genes)
+dotplot(ora_bp_down, showCategory = 10, title="GO Biological Processes Enrichment in Down-regulated genes")
+# Display gene count
+png("example_2_conditions/treatment_vs_control_result_DE_down_ORA_BP_top10.png", width = 8, height = 6, units = "in", res = 300)
+barplot(ora_bp_down, showCategory = 10, title="GO Biological Processes Enrichment in Down-regulated genes")
+dev.off()
+
+ora_bp_down_df %>%
+  arrange(p.adjust) %>%
+  head(n=10) %>%
+  pull(Description)
+
+
+
+### ######### Parameters to consider / play with #########  
+# DE thresholds: padj, log2FoldChange
+# Gene list: DE genes, Up, Down
+# Ontology: "BP", "MF", "CC" or "ALL"
+# Ontology pAdjustMethod
+# Ontology pvalueCutoff, qvalueCutoff
 
 
