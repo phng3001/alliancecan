@@ -7,7 +7,8 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 bioc_pkgs <- c(
   "DESeq2",
   "apeglm",
-  "clusterProfiler"
+  "clusterProfiler",
+  "org.Sc.sgd.db"
 )
 
 cran_pkgs <- c(
