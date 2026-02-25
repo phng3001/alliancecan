@@ -1,7 +1,8 @@
-############# Initial setup #############
+# ############# Initial setup #############
 
 # Set working directory
 setwd("/project/def-mouellet/Scripts_MOU/PNP/alliancecan/deseq2/")
+getwd()
 
 # Activate environment
 renv::activate()
@@ -12,12 +13,16 @@ library(ggplot2)
 library(tidyverse)
 library(pheatmap)
 library(RColorBrewer)
+library(ggrepel)
+
+# Set seed
+set.seed(42)
 
 
 
 
 
-############# Load data #############
+# ############# Load data #############
 
 # Gene/transcript count
 data <- read.table("example_2_conditions/sacCer_counts_raw.txt", header = T, row.names = 1)
@@ -41,7 +46,7 @@ all(colnames(data) == rownames(meta))
 
 
 
-############# Differential expression analysis #############
+# ############# Differential expression analysis #############
 
 # Create DESeqDataSet object
 dds <- DESeqDataSetFromMatrix(
@@ -54,7 +59,7 @@ dds <- DESeqDataSetFromMatrix(
 # counts(dds)
 # str(counts(dds))
 
-########### Pre-filter (optional) ###########
+## ########### Pre-filter (optional) ###########
 # https://support.bioconductor.org/p/65256/
 
 # Option 1: Filter genes where there are less than 10 counts
@@ -89,7 +94,7 @@ dds <- DESeqDataSetFromMatrix(
 
 
 
-########### Run DESeq2 ###########
+## ########### Run DESeq2 ###########
 
 # Set reference level
 dds$condition <- relevel(dds$condition, ref = "C")
@@ -99,7 +104,7 @@ dds <- DESeq(dds)
 
 
 
-########### Check the model fit ###########
+## ########### Check the model fit ###########
 
 # Dispersion (α): Var = μ + α*μ^2
 # Dispersion ~ 1/μ, ~ Var
@@ -109,12 +114,12 @@ dev.off()
 
 
 
-########### Explore the results ###########
+## ########### Explore the results ###########
 
 # Available coefficients
 resultsNames(dds)
 
-######### Unshrunken LFC #########
+### ######### Unshrunken LFC #########
 
 # alpha: adjusted p-value cutoff (FDR)
 res <- results(dds, 
@@ -140,7 +145,7 @@ write.table(res_df,
 
 
 
-######### Shrunken LFC #########
+### ######### Shrunken LFC #########
 # Shrinkage of LFC estimates toward zero when the information for a gene is low (low counts, high dispersion) 
 # This does not change the total number of genes identified as significantly DE
 
@@ -169,5 +174,321 @@ resLFC_df <- resLFC %>%
 write.table(resLFC_df, 
             file = "example_2_conditions/treatment_vs_control_result.tsv", 
             sep = "\t", quote = FALSE, row.names = FALSE)
+
+
+
+### ######### DE genes #########
+# Use shrunken LFC
+
+# Set thresholds
+padj.cutoff <- 0.05
+lfc.cutoff <- log2(2)
+
+# Significant DE genes
+resLFC_df_sig <- resLFC_df %>%
+  filter(padj < padj.cutoff & abs(log2FoldChange) > lfc.cutoff)
+
+# Save to file
+write.table(resLFC_df_sig, 
+            file = "example_2_conditions/treatment_vs_control_result_DE.tsv", 
+            sep = "\t", quote = FALSE, row.names = FALSE)
+
+
+
+## ########### Visualisation ###########
+
+# Add row names to metadata
+metadata <- meta %>%
+  rownames_to_column("sample_name")
+
+# normalized_counts <- counts(dds, normalized = TRUE)
+normalized_counts <- read.table("example_2_conditions/normalized_counts.tsv", 
+                                sep = "\t", header = T, row.names = 1)
+
+# Convert row names to a column named "gene"
+normalized_counts <- normalized_counts %>%
+  as.data.frame() %>%
+  rownames_to_column("gene")
+
+
+
+### ######### Count plot #########
+
+#### ####### A single gene #######
+
+plotCounts(dds, gene = "YDL248W", intgroup = "condition")
+
+normalized_counts %>%
+  filter(gene == "YDL248W")
+
+
+
+#### ####### Top DE genes #######
+
+# Top 20 DE genes by padj
+top20_sig_genes <- resLFC_df %>%
+  arrange(padj) %>%
+  pull(gene) %>%
+  head(n=20)
+
+# Subset normalized counts for top 20 genes
+top20_sig_norm <- normalized_counts %>%
+  filter(gene %in% top20_sig_genes)
+
+# Convert to long format
+top20_sig_norm_long <- top20_sig_norm %>%
+  gather(
+    colnames(top20_sig_norm)[2:7], 
+    key = "sample_name", 
+    value = "normalized_counts"
+    )
+
+# Merge with metadata
+top20_sig_norm_long_with_meta <- inner_join(metadata, top20_sig_norm_long, by = "sample_name")
+
+##### ##### Boxplot #####
+ggplot(
+  top20_sig_norm_long_with_meta,
+  aes(x = gene, y = normalized_counts, color = condition)
+) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  scale_y_log10() +
+  labs(
+    x = NULL, y = "log10 normalized counts", title = "Top 20 Significant DE Genes"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    plot.title = element_text(hjust = 0.5)
+  )
+
+ggplot(
+  top20_sig_norm_long_with_meta,
+  aes(x = gene, y = normalized_counts, color = condition)
+) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  scale_y_log10() +
+  scale_color_manual(
+    labels = c("Control", "Treatment"),
+    values = c("gray", "blue")
+  ) +
+  labs(
+    x = NULL, y = "log10 normalized counts", title = "Top 20 Significant DE Genes"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    plot.title = element_text(hjust = 0.5)
+  )
+ggsave("example_2_conditions/treatment_vs_control_top_20_DE_boxplot.pdf", width = 8, height = 6, dpi = 300)
+
+# plotCounts(dds, gene = "YPL223C", intgroup = "condition")
+
+
+
+##### ##### Scatterplot #####
+
+ggplot(
+  top20_sig_norm_long_with_meta, 
+  aes(x = condition, y = normalized_counts, color = condition)
+  ) +
+  geom_jitter(height = 0, width = 0.15) +
+  scale_y_continuous(trans = 'log10') +
+  scale_color_manual(
+    labels = c("C", "E"),
+    values = c("gray", "blue")
+  ) +
+  ylab("log10 normalized expression level") +
+  xlab("condition") +
+  ggtitle("Top 20 Significant DE Genes") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  facet_wrap(~ gene) +
+  theme_bw()
+ggsave("example_2_conditions/treatment_vs_control_top_20_DE_scatterplot.pdf", width = 8, height = 6, dpi = 300)
+
+
+
+### ######### Heatmap #########
+
+# Subset normalized counts for significant genes
+sig_norm <- normalized_counts %>%
+  filter(gene %in% resLFC_df_sig$gene) %>%
+  column_to_rownames("gene")
+
+# Set a color palette
+heat_colors <- brewer.pal(6, "YlOrRd")
+
+# Heatmap
+# Sometimes need to re-run to get the output file
+png("example_2_conditions/treatment_vs_control_DE_heatmap.png", width = 8, height = 8, units = "in", res = 300)
+pheatmap(
+  sig_norm,
+  color = heat_colors,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = FALSE,
+  annotation_col = meta,
+  fontsize = 10,
+  border_color = NA,
+  scale = "row",
+  fontsize_row = 10,
+  height = 20
+)
+dev.off()
+# Notes: Normalized gene counts are scaled by z-score standardization
+
+
+
+### ######### Volcano plot #########
+
+resLFC_df <- read.table("example_2_conditions/treatment_vs_control_result.tsv", 
+                        sep = "\t", header = T)
+
+# Set thresholds
+padj.cutoff <- 0.05
+lfc.cutoff <- log2(2)
+
+# Specify up/down/ns expressed genes
+resLFC_df_annot <- resLFC_df %>%
+  mutate(
+    expression = case_when(
+      padj < padj.cutoff & log2FoldChange > lfc.cutoff ~ "up",
+      padj < padj.cutoff & log2FoldChange < -lfc.cutoff ~ "down",
+      TRUE ~ "ns"
+    )
+  )
+
+# Data range
+## x axis
+range(resLFC_df_annot$log2FoldChange, na.rm = TRUE)
+## y axis
+max(-log10(range(resLFC_df_annot$padj, na.rm = TRUE)))
+
+#### ####### Simple Volcano plot #######
+resLFC_df_annot %>%
+  ggplot(
+    aes(x = log2FoldChange, y = -log10(padj), color = expression, alpha = 0.5)
+  ) +
+  geom_point(size = 3) +
+  geom_hline(
+    yintercept = -log10(0.05),
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    xintercept = c(-lfc.cutoff, lfc.cutoff),
+    linetype = "dashed"
+  ) +
+  scale_color_manual(
+    breaks = c("up", "down", "ns"),
+    values = c("tomato", "steelblue", "grey")
+  ) +
+  guides(alpha = "none") +
+  coord_cartesian(xlim = c(-8, 8), ylim = c(0, 200)) +
+  labs(
+    title = "Gene expression changes between Treatment and Control",
+    x = "log2(FC)", 
+    y = "-log10(padj)", 
+    color = "Expression\nchange"
+  ) +
+  theme_classic()
+
+
+
+#### ####### Volcano plot with top genes labeling #######
+
+##### ##### Example 1: Top 10 |log2FC| #####
+
+resLFC_df_annot_label <- resLFC_df_annot %>%
+  filter(expression != "ns") %>%
+  mutate(abs_log2FoldChange = abs(log2FoldChange)) %>%
+  arrange(desc(abs_log2FoldChange)) %>%
+  mutate(label = "")
+num_keep <- 10
+resLFC_df_annot_label$label[1:num_keep] <- resLFC_df_annot_label$gene[1:num_keep]
+  
+resLFC_df_annot %>%
+  ggplot(
+    aes(x = log2FoldChange, y = -log10(padj), color = expression, alpha = 0.5)
+  ) +
+  geom_point(size = 3) +
+  geom_text_repel(
+    data = resLFC_df_annot_label,
+    aes(label = label),
+    max.overlaps = Inf,
+    alpha = 1
+  ) +
+  geom_hline(
+    yintercept = -log10(0.05),
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    xintercept = c(-lfc.cutoff, lfc.cutoff),
+    linetype = "dashed"
+  ) +
+  scale_color_manual(
+    breaks = c("up", "down", "ns"),
+    values = c("tomato", "steelblue", "grey")
+  ) +
+  guides(alpha = "none") +
+  coord_cartesian(xlim = c(-8, 8), ylim = c(0, 200)) +
+  labs(
+    title = "Gene expression changes between Treatment and Control",
+    x = "log2(FC)", y = "-log10(padj)", color = "Expression\nchange"
+  ) +
+  theme_classic()
+
+
+
+##### ##### Example 2: Selection based on |log2FC| and padj #####
+
+resLFC_df_annot %>%
+  mutate(abs_log2FoldChange = abs(log2FoldChange)) %>%
+  filter(-log10(padj) > 50 & abs(log2FoldChange) > 5) %>%
+  dim()
+
+resLFC_df_annot_label <- resLFC_df_annot %>%
+  mutate(abs_log2FoldChange = abs(log2FoldChange)) %>%
+  filter(-log10(padj) > 50 & abs(log2FoldChange) > 5) %>%
+  mutate(label = gene)
+
+ggplot(
+  data = resLFC_df_annot,
+  aes(x = log2FoldChange, 
+      y = -log10(padj))
+  ) +
+  geom_point(
+    aes(colour = expression),
+    alpha = 0.6,
+    shape = 19,
+    size = 2
+    ) +
+  geom_hline(
+    yintercept = -log10(0.05),
+    linetype = "dashed"
+  ) + 
+  geom_vline(
+    xintercept = c(-lfc.cutoff, lfc.cutoff),
+    linetype = "dashed"
+  ) +
+  geom_label_repel(
+    data = resLFC_df_annot_label,
+    aes(label = label),
+    force = 2
+  ) +
+  scale_color_manual(
+    breaks = c("up", "down", "ns"),
+    values = c("darkred", "darkblue", "grey")
+  ) +
+  scale_x_continuous(
+    breaks = c(seq(-8, 8, 2)),
+    limits = c(-8, 8)
+    ) +
+  labs(
+    title = "Gene expression changes between Treatment and Control",
+    x = "log2(FC)", 
+    y = "-log10(padj)", 
+    color = "Expression\nchange"
+  ) +
+  theme_light()
+ggsave("example_2_conditions/treatment_vs_control_DE_volcano.pdf", width = 8, height = 6, dpi = 300)
 
 

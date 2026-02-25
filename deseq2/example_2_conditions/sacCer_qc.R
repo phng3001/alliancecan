@@ -1,7 +1,8 @@
-############# Initial setup #############
+# ############# Initial setup #############
 
 # Set working directory
 setwd("/project/def-mouellet/Scripts_MOU/PNP/alliancecan/deseq2/")
+getwd()
 
 # Activate environment
 renv::activate()
@@ -13,11 +14,14 @@ library(tidyverse)
 library(pheatmap)
 library(RColorBrewer)
 
+# Set seed
+set.seed(42)
 
 
 
 
-############# Load data #############
+
+# ############# Load data #############
 
 # Gene/transcript count
 data <- read.table("example_2_conditions/sacCer_counts_raw.txt", header = T, row.names = 1)
@@ -41,9 +45,9 @@ all(colnames(data) == rownames(meta))
 
 
 
-############# QC #############
+# ############# QC #############
 
-########### Count data modeling ###########
+## ########### Count data modeling ###########
 # Poisson: mean == variance; Binomial: mean < variance
 
 # Control condition
@@ -74,9 +78,7 @@ ggsave("example_2_conditions/treatment_mean_var_plot.pdf", width = 8, height = 6
 
 
 
-
-
-########### Normalized counts matrix ###########
+## ########### Normalized counts matrix ###########
 
 # Create DESeqDataSet object
 dds <- DESeqDataSetFromMatrix(
@@ -100,11 +102,9 @@ write.table(normalized_counts,
 
 
 
+## ########### Normalized counts transformed ###########
 
-
-########### Normalized counts transformed ###########
-
-######### rlog transformation #########
+### ######### rlog transformation #########
 # rlog() works well on small datasets (n < 30)
 rld <- rlog(dds, blind = TRUE)
 rld_mat <- assay(rld)
@@ -112,7 +112,7 @@ write.table(rld_mat,
             file = "example_2_conditions/normalized_counts_rlog.tsv", 
             sep = "\t", quote = FALSE, col.names = NA)
 
-######### vst transformation #########
+### ######### vst transformation #########
 # vst() is faster, recommended for medium to large datasets (n > 30)
 vsd <- vst(dds, blind = TRUE)
 vsd_mat <- assay(vsd)
@@ -120,7 +120,7 @@ write.table(vsd_mat,
             file = "example_2_conditions//normalized_counts_vst.tsv", 
             sep = "\t", quote = FALSE, col.names = NA)
 
-######### log2(n+1) transformation #########
+### ######### log2(n+1) transformation #########
 ntd <- normTransform(dds)
 ntd_mat <- assay(ntd)
 write.table(ntd_mat, 
@@ -129,9 +129,7 @@ write.table(ntd_mat,
 
 
 
-
-
-########### PCA ###########
+## ########### PCA ###########
 # Will use rlog transformation
 # vst or log2(n+1) could be used similarly
 
@@ -174,16 +172,14 @@ ggsave("example_2_conditions/PCA_ggplot.pdf", width = 8, height = 6, dpi = 300)
 
 
 
-
-
-########### Hierarchical Clustering ###########
+## ########### Hierarchical Clustering ###########
 # Will use rlog transformation
 # vst or log2(n+1) could be used similarly
 
 rld <- rlog(dds, blind = TRUE)
 rld_mat <- assay(rld)
 
-######### Correlation matrix #########
+### ######### Correlation matrix #########
 
 # Pairwise correlation
 rld_cor <- cor(rld_mat)
@@ -205,10 +201,10 @@ dev.off()
 
 
 
-######### Count matrix #########
+### ######### Count matrix #########
 normalized_counts <- counts(dds, normalized = TRUE)
 
-####### Genes highly expressed #######
+#### ####### Genes highly expressed #######
 # Top 20 most expressed genes
 top20_expression_genes <- order(rowMeans(normalized_counts), decreasing = TRUE)[1:20]
 
@@ -222,7 +218,7 @@ pheatmap(
 )
 dev.off()
 
-####### Genes highly varied #######
+#### ####### Genes highly varied #######
 # Top 20 genes with most variance
 top20_variance_genes <- order(rowVars(normalized_counts), decreasing = TRUE)[1:20]
 
