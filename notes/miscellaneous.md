@@ -17,7 +17,7 @@ Operator | Function | Syntax
 `&>` | Redirect all | `command &> log.txt`
 `>>` | Append stdout | `command >> files.txt`
 `2>>` | Append stderr | `command 2>> errors.txt`
-`&>>` | Append all | `command &> log.txt`
+`&>>` | Append all | `command &>> log.txt`
 
 > **Notes:** Redirect to `/dev/null` to hide the corresponding stream (E.g. `command &> /dev/null`)
 
