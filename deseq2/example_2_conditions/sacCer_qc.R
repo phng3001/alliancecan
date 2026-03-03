@@ -114,10 +114,11 @@ write.table(rld_mat,
 
 ### ######### vst transformation #########
 # vst() is faster, recommended for medium to large datasets (n > 30)
-vsd <- vst(dds, blind = TRUE)
+vsd <- vst(dds, blind = TRUE) # n genes >= 1000
+# vsd <- varianceStabilizingTransformation(dds, blind = TRUE) # n genes < 1000
 vsd_mat <- assay(vsd)
 write.table(vsd_mat, 
-            file = "example_2_conditions//normalized_counts_vst.tsv", 
+            file = "example_2_conditions/normalized_counts_vst.tsv", 
             sep = "\t", quote = FALSE, col.names = NA)
 
 ### ######### log2(n+1) transformation #########
