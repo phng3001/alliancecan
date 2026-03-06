@@ -28,12 +28,16 @@ set.seed(42)
 
 # Gene/transcript count
 data <- read.table("example_2_conditions/sacCer_counts_raw.txt", header = T, row.names = 1)
+str(data)
+# If count data is not integer, round to integer
+# data <- data %>%
+#   mutate(across(where(is.numeric), ~ as.integer(round(.))))
 
 # Metadata
 meta <- read.table("example_2_conditions/sacCer_meta.txt", header = T, row.names = 1)
-
 # Convert to factor
 meta[] <- lapply(meta, as.factor) # all columns
+str(meta)
 
 # Check that sample names match in both files
 ## Composition check
