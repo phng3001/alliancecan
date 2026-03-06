@@ -10,16 +10,17 @@
 ######### Preprocessing #########
 
 # Check if the correct number of arguments is provided
-if [ "$#" -ne 4 ]; then
-    echo "Usage: bash $0 <annotation_gtf/gff> <attribute_type> <bam_file_list> <output_tsv>"
+if [ "$#" -ne 5 ]; then
+    echo "Usage: bash $0 <annotation_gtf/gff> <feature_type> <attribute_type> <bam_file_list> <output_tsv>"
     exit 1
 fi
 
 # Asign arguments to variables
 annotation_file="$1"
-attribute_type="$2"
-bam_file_list="$3"
-output_file="$4"
+feature_type="$2"
+attribute_type="$3"
+bam_file_list="$4"
+output_file="$5"
 
 # Export variables
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
@@ -34,19 +35,20 @@ module load StdEnv/2023 subread/2.0.6
 
 # -p paired-end
 # -s strandness: 0 (unstranded, default) | 1 (stranded/forward) | 2 (stranded/reverse)
-# -t feature type: e.g. transcript, exon
-# -g attribute type: e.g. gene_id (default), transcript_id
 # -B: Require both ends mapped
 # -C: Exclude chimeric fragments
 # -M --fraction: multi-mapping reads included, fractional counts assigned
 # --primary: Count primary alignments
+# -t feature type: e.g. exon (default), transcript, CDS (column 3 in GTF)
+# -g attribute type: e.g. gene_id (default), transcript_id (column 9 in GTF)
 
 featureCounts \
 -T $OMP_NUM_THREADS \
 -p \
--s 2 \
+-s 0 \
 -B -C \
 --primary \
+-t $feature_type \
 -g $attribute_type \
 -a $annotation_file \
 -o $output_file \
