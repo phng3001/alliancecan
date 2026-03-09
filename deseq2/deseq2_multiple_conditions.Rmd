@@ -1,0 +1,299 @@
+---
+title: "DESeq2 multiple conditions"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*.
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+# Initial setup
+
+```{r Rmd setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "/project/def-mouellet/Scripts_MOU/PNP/alliancecan/deseq2/")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Set working directory}
+# Set working directory
+setwd("/project/def-mouellet/Scripts_MOU/PNP/alliancecan/deseq2/")
+getwd()
+```
+
+```{r Activate renv}
+# Activate environment
+renv::activate()
+```
+
+
+```{r Load libraries}
+# Load required packages
+library(DESeq2)
+library(ggplot2)
+library(tidyverse)
+library(pheatmap)
+library(RColorBrewer)
+
+# Set seed
+set.seed(42)
+```
+
+
+
+
+
+# Load data
+
+```{r Count data}
+# Count data
+data <- read.table("example_multiple_conditions/input/Mov10_full_counts.txt", 
+                   header = T, row.names = 1)
+str(data)
+```
+
+```{r Col data}
+# Col data / Sample info / Metadata
+meta <- read.table("example_multiple_conditions/input/Mov10_full_meta.txt", 
+                   header = T, row.names = 1)
+
+# Convert to factor
+meta[] <- lapply(meta, as.factor) # all columns
+str(meta)
+```
+
+```{r Sample info}
+print(meta)
+```
+
+```{r Check sample name match}
+# Check that sample names match in both files
+## Composition check
+all(colnames(data) %in% rownames(meta)) # Should be TRUE
+## Order check
+all(colnames(data) == rownames(meta))
+## If order check gives FALSE
+data_raw <- data
+data <- data_raw[, match(rownames(meta), colnames(data_raw))]
+all(colnames(data) == rownames(meta))
+```
+
+
+
+
+
+# QC
+
+## Count distribution
+
+```{r}
+# Long format
+data_long <- data %>%
+  gather(
+    colnames(data),
+    key = "sample_name",
+    value = "raw_counts"
+  )
+```
+
+```{r}
+# Count distribution
+ggplot(
+  data_long,
+  aes(x = raw_counts)
+  ) +
+  geom_histogram(stat = "bin", bins = 100) +
+  facet_wrap(~ sample_name) +
+  xlab("Raw expression counts") +
+  ylab("Number of genes") +
+  theme_bw()
+```
+
+A low number of counts associated with a large proportion of genes
+
+
+
+## Count data modeling
+
+Poisson: mean == variance
+
+Binomial: mean \< variance
+
+```{r}
+# MOV10_overexpression replicates
+mean_counts <- apply(data[, c("Mov10_oe_1", "Mov10_oe_2", "Mov10_oe_3")], 1, mean)
+var_counts <- apply(data[, c("Mov10_oe_1", "Mov10_oe_2", "Mov10_oe_3")], 1, var)
+df <- data.frame(mean_counts, var_counts)
+
+ggplot(df) +
+  geom_point(aes(x = mean_counts, y = var_counts)) +
+  geom_line(aes(x = mean_counts, y = mean_counts, color="red"), show.legend = FALSE) +
+  scale_y_log10() +
+  scale_x_log10() +
+  theme_classic()
+```
+
+
+
+## Normalized counts
+
+```{r Create DESeqDataSet object}
+# Create DESeqDataSet object
+dds <- DESeqDataSetFromMatrix(
+  countData = data,
+  colData = meta,
+  design = ~sampletype
+)
+```
+
+```{r Original count matrix}
+# The original count matrix
+head(counts(dds))
+```
+
+```{r DESeq2 normalization}
+# DESeq2 normalization: median of ratios
+dds <- estimateSizeFactors(dds)
+sizeFactors(dds)
+```
+
+```{r Normalized counts matrix}
+# Normalized counts matrix
+normalized_counts <- counts(dds, normalized = TRUE)
+write.table(normalized_counts, 
+           file = "example_multiple_conditions/output/normalized_counts.tsv", 
+           sep = "\t", quote = FALSE, col.names = NA)
+```
+
+
+
+## Normalized counts transformed
+Only necessary for visualization in QC
+
+### rlog transformation
+rlog() works well on small datasets (n < 30)
+
+```{r rlog()}
+rld <- rlog(dds, blind = TRUE)
+rld_mat <- assay(rld)
+write.table(rld_mat, 
+           file = "example_multiple_conditions/output/normalized_counts_rlog.tsv", 
+           sep = "\t", quote = FALSE, col.names = NA)
+```
+
+### vst transformation
+vst() is faster than rlog(), recommended for medium to large datasets (n > 30)
+
+```{r vst()}
+vsd <- vst(dds, blind = TRUE) # n genes >= 1000
+# vsd <- varianceStabilizingTransformation(dds, blind = TRUE) # n genes < 1000
+vsd_mat <- assay(vsd)
+write.table(vsd_mat, 
+           file = "example_multiple_conditions/output/normalized_counts_vst.tsv", 
+           sep = "\t", quote = FALSE, col.names = NA)
+```
+
+### log2(n+1) transformation
+
+```{r log2(n+1)}
+ntd <- normTransform(dds)
+ntd_mat <- assay(ntd)
+write.table(ntd_mat, 
+            file = "example_multiple_conditions/output/normalized_counts_log2.tsv", 
+            sep = "\t", quote = FALSE, col.names = NA)
+```
+
+
+
+## PCA
+This example use rlog transformation. vst or log2(n+1) could be used similarly
+
+### PC1 & PC2
+
+```{r plotPCA()}
+plotPCA(rld, intgroup = "sampletype") # Top 500 most variable genes
+# plotPCA(rld, intgroup = "sampletype", ntop = 100) # Top 100 most variable genes
+```
+
+```{r PCA data}
+pcaData <- plotPCA(rld, intgroup = c("sampletype", "MOVexpr"), returnData = TRUE)
+pcaData
+```
+
+```{r percentVar}
+# Get the percentage variation
+attributes(pcaData)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+```
+
+```{r PCA ggplot2}
+# Plot PCA using ggplot2
+ggplot(
+  pcaData,
+  aes(
+    x = PC1, y = PC2,
+    color = sampletype, 
+    shape = MOVexpr
+    )
+) +
+  geom_point(size = 5) +
+  labs(
+    x = paste0("PC1 (", percentVar[1], "%)"),
+    y = paste0("PC2 (", percentVar[2], "%)")
+    ) +
+    theme_classic()
+
+ggsave("example_multiple_conditions/output/PCA.pdf", width = 8, height = 6, dpi = 300)
+```
+
+### Additional PCs
+
+```{r PCs data}
+pca <- prcomp(t(rld_mat)) # all genes
+attributes(pca)
+```
+
+```{r PCs dataframe}
+as.data.frame(pca$x)
+```
+
+```{r PCs dataframe with metadata}
+pca_w_meta_df <- merge(
+  as.data.frame(pca$x), 
+  meta, 
+  by = 0, # row names as merging key
+  all = TRUE # full join
+  )
+pca_w_meta_df
+```
+
+```{r Percentage variation}
+# Percentage variation
+percentVar <- round((pca$sdev^2) / sum(pca$sdev^2) * 100, 1)
+percentVar
+```
+
+
+```{r PC3-4 ggplot2}
+ggplot(
+  pca_w_meta_df,
+  aes(
+    x = PC3, y = PC4,
+    color = sampletype, 
+    shape = MOVexpr
+    )
+) +
+  geom_point(size = 5) +
+  labs(
+    x = paste0("PC3 (", percentVar[3], "%)"),
+    y = paste0("PC4 (", percentVar[4], "%)")
+    ) +
+  theme_classic()
+```
+
+
