@@ -39,6 +39,7 @@ library(ggplot2)
 library(tidyverse)
 library(pheatmap)
 library(RColorBrewer)
+library(ggrepel)
 
 # Set seed
 set.seed(42)
@@ -55,6 +56,10 @@ set.seed(42)
 data <- read.table("example_multiple_conditions/input/Mov10_full_counts.txt", 
                    header = T, row.names = 1)
 str(data)
+
+# If count data is not integer, round to integer
+# data <- data %>%
+#   mutate(across(where(is.numeric), ~ as.integer(round(.))))
 ```
 
 ```{r Col data}
@@ -68,7 +73,7 @@ str(meta)
 ```
 
 ```{r Sample info}
-print(meta)
+meta
 ```
 
 ```{r Check sample name match}
@@ -91,7 +96,7 @@ all(colnames(data) == rownames(meta))
 
 ## Count distribution
 
-```{r}
+```{r Count data long format}
 # Long format
 data_long <- data %>%
   gather(
@@ -101,7 +106,7 @@ data_long <- data %>%
   )
 ```
 
-```{r}
+```{r Count histogram}
 # Count distribution
 ggplot(
   data_long,
@@ -124,7 +129,7 @@ Poisson: mean == variance
 
 Binomial: mean \< variance
 
-```{r}
+```{r Mean - variance plot}
 # MOV10_overexpression replicates
 mean_counts <- apply(data[, c("Mov10_oe_1", "Mov10_oe_2", "Mov10_oe_3")], 1, mean)
 var_counts <- apply(data[, c("Mov10_oe_1", "Mov10_oe_2", "Mov10_oe_3")], 1, var)
@@ -142,7 +147,7 @@ ggplot(df) +
 
 ## Normalized counts
 
-```{r Create DESeqDataSet object}
+```{r DESeqDataSet object (QC)}
 # Create DESeqDataSet object
 dds <- DESeqDataSetFromMatrix(
   countData = data,
@@ -294,6 +299,180 @@ ggplot(
     y = paste0("PC4 (", percentVar[4], "%)")
     ) +
   theme_classic()
+```
+
+
+
+## Hierarchical Clustering
+This example use rlog transformation. vst or log2(n+1) could be used similarly
+
+```{r rlog data}
+# Load rlog data
+rld_mat <- read.table("example_multiple_conditions/output/normalized_counts_rlog.tsv", 
+                      header = T, row.names = 1)
+head(rld_mat)
+```
+
+### Correlation matrix
+
+```{r Pairwise correlation}
+# Pairwise correlation
+rld_cor <- cor(rld_mat)
+rld_cor
+```
+
+```{r Correlation heatmap}
+# Correlation heatmap, default
+pheatmap(rld_cor)
+```
+
+```{r Customized heatmap}
+# Correlation heatmap, customized
+heat.colors <- brewer.pal(9, "Blues")
+pheatmap(
+  rld_cor, 
+  color = heat.colors,
+  cluster_cols = TRUE, cluster_rows = TRUE,
+  border_color=NA, fontsize = 10, height=20
+)
+```
+
+```{r Save heatmap}
+# Save heatmap
+heat.colors <- brewer.pal(9, "Blues")
+png("example_multiple_conditions/output/correlation_heatmap.png", width = 8, height = 8, units = "in", res = 300)
+pheatmap(
+  rld_cor, 
+  color = heat.colors,
+  cluster_cols = TRUE, cluster_rows = TRUE,
+  border_color=NA, fontsize = 10, height=20
+)
+dev.off()
+```
+
+
+
+### Count matrix
+
+```{r Normalized count data}
+# Load normalized data
+normalized_counts <- read.table("example_multiple_conditions/output/normalized_counts.tsv",
+                                header = T, row.names = 1)
+head(normalized_counts)
+```
+
+#### Genes highly expressed
+
+```{r Top expressed genes}
+# Top 20 most expressed genes
+top20_expression_genes <- order(rowMeans(as.matrix(normalized_counts)), decreasing = TRUE)[1:20]
+
+normalized_counts[top20_expression_genes,] %>%
+  row.names()
+```
+
+```{r Top expressed gene heatmap}
+# Heatmap
+pheatmap(
+  rld_mat[top20_expression_genes, ],
+  cluster_cols = TRUE, cluster_rows = TRUE,
+  fontsize_row = 10,
+  annotation_col = meta
+)
+```
+
+#### Genes highly varied
+
+```{r Top varied genes}
+# Top 20 genes with most variance
+top20_variance_genes <- order(rowVars(as.matrix(normalized_counts)), decreasing = TRUE)[1:20]
+
+normalized_counts[top20_variance_genes,] %>%
+  row.names()
+```
+
+```{r Top varied gene heatmap}
+# Heatmap
+pheatmap(
+  rld_mat[top20_variance_genes, ],
+  cluster_cols = TRUE, cluster_rows = TRUE,
+  fontsize_row = 10,
+  annotation_col = meta
+)
+```
+
+
+
+
+
+# Differential expression analysis
+
+```{r DESeqDataSet object (DEA)}
+# Create DESeqDataSet object
+dds <- DESeqDataSetFromMatrix(
+  countData = data,
+  colData = meta,
+  design = ~ sampletype
+)
+```
+
+## Pre-filter (optional)
+https://support.bioconductor.org/p/65256/
+
+```{r Pre-filtering}
+# Option 1: Filter genes where there are less than 10 counts
+# idx <- rowSums(counts(dds)) >= 10
+# dds <- dds[idx,]
+
+# Option 2: Filter genes where there are less than 3 samples having at least 5 counts
+# idx <- rowSums(counts(dds) >= 5) >= 3
+# dds <- dds[idx,]
+
+# Option 3: Filter genes where there are less than 3 samples with normalized counts greater than or equal to 5
+# dds <- estimateSizeFactors(dds)
+# idx <- rowSums(counts(dds, normalized=TRUE) >= 5 ) >= 3
+# dds <- dds[idx,]
+
+# Option 4: Only keep genes that have a total count of at least 10 in any condition
+# cond <- colData(dds)$condition
+# idx <- rep(FALSE, nrow(dds))
+# for (c in levels(cond)) {
+#   idx <- idx | rowSums(counts(dds)[, cond == c, drop=FALSE]) >= 10
+# }
+# dds <- dds[idx,]
+
+# Option 5: Only keep genes that have at least 10 count in every sample of at least 1 condition
+# cond <- colData(dds)$condition
+# idx <- rep(FALSE, nrow(dds))
+# for (c in levels(cond)) {
+#   mat <- counts(dds)[, cond == c, drop = FALSE]
+#   idx <- idx | rowSums(mat >= 10) == ncol(mat)
+# }
+# dds <- dds[idx,]
+```
+
+
+
+## Run DESeq2
+
+```{r Run DESeq2}
+# Run the DE analysis
+dds <- DESeq(dds)
+```
+
+Dispersion (α): Var = μ + α*μ^2
+
+Dispersion ~ 1/μ, ~ Var
+
+```{r Dispersion estimates}
+# Dispersion estimates
+plotDispEsts(dds)
+```
+
+
+
+```{r}
+# Draft
 ```
 
 
