@@ -2,6 +2,8 @@
 **/old/**
 **/trash/**
 
+renv.lock.old
+
 # ssh key
 *.openssh
 
