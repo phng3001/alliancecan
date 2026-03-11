@@ -39,14 +39,13 @@ library(tidyverse)
 library(pheatmap)
 library(RColorBrewer)
 library(ggrepel)
+library(DEGreport)
+library(clusterProfiler)
+library(org.Hs.eg.db)
 
 # Set seed
 set.seed(42)
 ```
-
-
-
-
 
 # Load data
 
@@ -87,10 +86,6 @@ data <- data_raw[, match(rownames(meta), colnames(data_raw))]
 all(colnames(data) == rownames(meta))
 ```
 
-
-
-
-
 # QC
 
 ## Count distribution
@@ -120,8 +115,6 @@ ggplot(
 
 A low number of counts associated with a large proportion of genes
 
-
-
 ## Count data modeling
 
 Poisson: mean == variance
@@ -141,8 +134,6 @@ ggplot(df) +
   scale_x_log10() +
   theme_classic()
 ```
-
-
 
 ## Normalized counts
 
@@ -173,8 +164,6 @@ normalized_counts <- counts(dds, normalized = TRUE)
 #            file = "example_multiple_conditions/output/normalized_counts.tsv", 
 #            sep = "\t", quote = FALSE, col.names = NA)
 ```
-
-
 
 ## Normalized counts transformed
 
@@ -215,8 +204,6 @@ ntd_mat <- assay(ntd)
 #             sep = "\t", quote = FALSE, col.names = NA)
 ```
 
-
-
 ## PCA
 
 This example use rlog transformation. vst or log2(n+1) could be used similarly
@@ -234,8 +221,9 @@ pcaData
 ```
 
 ```{r percentVar}
-# Get the percentage variation
+# pcaData attributes
 attributes(pcaData)
+# Get the percentage variation
 percentVar <- round(100 * attr(pcaData, "percentVar"))
 ```
 
@@ -255,11 +243,8 @@ ggplot(
     y = paste0("PC2 (", percentVar[2], "%)")
     ) +
     theme_classic()
-
 # ggsave("example_multiple_conditions/output/PCA.pdf", width = 8, height = 6, dpi = 300)
 ```
-
-
 
 ### Additional PCs
 
@@ -276,7 +261,7 @@ as.data.frame(pca$x)
 pca_w_meta_df <- merge(
   as.data.frame(pca$x), 
   meta, 
-  by = 0, # row names as merging key
+  by = 0,    # row names as merging key
   all = TRUE # full join
   )
 
@@ -290,6 +275,7 @@ percentVar
 ```
 
 ```{r PC3-4 ggplot2}
+# PC3-4
 ggplot(
   pca_w_meta_df,
   aes(
@@ -306,11 +292,11 @@ ggplot(
   theme_classic()
 ```
 
-
-
 ## Hierarchical Clustering
 
 This example use rlog transformation. vst or log2(n+1) could be used similarly
+
+### Correlation matrix
 
 ```{r rlog data}
 # Load rlog data
@@ -318,8 +304,6 @@ rld_mat <- read.table("example_multiple_conditions/output/normalized_counts_rlog
                       header = T, row.names = 1)
 head(rld_mat)
 ```
-
-### Correlation matrix
 
 ```{r Pairwise correlation}
 # Pairwise correlation
@@ -355,8 +339,6 @@ pheatmap(
 # )
 # dev.off()
 ```
-
-
 
 ### Count matrix
 
@@ -407,10 +389,6 @@ pheatmap(
 )
 ```
 
-
-
-
-
 # Differential expression analysis: Pairwise comparison
 
 ```{r DESeqDataSet object (DEA)}
@@ -458,8 +436,6 @@ dds <- DESeqDataSetFromMatrix(
 # dds <- dds[idx,]
 ```
 
-
-
 ## Run DESeq2
 
 ```{r Run DESeq2}
@@ -482,8 +458,6 @@ contrast_oe <- c("sampletype", "MOV10_overexpression", "control")
 contrast_kd <- c("sampletype", "MOV10_knockdown", "control")
 ```
 
-
-
 ### Overexpression vs control
 
 #### Raw result
@@ -497,7 +471,6 @@ res_tableOE_unshrunken <- results(
 
 res_tableOE_unshrunken
 ```
-
 
 ```{r Overexpression raw result dataframe}
 # Convert to dataframe
@@ -524,12 +497,11 @@ summary(res_tableOE_unshrunken)
 plotMA(res_tableOE_unshrunken)
 ```
 
-
-
 #### Shrunken result
-- Shrinkage of LFC estimates toward zero when the information for a gene is low (low counts, high dispersion) 
 
-- LFC shrinkage will not change the total number of genes that are identified as significantly differentially expressed
+-   Shrinkage of LFC estimates toward zero when the information for a gene is low (low counts, high dispersion)
+
+-   LFC shrinkage will not change the total number of genes that are identified as significantly differentially expressed
 
 ```{r Overexpression shrunken result table}
 res_tableOE <- lfcShrink(
@@ -566,8 +538,6 @@ summary(res_tableOE)
 # Shrunken MA plot
 plotMA(res_tableOE)
 ```
-
-
 
 ### Knockdown vs control
 
@@ -606,8 +576,6 @@ res_tableKD_df <- res_tableKD %>%
 #            sep = "\t", quote = FALSE, row.names = FALSE)
 ```
 
-
-
 ## Result exploration
 
 ```{r DESeq2 columns}
@@ -643,8 +611,6 @@ sig_tableOE_df
 sig_tableKD_df
 ```
 
-
-
 ## Result visualisation
 
 ```{r Normalized count dataframe}
@@ -666,8 +632,6 @@ meta_df <- meta %>%
 meta_df
 ```
 
-
-
 ### Count plot
 
 #### A single gene
@@ -675,8 +639,6 @@ meta_df
 ```{r plotCounts()}
 plotCounts(dds = dds, gene = "MOV10", intgroup = "sampletype")
 ```
-
-
 
 #### Multiple genes
 
@@ -690,7 +652,7 @@ top20_sigOE_genes <- res_tableOE_df %>%
 top20_sigOE_genes
 ```
 
-```{r Top gene normalized count long format}
+```{r Top genes normalized count long format}
 # Subset normalized counts for top 20 genes
 top20_sigOE_norm <- normalized_counts_df %>%
   filter(gene %in% top20_sigOE_genes)
@@ -709,7 +671,8 @@ top20_sigOE_norm <- inner_join(meta_df, top20_sigOE_norm, by = "sample_name")
 top20_sigOE_norm
 ```
 
-```{r Top gene boxplots}
+```{r Top genes boxplots}
+# Top genes boxplots
 ggplot(
   top20_sigOE_norm,
   aes(x = gene, y = normalized_counts, color = sampletype)
@@ -733,7 +696,8 @@ ggplot(
 
 ```
 
-```{r Top gene facet scatterplots}
+```{r Top genes facet scatterplots}
+# Top genes facet scatterplots
 ggplot(
   top20_sigOE_norm, 
   aes(x = sampletype, y = normalized_counts, color = sampletype)
@@ -756,27 +720,152 @@ ggplot(
   )
 ```
 
-
-
 ### Heatmap
 
-```{r}
-# TO DO
+```{r DE genes heatmap}
+# Example: Overexpression condition vs control
+
+# Significant genes
+sigOE_genes <- sig_tableOE_df %>%
+  pull(gene)
+
+# Subset normalized counts for significant genes
+sigOE_norm <- normalized_counts_df[, c(1, 4:9)] %>%
+  filter(gene %in% sigOE_genes) %>%
+  column_to_rownames("gene")
+
+# Set a color palette
+heat_colors <- brewer.pal(6, "YlOrRd")
+
+# Heatmap
+pheatmap(
+  sigOE_norm,
+  color = heat_colors,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = FALSE,
+  annotation_col = meta,
+  fontsize = 10,
+  border_color = NA,
+  scale = "row",
+  fontsize_row = 10,
+  height = 20
+)
+# Notes: Normalized gene counts are scaled by z-score standardization
 ```
-
-
 
 ### Volcano plot
 
-```{r}
-# TO DO
+```{r Volcano plot data preparation}
+# Example: Overexpression condition vs control
+
+# Set thresholds
+# padj.cutoff <- 0.05
+# lfc.cutoff <- log2(2)
+
+# Specify up/down/ns expressed genes
+res_tableOE_df_annot <- res_tableOE_df %>%
+  mutate(
+    expression = case_when(
+      padj < padj.cutoff & log2FoldChange > lfc.cutoff ~ "up",
+      padj < padj.cutoff & log2FoldChange < -lfc.cutoff ~ "down",
+      TRUE ~ "ns"
+    )
+  )
+
+# Data range
+## x axis
+range(res_tableOE_df_annot$log2FoldChange, na.rm = TRUE)
+## y axis
+max(-log10(range(res_tableOE_df_annot$padj, na.rm = TRUE)))
 ```
 
+```{r Volcano plot}
+# Volcano plot
+res_tableOE_df_annot %>%
+  ggplot(
+    aes(x = log2FoldChange, y = -log10(padj), color = expression, alpha = 0.5)
+  ) +
+  geom_point(size = 3) +
+  geom_hline(
+    yintercept = -log10(0.05),
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    xintercept = c(-lfc.cutoff, lfc.cutoff),
+    linetype = "dashed"
+  ) +
+  scale_color_manual(
+    breaks = c("up", "down", "ns"),
+    values = c("tomato", "steelblue", "grey")
+  ) +
+  guides(alpha = "none") +
+  coord_cartesian(xlim = c(-7, 7), ylim = c(0, 200)) +
+  labs(
+    title = "Gene expression changes between MOV10 overexpression and Control",
+    x = "log2(FC)", 
+    y = "-log10(padj)", 
+    color = "Expression\nchange"
+  ) +
+  theme_classic()
+```
 
+```{r Volcano plot with top genes labeling}
+# Select genes to label
+res_tableOE_df_annot %>%
+  mutate(abs_log2FoldChange = abs(log2FoldChange)) %>%
+  filter(-log10(padj) > 50 | abs(log2FoldChange) > 5) %>%
+  dim()
 
+# Label genes dataframe
+res_tableOE_df_annot_label <- res_tableOE_df_annot %>%
+  mutate(abs_log2FoldChange = abs(log2FoldChange)) %>%
+  filter(-log10(padj) > 50 | abs(log2FoldChange) > 5) %>%
+  mutate(label = gene)
 
+# Volcano plot with top genes labeling
+ggplot(
+  data = res_tableOE_df_annot,
+  aes(x = log2FoldChange, 
+      y = -log10(padj))
+  ) +
+  geom_point(
+    aes(colour = expression),
+    alpha = 0.6,
+    shape = 19,
+    size = 2
+    ) +
+  geom_hline(
+    yintercept = -log10(0.05),
+    linetype = "dashed"
+  ) + 
+  geom_vline(
+    xintercept = c(-lfc.cutoff, lfc.cutoff),
+    linetype = "dashed"
+  ) +
+  geom_label_repel(
+    data = res_tableOE_df_annot_label,
+    aes(label = label),
+    force = 2
+  ) +
+  scale_color_manual(
+    breaks = c("up", "down", "ns"),
+    values = c("darkred", "darkblue", "grey")
+  ) +
+  scale_x_continuous(
+    breaks = c(seq(-8, 8, 2)),
+    limits = c(-8, 8)
+    ) +
+  labs(
+    title = "Gene expression changes between MOV10 overexpression and Control",
+    x = "log2(FC)", 
+    y = "-log10(padj)", 
+    color = "Expression\nchange"
+  ) +
+  theme_light()
+```
 
 # Differential expression analysis: Likelihood ratio test (LRT)
+
 LRT is used to identify any genes that show change in expression across the different levels.
 
 log2FoldChange in LRT test is an arbitrary coefficient and should not be used.
@@ -798,9 +887,162 @@ res_lrt <- results(dds_lrt)
 res_lrt
 ```
 
+```{r LRT result dataframe}
+# Convert to dataframe
+res_lrt_df <- res_lrt %>%
+  data.frame() %>%
+  rownames_to_column(var = "gene") %>%
+  arrange(padj)
+
+# Save to file
+# write.table(res_lrt_df, 
+#             file = "example_multiple_conditions/output/lrt_result.tsv", 
+#             sep = "\t", quote = FALSE, row.names = FALSE)
+
+res_lrt_df
+```
+
 ```{r LRT result summary}
 # LRT result summary
 summary(res_lrt)
+```
+
+```{r LRT DE genes}
+# Set thresholds
+padj.cutoff <- 0.05
+
+# Significant DE genes
+sig_lrt_df <- res_lrt_df %>%
+  filter(padj < padj.cutoff)
+
+# Save to file
+# write.table(sig_lrt_df, 
+#           file = "example_multiple_conditions/output/lrt_result_DE.tsv", 
+#           sep = "\t", quote = FALSE, row.names = FALSE)
+
+sig_lrt_df
+```
+
+```{r LRT DE genes rlog data}
+# Significant DE gene list, padj cutoff 1e-7
+sigLRT_genes <- sig_lrt_df %>%
+  filter(padj < 1e-7) %>%
+  pull(gene)
+
+# Load rlog data
+rld_mat <- read.table("example_multiple_conditions/output/normalized_counts_rlog.tsv", 
+                     header = T, row.names = 1)
+
+# Subset rlog data for significant DE genes
+rld_sigLRT_mat <- rld_mat[sigLRT_genes, ]
+
+rld_sigLRT_mat
+```
+
+```{r degPatterns()}
+# DE genes clustering
+clusters <- degPatterns(
+   rld_sigLRT_mat,
+   metadata = meta,
+   time = "sampletype",
+   col = NULL
+)
+```
+
+```{r degPatterns() clustering result}
+# clusters$df
+
+# Number of genes per cluster
+clusters$df %>%
+  count(cluster)
+```
+
+```{r Extract gene list from cluster of interest}
+# Example: Extract genes in cluster 1 where KD ~ CTL < OE
+cluster_1_genes <- clusters$df %>%
+  filter(cluster == 1) %>%
+  pull(genes)
+
+length(cluster_1_genes)
+```
+
+# Functional analysis: Over-representation analysis (ORA)
+
+Parameters to consider:
+
+-   DE thresholds: padj, log2FoldChange
+
+-   Gene list: DE genes, Up, Down
+
+-   Ontology: "BP", "MF", "CC" or "ALL"
+
+-   Ontology pAdjustMethod
+
+-   Ontology pvalueCutoff, qvalueCutoff
+
+```{r Background genes}
+# Background genes: All genes tested
+allOE_genes <- as.character(res_tableOE_df$gene)
+length(allOE_genes)
+```
+
+```{r Genes of interest}
+# DE thresholds
+padj.cutoff <- 0.05
+# lfc.cutoff <- log2(2)
+
+# Significant genes
+sigOE_genes <- res_tableOE_df %>%
+  filter(padj < padj.cutoff) %>%
+  pull(gene)
+
+length(sigOE_genes)
+```
+
+```{r ORA}
+# ORA analysis
+ora_res <- enrichGO(
+  gene = sigOE_genes,     # Gene list of interest
+  universe = allOE_genes, # Background genes
+  OrgDb = org.Hs.eg.db,   # Organism database
+  keyType = "SYMBOL",     # Key type of gene identifiers in gene list 
+  ont = "BP",             # Oncology: BP (Biological Process)
+  pAdjustMethod = "BH",   # Multiple testing correction
+  pvalueCutoff  = 0.05,   # P-value cutoff
+  qvalueCutoff = 0.05     # Q-value cutoff
+  )
+```
+
+```{r ORA result table}
+# ORA result table
+ora_res_df <- data.frame(ora_res)
+# range(ora_res_df$p.adjust, na.rm = TRUE)
+
+# Save to file
+# write.table(ora_res_df, 
+#             file = "example_multiple_conditions/output/overexpression_vs_control_result_DE_ORA_BP.tsv",
+#             sep = "\t", quote = FALSE, row.names = FALSE)
+
+ora_res_df
+```
+
+```{r ORA dotplot}
+# Top n terms by p.adjust
+# Display gene ratio: Nb of genes related to GO term / total number of significant genes
+dotplot(
+  ora_res, 
+  showCategory = 10, 
+  title="GO Biological Processes Enrichment in DE genes")
+```
+
+```{r ORA barplot}
+# Top n terms by p.adjust
+# Display gene count
+barplot(
+  ora_res, 
+  showCategory = 10, 
+  title="GO Biological Processes Enrichment in DE genes"
+  )
 ```
 
 
@@ -808,5 +1050,3 @@ summary(res_lrt)
 ```{r}
 # Draft
 ```
-
-
