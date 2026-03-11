@@ -31,7 +31,6 @@ getwd()
 renv::activate()
 ```
 
-
 ```{r Load libraries}
 # Load required packages
 library(DESeq2)
@@ -170,37 +169,40 @@ sizeFactors(dds)
 ```{r Normalized counts matrix}
 # Normalized counts matrix
 normalized_counts <- counts(dds, normalized = TRUE)
-write.table(normalized_counts, 
-           file = "example_multiple_conditions/output/normalized_counts.tsv", 
-           sep = "\t", quote = FALSE, col.names = NA)
+# write.table(normalized_counts, 
+#            file = "example_multiple_conditions/output/normalized_counts.tsv", 
+#            sep = "\t", quote = FALSE, col.names = NA)
 ```
 
 
 
 ## Normalized counts transformed
+
 Only necessary for visualization in QC
 
 ### rlog transformation
-rlog() works well on small datasets (n < 30)
+
+rlog() works well on small datasets (n \< 30)
 
 ```{r rlog()}
 rld <- rlog(dds, blind = TRUE)
 rld_mat <- assay(rld)
-write.table(rld_mat, 
-           file = "example_multiple_conditions/output/normalized_counts_rlog.tsv", 
-           sep = "\t", quote = FALSE, col.names = NA)
+# write.table(rld_mat, 
+#            file = "example_multiple_conditions/output/normalized_counts_rlog.tsv", 
+#            sep = "\t", quote = FALSE, col.names = NA)
 ```
 
 ### vst transformation
-vst() is faster than rlog(), recommended for medium to large datasets (n > 30)
+
+vst() is faster than rlog(), recommended for medium to large datasets (n \> 30)
 
 ```{r vst()}
 vsd <- vst(dds, blind = TRUE) # n genes >= 1000
 # vsd <- varianceStabilizingTransformation(dds, blind = TRUE) # n genes < 1000
 vsd_mat <- assay(vsd)
-write.table(vsd_mat, 
-           file = "example_multiple_conditions/output/normalized_counts_vst.tsv", 
-           sep = "\t", quote = FALSE, col.names = NA)
+# write.table(vsd_mat, 
+#            file = "example_multiple_conditions/output/normalized_counts_vst.tsv", 
+#            sep = "\t", quote = FALSE, col.names = NA)
 ```
 
 ### log2(n+1) transformation
@@ -208,14 +210,15 @@ write.table(vsd_mat,
 ```{r log2(n+1)}
 ntd <- normTransform(dds)
 ntd_mat <- assay(ntd)
-write.table(ntd_mat, 
-            file = "example_multiple_conditions/output/normalized_counts_log2.tsv", 
-            sep = "\t", quote = FALSE, col.names = NA)
+# write.table(ntd_mat, 
+#             file = "example_multiple_conditions/output/normalized_counts_log2.tsv", 
+#             sep = "\t", quote = FALSE, col.names = NA)
 ```
 
 
 
 ## PCA
+
 This example use rlog transformation. vst or log2(n+1) could be used similarly
 
 ### PC1 & PC2
@@ -253,8 +256,10 @@ ggplot(
     ) +
     theme_classic()
 
-ggsave("example_multiple_conditions/output/PCA.pdf", width = 8, height = 6, dpi = 300)
+# ggsave("example_multiple_conditions/output/PCA.pdf", width = 8, height = 6, dpi = 300)
 ```
+
+
 
 ### Additional PCs
 
@@ -274,6 +279,7 @@ pca_w_meta_df <- merge(
   by = 0, # row names as merging key
   all = TRUE # full join
   )
+
 pca_w_meta_df
 ```
 
@@ -282,7 +288,6 @@ pca_w_meta_df
 percentVar <- round((pca$sdev^2) / sum(pca$sdev^2) * 100, 1)
 percentVar
 ```
-
 
 ```{r PC3-4 ggplot2}
 ggplot(
@@ -304,6 +309,7 @@ ggplot(
 
 
 ## Hierarchical Clustering
+
 This example use rlog transformation. vst or log2(n+1) could be used similarly
 
 ```{r rlog data}
@@ -339,15 +345,15 @@ pheatmap(
 
 ```{r Save heatmap}
 # Save heatmap
-heat.colors <- brewer.pal(9, "Blues")
-png("example_multiple_conditions/output/correlation_heatmap.png", width = 8, height = 8, units = "in", res = 300)
-pheatmap(
-  rld_cor, 
-  color = heat.colors,
-  cluster_cols = TRUE, cluster_rows = TRUE,
-  border_color=NA, fontsize = 10, height=20
-)
-dev.off()
+# heat.colors <- brewer.pal(9, "Blues")
+# png("example_multiple_conditions/output/correlation_heatmap.png", width = 8, height = 8, units = "in", res = 300)
+# pheatmap(
+#   rld_cor, 
+#   color = heat.colors,
+#   cluster_cols = TRUE, cluster_rows = TRUE,
+#   border_color=NA, fontsize = 10, height=20
+# )
+# dev.off()
 ```
 
 
@@ -405,7 +411,7 @@ pheatmap(
 
 
 
-# Differential expression analysis
+# Differential expression analysis: Pairwise comparison
 
 ```{r DESeqDataSet object (DEA)}
 # Create DESeqDataSet object
@@ -417,7 +423,8 @@ dds <- DESeqDataSetFromMatrix(
 ```
 
 ## Pre-filter (optional)
-https://support.bioconductor.org/p/65256/
+
+<https://support.bioconductor.org/p/65256/>
 
 ```{r Pre-filtering}
 # Option 1: Filter genes where there are less than 10 counts
@@ -460,13 +467,340 @@ https://support.bioconductor.org/p/65256/
 dds <- DESeq(dds)
 ```
 
-Dispersion (α): Var = μ + α*μ^2
+Dispersion (α): Var = μ + α\*μ\^2
 
-Dispersion ~ 1/μ, ~ Var
+Dispersion \~ 1/μ, \~ Var
 
 ```{r Dispersion estimates}
 # Dispersion estimates
 plotDispEsts(dds)
+```
+
+```{r Contrasts}
+# Define contrats: c(factor, case, control)
+contrast_oe <- c("sampletype", "MOV10_overexpression", "control")
+contrast_kd <- c("sampletype", "MOV10_knockdown", "control")
+```
+
+
+
+### Overexpression vs control
+
+#### Raw result
+
+```{r Overexpression raw result table}
+res_tableOE_unshrunken <- results(
+  dds,
+  contrast = contrast_oe,
+  alpha = 0.05 # FDR adjusted p-value
+)
+
+res_tableOE_unshrunken
+```
+
+
+```{r Overexpression raw result dataframe}
+# Convert to dataframe
+res_tableOE_unshrunken_df <- res_tableOE_unshrunken %>%
+  data.frame() %>%
+  rownames_to_column(var = "gene") %>%
+  arrange(padj)
+
+# Save to file
+# write.table(res_tableOE_unshrunken_df, 
+#             file = "example_multiple_conditions/output/overexpression_vs_control_unshrunken_result.tsv", 
+#             sep = "\t", quote = FALSE, row.names = FALSE)
+
+res_tableOE_unshrunken_df
+```
+
+```{r Overexpression raw result summary}
+# Summarize results
+summary(res_tableOE_unshrunken)
+```
+
+```{r Overexpression raw MA plot}
+# Unshrunken MA plot
+plotMA(res_tableOE_unshrunken)
+```
+
+
+
+#### Shrunken result
+- Shrinkage of LFC estimates toward zero when the information for a gene is low (low counts, high dispersion) 
+
+- LFC shrinkage will not change the total number of genes that are identified as significantly differentially expressed
+
+```{r Overexpression shrunken result table}
+res_tableOE <- lfcShrink(
+  dds, 
+  contrast = contrast_oe, 
+  res = res_tableOE_unshrunken, 
+  type = "ashr"
+  )
+
+res_tableOE
+```
+
+```{r Overexpression shrunken result dataframe}
+# Convert to dataframe
+res_tableOE_df <- res_tableOE %>%
+  data.frame() %>%
+  rownames_to_column(var = "gene") %>%
+  arrange(padj)
+
+# Save to file
+# write.table(res_tableOE_df, 
+#            file = "example_multiple_conditions/output/overexpression_vs_control_result.tsv", 
+#            sep = "\t", quote = FALSE, row.names = FALSE)
+
+res_tableOE_df
+```
+
+```{r Overexpression shrunken result summary}
+# Summarize results
+summary(res_tableOE)
+```
+
+```{r Overexpression shrunken MA plot}
+# Shrunken MA plot
+plotMA(res_tableOE)
+```
+
+
+
+### Knockdown vs control
+
+```{r Knockdown raw result}
+res_tableKD_unshrunken <- results(
+  dds, 
+  contrast = contrast_kd, 
+  alpha = 0.05
+  )
+
+res_tableKD_unshrunken_df <- res_tableKD_unshrunken %>%
+  data.frame() %>%
+  rownames_to_column(var = "gene") %>%
+  arrange(padj)
+
+# write.table(res_tableKD_unshrunken_df, 
+#             file = "example_multiple_conditions/output/knockdown_vs_control_unshrunken_result.tsv", 
+#             sep = "\t", quote = FALSE, row.names = FALSE)
+```
+
+```{r Knockdown shrunken result}
+res_tableKD <- lfcShrink(
+  dds, 
+  contrast = contrast_kd, 
+  res = res_tableKD_unshrunken, 
+  type = "ashr"
+  )
+
+res_tableKD_df <- res_tableKD %>%
+  data.frame() %>%
+  rownames_to_column(var = "gene") %>%
+  arrange(padj)
+
+# write.table(res_tableKD_df, 
+#            file = "example_multiple_conditions/output/knockdown_vs_control_result.tsv", 
+#            sep = "\t", quote = FALSE, row.names = FALSE)
+```
+
+
+
+## Result exploration
+
+```{r DESeq2 columns}
+# Column information
+mcols(res_tableOE, use.names = TRUE)
+```
+
+```{r DE genes}
+# Set thresholds
+padj.cutoff <- 0.05
+lfc.cutoff <- log2(2)
+
+# Significant DE genes
+sig_tableOE_df <- res_tableOE_df %>%
+  filter(padj < padj.cutoff & abs(log2FoldChange) > lfc.cutoff)
+sig_tableKD_df <- res_tableKD_df %>%
+  filter(padj < padj.cutoff & abs(log2FoldChange) > lfc.cutoff)
+
+# Save to files
+# write.table(sig_tableOE_df, 
+#             file = "example_multiple_conditions/output/overexpression_vs_control_result_DE.tsv", 
+#             sep = "\t", quote = FALSE, row.names = FALSE)
+# write.table(sig_tableKD_df, 
+#             file = "example_multiple_conditions/output/knockdown_vs_control_result_DE.tsv", 
+#             sep = "\t", quote = FALSE, row.names = FALSE)
+```
+
+```{r Overexpression DE dataframe}
+sig_tableOE_df
+```
+
+```{r Knockdown DE dataframe}
+sig_tableKD_df
+```
+
+
+
+## Result visualisation
+
+```{r Normalized count dataframe}
+# Normalized count data
+normalized_counts <- read.table("example_multiple_conditions/output/normalized_counts.tsv",
+                                header = T, row.names = 1)
+
+normalized_counts_df <- normalized_counts %>%
+  rownames_to_column(var = "gene")
+
+normalized_counts_df
+```
+
+```{r Sample info dataframe}
+# Metadata
+meta_df <- meta %>%
+  rownames_to_column("sample_name")
+
+meta_df
+```
+
+
+
+### Count plot
+
+#### A single gene
+
+```{r plotCounts()}
+plotCounts(dds = dds, gene = "MOV10", intgroup = "sampletype")
+```
+
+
+
+#### Multiple genes
+
+```{r Select top genes}
+# Example: Top 20 DE genes in overexpression condition vs control by padj
+top20_sigOE_genes <- res_tableOE_df %>%
+  arrange(padj) %>%
+  pull(gene) %>%
+  head(n=20)
+
+top20_sigOE_genes
+```
+
+```{r Top gene normalized count long format}
+# Subset normalized counts for top 20 genes
+top20_sigOE_norm <- normalized_counts_df %>%
+  filter(gene %in% top20_sigOE_genes)
+
+# Convert to long format
+top20_sigOE_norm <- top20_sigOE_norm %>%
+  gather(
+    colnames(top20_sigOE_norm)[-1], 
+    key = "sample_name", 
+    value = "normalized_counts"
+    )
+
+# Merge with metadata
+top20_sigOE_norm <- inner_join(meta_df, top20_sigOE_norm, by = "sample_name")
+
+top20_sigOE_norm
+```
+
+```{r Top gene boxplots}
+ggplot(
+  top20_sigOE_norm,
+  aes(x = gene, y = normalized_counts, color = sampletype)
+) +
+  geom_boxplot() +
+  scale_y_log10() +
+  scale_color_manual(
+    labels = c("control", "MOV10_overexpression", "MOV10_knockdown"),
+    values = c("gray", "red", "blue")
+  ) +
+  labs(
+    x = NULL, 
+    y = "log10 normalized counts", 
+    title = "Top 20 Significant DE Genes in MOV10 overexpression condition"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    plot.title = element_text(hjust = 0.5)
+  )
+
+```
+
+```{r Top gene facet scatterplots}
+ggplot(
+  top20_sigOE_norm, 
+  aes(x = sampletype, y = normalized_counts, color = sampletype)
+  ) +
+  geom_jitter(height = 0, width = 0.15) +
+  scale_y_continuous(trans = 'log10') +
+  scale_color_manual(
+    labels = c("control", "MOV10_overexpression", "MOV10_knockdown"),
+    values = c("gray", "red", "blue")
+  ) +
+  ylab("log10 normalized expression level") +
+  xlab("condition") +
+  ggtitle("Top 20 Significant DE Genes in MOV10 overexpression condition") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  facet_wrap(~ gene) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_blank(),
+    plot.title = element_text(hjust = 0.5)
+  )
+```
+
+
+
+### Heatmap
+
+```{r}
+# TO DO
+```
+
+
+
+### Volcano plot
+
+```{r}
+# TO DO
+```
+
+
+
+
+
+# Differential expression analysis: Likelihood ratio test (LRT)
+LRT is used to identify any genes that show change in expression across the different levels.
+
+log2FoldChange in LRT test is an arbitrary coefficient and should not be used.
+
+```{r LRT}
+dds <- DESeqDataSetFromMatrix(
+    countData = data,
+    colData = meta,
+    design = ~ sampletype
+)
+
+# Likelihood ratio test
+dds_lrt <- DESeq(dds, test = "LRT", reduced = ~ 1)
+```
+
+```{r LRT result}
+# LRT result
+res_lrt <- results(dds_lrt)
+res_lrt
+```
+
+```{r LRT result summary}
+# LRT result summary
+summary(res_lrt)
 ```
 
 
