@@ -8,7 +8,10 @@ bioc_pkgs <- c(
   "DESeq2",
   "apeglm",
   "clusterProfiler",
-  "org.Sc.sgd.db"
+  "org.Sc.sgd.db",
+  "DEGreport",
+  "enrichplot",
+  "org.Hs.eg.db"
 )
 
 cran_pkgs <- c(
