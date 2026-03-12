@@ -47,6 +47,8 @@ meta <- read.table("example_2_conditions/input/sacCer_meta.txt",
 meta[] <- lapply(meta, as.factor) # all columns
 str(meta)
 
+
+
 ## ########### Check sample names match ###########
 
 ## Composition check
