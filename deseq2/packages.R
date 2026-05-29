@@ -11,7 +11,8 @@ bioc_pkgs <- c(
   "org.Sc.sgd.db",
   "DEGreport",
   "enrichplot",
-  "org.Hs.eg.db"
+  "org.Hs.eg.db",
+  "pathview"
 )
 
 cran_pkgs <- c(

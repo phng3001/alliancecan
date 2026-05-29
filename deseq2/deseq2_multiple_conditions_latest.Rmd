@@ -1,0 +1,1621 @@
+---
+title: "DESeq2"
+author: "PNP"
+date: "2026-05-29"
+output:
+  pdf_document:
+    toc: true
+    latex_engine: xelatex
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: flatly
+params:
+  in_dir: "example_multiple_conditions/input"
+  out_dir: "example_multiple_conditions/output"
+header-includes:
+  - \let\oldtableofcontents\tableofcontents
+  - \renewcommand{\tableofcontents}{\oldtableofcontents\clearpage}
+---
+
+# Initial setup
+
+```{r Rmd setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "/project/def-mouellet/Scripts_MOU/PNP/alliancecan/deseq2/")
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = "center")
+```
+
+```{r Set working directory}
+# Set working directory
+setwd("/project/def-mouellet/Scripts_MOU/PNP/alliancecan/deseq2/")
+getwd()
+```
+
+```{r Activate renv}
+# Activate environment
+renv::activate()
+```
+
+```{r Load libraries}
+# Load required packages
+library(DESeq2)
+library(ggplot2)
+library(tidyverse)
+library(limma)
+library(pheatmap)
+library(RColorBrewer)
+library(ggrepel)
+library(DEGreport)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(ggnewscale)
+library(pathview)
+
+# Set seed
+set.seed(42)
+```
+
+```{r Input dir}
+# Input directory
+in_dir <- params$in_dir
+print(in_dir)
+dir(in_dir)
+```
+
+```{r Output dir}
+# Output directory
+out_dir <- params$out_dir
+
+if (!dir.exists(out_dir)) {
+  dir.create(out_dir, recursive = TRUE)
+}
+
+print(out_dir)
+```
+
+# Load data
+
+## Count data
+
+```{r}
+# Count data
+data <- read.table(
+  file.path(in_dir, "Mov10_full_counts.txt"), 
+  sep = "\t", header = T, row.names = 1
+  )
+
+head(data)
+```
+
+```{r}
+str(data)
+```
+
+```{r}
+# If count data is not integer, round to integer
+# data <- data %>%
+#   mutate(across(where(is.numeric), ~ as.integer(round(.))))
+```
+
+```{r}
+# To remove samples
+# data <- data %>% 
+#   dplyr::select(-c(Irrel_kd_3))
+```
+
+```{r}
+data %>%
+  dim()
+```
+
+## Col data / Sample info / Metadata
+
+```{r}
+# Col data
+meta <- read.table(
+  file.path(in_dir, "Mov10_full_meta.txt"),
+  sep = "\t", header = T, row.names = 1
+  )
+
+meta
+```
+
+```{r}
+# Convert to factor
+meta[] <- lapply(meta, as.factor) # all columns
+str(meta)
+```
+
+```{r}
+# To remove samples
+# meta <- meta[!rownames(meta) %in% c("Irrel_kd_3"), ]
+```
+
+## Check sample names match
+
+```{r}
+# Composition check
+all(colnames(data) %in% rownames(meta)) # Should be TRUE
+```
+
+```{r}
+# Order check
+all(colnames(data) == rownames(meta))
+```
+
+```{r}
+# If order check gives FALSE
+# data_raw <- data
+# data <- data_raw[, match(rownames(meta), colnames(data_raw))]
+```
+
+# Prefiltering (optional)
+
+## Option 1: Filter genes where there are less than x counts
+
+```{r}
+# Filter genes where there are less than 10 counts
+# idx <- rowSums(data) >= 10
+# data <- data[idx,]
+# data %>% dim() # [1] 17159     8
+```
+
+## Option 2: Filter genes where there are less than y samples having at least x counts
+
+```{r}
+# Filter genes where there are less than 3 samples having at least 5 counts
+# idx <- rowSums(data >= 5) >= 3
+# data <- data[idx,]
+# data %>% dim() # [1] 15964     8
+```
+
+## Option 3: Only keep genes that have at least x count in at least the number of samples in the smallest group
+
+```{r}
+# Only keep genes that have at least 10 count in at least the number of samples in the smallest group
+# smallest_group <- min(table(meta$sampletype))
+# idx <- rowSums(data >= 10) >= smallest_group
+# data <- data[idx,]
+# data %>% dim() # [1] 15365     8
+```
+
+## Option 4: Only keep genes that have a total count of at least x in any condition
+
+```{r}
+# Only keep genes that have a total count of at least 10 in any condition
+# cond <- meta$sampletype
+# idx <- rep(FALSE, nrow(data))
+# for (c in levels(cond)) {
+#    idx <- idx | rowSums(data[, cond == c, drop=FALSE]) >= 10
+# }
+# data <- data[idx,]
+# data %>% dim() # [1] 16409     8
+```
+
+## Option 5: Only keep genes that have at least x count in every sample of at least 1 condition
+
+```{r}
+# Only keep genes that have at least 10 count in every sample of at least 1 condition
+# cond <- meta$sampletype
+# idx <- rep(FALSE, nrow(data))
+# for (c in levels(cond)) {
+#  mat <- data[, cond == c, drop = FALSE]
+#  idx <- idx | rowSums(mat >= 10) == ncol(mat)
+# }
+# data <- data[idx,]
+# data %>% dim() # [1] 14901     8
+```
+
+## Option 6: Filtering after normalisation
+
+```{r}
+# Filter genes where there are less than 3 samples with normalized counts greater than or equal to 5
+# dds <- DESeqDataSetFromMatrix(
+#   countData = data,
+#   colData = meta,
+#   design = ~ sampletype
+# )
+# dds <- estimateSizeFactors(dds)
+# idx <- rowSums(counts(dds, normalized=TRUE) >= 5 ) >= 3
+# dds <- dds[idx,]
+```
+
+# QC
+
+## Sample-level QC
+
+### Count distribution
+
+```{r}
+# Count data long format
+data_long <- data %>%
+  gather(
+    colnames(data),
+    key = "sample_name",
+    value = "raw_counts"
+  )
+
+# Count distribution
+ggplot(
+  data_long,
+  aes(x = raw_counts)
+) +
+  geom_histogram(stat = "bin", bins = 100) +
+  facet_wrap(~ sample_name) +
+  xlab("Raw expression counts") +
+  ylab("Number of genes") +
+  ggtitle("Count distribution") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Mean - variance relation
+
+```{r}
+tmp <- data.frame(M = rowMeans(data), V = apply(data, 1, var))
+
+ggplot(tmp, aes(x = M, y = V)) +
+  geom_point(size = 1) +
+  geom_abline(intercept = 0, slope = 1, color = "red", linewidth = 1) +
+  scale_x_log10() + scale_y_log10() +
+  geom_smooth(method = "gam", color = "blue") +
+  xlab("Count mean") + ylab("Count variance") +
+  ggtitle("Mean - variance relation",
+          subtitle = "Red line = Poisson (mean = variance).") +
+  theme_bw()
+```
+
+### Count normalisation
+
+DESeq2-normalized counts: Median of ratios method
+
+For more details: <https://hbctraining.github.io/Intro-to-DGE/lessons/02_DGE_count_normalization.html>
+
+#### Create DESEq2 object
+
+```{r}
+dds <- DESeqDataSetFromMatrix(
+  countData = data,
+  colData = meta,
+  design = ~sampletype
+)
+```
+
+```{r}
+# Original count data
+head(counts(dds))
+
+# Original col data
+colData(dds)
+```
+
+#### Generate size factors
+
+```{r}
+dds <- estimateSizeFactors(dds)
+sizeFactors(dds)
+```
+
+```{r}
+plot(
+  sizeFactors(dds),
+  main = "Size factor per sample",
+  xlab = "Sample", ylab = "Size factor",
+  cex.main = 1.2, pch = 16, col = "steelblue"
+  )
+abline(h = 1, col = "red", lty = 2)
+```
+
+#### Retrieve normalized counts
+
+```{r}
+normalized_counts <- counts(dds, normalized=TRUE)
+```
+
+```{r}
+boxplot(
+  log10(normalized_counts + 1),
+  las = 2,
+  main = "Normalized count distribution (log10)",
+  ylab = "log10(normalized_counts + 1)",
+  col = "lightblue", border = "grey40"
+  )
+```
+
+```{r}
+write.table(
+  normalized_counts, 
+  file = file.path(out_dir, "normalized_counts.tsv"), 
+  sep = "\t", quote = FALSE, col.names = NA
+ )
+```
+
+### Transformed normalized counts
+
+Only for visualization in QC. Do not use for differential expression analysis
+
+#### rlog transformation
+
+rlog() works well on small datasets (n \< 30)
+
+```{r}
+rld <- rlog(dds, blind = TRUE)
+rld_mat <- assay(rld)
+```
+
+```{r}
+write.table(
+  rld_mat, 
+  file = file.path(out_dir, "normalized_counts_rlog.tsv"), 
+  sep = "\t", quote = FALSE, col.names = NA
+ )
+```
+
+#### vst transformation
+
+vst() is faster than rlog(), recommended for medium to large datasets (n \> 30)
+
+```{r}
+vsd <- vst(dds, blind = TRUE) # n genes >= 1000
+# vsd <- varianceStabilizingTransformation(dds, blind = TRUE) # n genes < 1000
+vsd_mat <- assay(vsd)
+```
+
+```{r}
+write.table(
+  vsd_mat, 
+  file = file.path(out_dir, "normalized_counts_vst.tsv"), 
+  sep = "\t", quote = FALSE, col.names = NA
+ )
+```
+
+#### log2(n+1) transformation
+
+```{r}
+ntd <- normTransform(dds)
+ntd_mat <- assay(ntd)
+```
+
+```{r}
+write.table(
+  ntd_mat, 
+  file = file.path(out_dir, "normalized_counts_log2.tsv"), 
+  sep = "\t", quote = FALSE, col.names = NA
+ )
+```
+
+### PCA
+
+This example will use rlog transformation. vst or log2(n+1) could be used similarly
+
+#### PC1 & PC2
+
+```{r}
+plotPCA(rld, intgroup = "sampletype") # Top 500 most variable genes
+# plotPCA(rld, intgroup = "sampletype", ntop = 100) # Top 100 most variable genes
+```
+
+```{r}
+# PCA data
+pcaData <- plotPCA(rld, intgroup = c("sampletype", "MOVexpr"), returnData = TRUE)
+# pcaData attributes
+attributes(pcaData)
+# Get the percentage variation
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+```
+
+```{r}
+# Plot PCA using ggplot2
+ggplot(
+  pcaData,
+  aes(
+    x = PC1, y = PC2,
+    color = sampletype, 
+    shape = MOVexpr
+    )
+) +
+  geom_point(size = 5) +
+  labs(
+    x = paste0("PC1 (", percentVar[1], "%)"),
+    y = paste0("PC2 (", percentVar[2], "%)")
+    ) +
+    theme_classic()
+
+ggsave(
+  file = file.path(out_dir, "PCA.pdf"), 
+  width = 8, height = 6, dpi = 300
+  )
+```
+
+#### Additional PCs
+
+```{r}
+# PCs data
+pca <- prcomp(t(rld_mat)) # all genes
+# PCs attributes
+attributes(pca)
+# Build PCs dataframe
+pca_df <- cbind(meta, pca$x)
+pca_df
+```
+
+```{r}
+# Percentage variation
+percentVar <- round((pca$sdev^2) / sum(pca$sdev^2) * 100, 1)
+percentVar
+```
+
+```{r}
+# Plot PC3-4 using ggplot2
+ggplot(
+  pca_df,
+  aes(
+    x = PC3, y = PC4,
+    color = sampletype, 
+    shape = MOVexpr
+    )
+) +
+  geom_point(size = 5) +
+  labs(
+    x = paste0("PC3 (", percentVar[3], "%)"),
+    y = paste0("PC4 (", percentVar[4], "%)")
+    ) +
+  theme_classic()
+```
+
+#### Remove batch effect
+
+Not relevant in this case. Just to show how to do it in case of confounding variable
+
+```{r}
+rld1 <- rld
+assay(rld1) <- removeBatchEffect(assay(rld1), batch = colData(rld1)$MOVexpr) # Remove effect of MOVexpr
+```
+
+```{r}
+plotPCA(rld1, intgroup = "sampletype") + 
+  theme_bw() + 
+  ggtitle("PCA per sampletype (after removing visual effect of MOVexpr)") 
+```
+
+Note: removeBatchEffect() only serves for visualisation. Statistical analysis should be correct using design argument in DESeqDataSetFromMatrix(): design = \~ confounder + condition (e.g. design = \~ sex + disease)
+
+### Hierarchical Clustering
+
+This example will use rlog transformation. vst or log2(n+1) could be used similarly
+
+#### Correlation matrix
+
+```{r}
+# rlog matrix
+rld_mat <- assay(rld)
+```
+
+```{r}
+# Pairwise correlation
+rld_cor <- cor(rld_mat)
+```
+
+```{r, fig.width=9, fig.height=6}
+# Correlation heatmap, default
+pheatmap(rld_cor, annotation = meta)
+```
+
+```{r, fig.width=9, fig.height=6}
+# Correlation heatmap, customized
+heat.colors <- brewer.pal(9, "Blues")
+pheatmap(
+  rld_cor,
+  annotation = meta,
+  color = heat.colors,
+  cluster_cols = TRUE, cluster_rows = TRUE,
+  border_color=NA, fontsize = 10, height=20
+)
+```
+
+```{r}
+# Save heatmap
+# heat.colors <- brewer.pal(9, "Blues")
+# png(
+#   file = file.path(out_dir, "correlation_heatmap.png"),
+#   width = 8, height = 8, units = "in", res = 300
+#   )
+# pheatmap(
+#  rld_cor,
+#  annotation = meta,
+#  color = heat.colors,
+#  cluster_cols = TRUE, cluster_rows = TRUE,
+#  border_color=NA, fontsize = 10, height=20
+# )
+# dev.off()
+```
+
+#### Count matrix
+
+```{r}
+# Load normalized data
+normalized_counts <- read.table(
+  file = file.path(out_dir, "normalized_counts.tsv"),
+  header = T, row.names = 1
+  )
+```
+
+##### Genes highly expressed
+
+```{r}
+# Top 20 most expressed genes
+top20_expression_genes <- order(rowMeans(as.matrix(normalized_counts)), decreasing = TRUE)[1:20]
+
+normalized_counts[top20_expression_genes,] %>%
+  row.names()
+```
+
+```{r}
+pheatmap(
+  rld_mat[top20_expression_genes, ],
+  cluster_cols = TRUE, cluster_rows = TRUE,
+  fontsize_row = 10,
+  annotation_col = meta
+)
+```
+
+##### Genes highly varied
+
+```{r}
+# Top 20 genes with most variance
+top20_variance_genes <- order(rowVars(as.matrix(normalized_counts)), decreasing = TRUE)[1:20]
+
+normalized_counts[top20_variance_genes,] %>%
+  row.names()
+```
+
+```{r}
+pheatmap(
+  rld_mat[top20_variance_genes, ],
+  cluster_cols = TRUE, cluster_rows = TRUE,
+  fontsize_row = 10,
+  annotation_col = meta
+)
+```
+
+## Gene-level QC
+
+Genes to omit:
+
+-   Genes with zero counts in all samples
+
+-   Genes with an extreme count outlier
+
+-   Genes with a low mean normalized counts
+
+DESeq2 will perform this filtering by default; however other DE tools, such as EdgeR will not
+
+For more details: <https://hbctraining.github.io/Intro-to-DGE/lessons/05b_wald_test_results.html>
+
+# Differential expression analysis: Pairwise comparison
+
+## Run DESeq2
+
+```{r}
+# Create DESeqDataSet object
+dds <- DESeqDataSetFromMatrix(
+  countData = data,
+  colData = meta,
+  design = ~ sampletype
+)
+```
+
+```{r}
+# Set reference level
+dds$sampletype <- relevel(dds$sampletype, ref = "control")
+```
+
+```{r}
+dds <- DESeq(dds)
+```
+
+## Dispersion estimates
+
+```{r, fig.width=16, fig.height=9}
+par(mfrow = c(2,2))
+
+dds_par <- estimateDispersions(dds, fitType = "parametric") # standard
+dds_loc <- estimateDispersions(dds, fitType = "local") 
+dds_mean <- estimateDispersions(dds, fitType = "mean")
+# dds_gmp <- estimateDispersions(dds, fitType = "glmGamPoi") # single-cell, pseudo-bulk
+
+plotDispEsts(dds_par, finalcol = NA, main = "parametric (default)")
+plotDispEsts(dds_loc, finalcol = NA, main = "local")
+plotDispEsts(dds_mean, finalcol = NA, main = "mean")
+# plotDispEsts(dds_gmp, finalcol = NA, main = "glmGamPoi") 
+```
+
+```{r}
+dds <- estimateDispersionsFit(dds, fitType = "parametric")
+plotDispEsts(dds, main = "Final dispersion estimate (parametric)")
+```
+
+Examples of worrisome dispersion plots could be found at: <https://hbctraining.github.io/Intro-to-DGE/lessons/04b_DGE_DESeq2_analysis.html>
+
+## Results
+
+```{r}
+# Define contrats: c("condition", "level_to_compare", "base_level")
+contrast_oe <- c("sampletype", "MOV10_overexpression", "control")
+contrast_kd <- c("sampletype", "MOV10_knockdown", "control")
+```
+
+```{r}
+# ?results
+```
+
+### Overexpression vs control
+
+#### Raw result
+
+```{r}
+# Extract using contrast
+res_OE_unshrunken <- results(
+  dds,
+  contrast = contrast_oe,
+  alpha = 0.05 # FDR adjusted p-value
+)
+
+res_OE_unshrunken
+```
+
+```{r}
+# Result column info
+mcols(res_OE_unshrunken, use.names = TRUE)
+```
+
+-   baseMean: mean of normalized counts for all samples
+
+-   log2FoldChange: log2 fold change
+
+-   lfcSE: standard error
+
+-   stat: Wald statistic
+
+-   pvalue: Wald test p-value
+
+-   padj: BH adjusted p-values
+
+```{r}
+# Summarize results
+summary(res_OE_unshrunken)
+```
+
+```{r}
+resultsNames(dds)
+```
+
+```{r}
+# Extract using name
+res_OE_unshrunken_bis <- results(
+  dds,
+  name = "sampletype_MOV10_overexpression_vs_control",
+  alpha = 0.05
+)
+
+res_OE_unshrunken_bis
+```
+
+```{r}
+summary(res_OE_unshrunken_bis)
+```
+
+#### Shrinkage
+
+Shrinkage of the LFC estimates toward zero when the information for a gene is low, which could include:
+
+-   Low counts
+
+-   High dispersion values
+
+LFC shrinkage will not change the total number of genes that are identified as significantly differentially expressed
+
+```{r}
+resultsNames(dds)
+```
+
+```{r}
+res_OE_norm <- lfcShrink(dds, coef="sampletype_MOV10_overexpression_vs_control", type="normal")
+res_OE_apeglm <- lfcShrink(dds, coef="sampletype_MOV10_overexpression_vs_control", type="apeglm")
+res_OE_ashr <- lfcShrink(dds, coef="sampletype_MOV10_overexpression_vs_control", type="ashr")
+```
+
+```{r, fig.width=16, fig.height=9}
+par(mfrow = c(2, 2))
+y.lim <- c(-2, 2)
+DESeq2::plotMA(res_OE_unshrunken, ylim = y.lim, main = "No shrinkage")
+DESeq2::plotMA(res_OE_norm, ylim = y.lim, main = "Shrinkage : normal")
+DESeq2::plotMA(res_OE_apeglm, ylim = y.lim, main = "Shrinkage : apeglm")
+DESeq2::plotMA(res_OE_ashr, ylim = y.lim, main = "Shrinkage : ashr")
+```
+
+```{r}
+# Method chosen: apeglm
+res_OE <- lfcShrink(
+  dds, 
+  coef="sampletype_MOV10_overexpression_vs_control",
+  res = res_OE_unshrunken,
+  type="apeglm")
+
+summary(res_OE)
+```
+
+```{r}
+# Convert to dataframe, sort by padj
+res_OE_df <- res_OE %>%
+  data.frame() %>%
+  rownames_to_column(var = "gene") %>%
+  arrange(padj)
+```
+
+```{r}
+write.table(
+  res_OE_df, 
+  file = file.path(out_dir, "Mov10oe_vs_control_result.tsv"), 
+  sep = "\t", quote = FALSE, row.names = FALSE
+ )
+```
+
+#### Significant DE genes
+
+Use shrunken LFC
+
+```{r}
+# Set thresholds
+padj.cutoff <- 0.05
+lfc.cutoff <- log2(2)
+```
+
+```{r}
+# DE genes
+sig_OE_df <- res_OE_df %>%
+  filter(padj < padj.cutoff & abs(log2FoldChange) > lfc.cutoff)
+```
+
+```{r}
+head(sig_OE_df)
+```
+
+```{r}
+write.table(
+  sig_OE_df, 
+  file = file.path(out_dir, "Mov10oe_vs_control_result_DE.tsv"), 
+  sep = "\t", quote = FALSE, row.names = FALSE
+ )
+```
+
+### KO vs control
+
+```{r}
+# Raw result
+res_KD_unshrunken <- results(
+  dds,
+  contrast = contrast_kd,
+  alpha = 0.05 # FDR adjusted p-value
+)
+```
+
+```{r}
+# Shrinkage: apeglm
+res_KD <- lfcShrink(
+  dds, 
+  coef="sampletype_MOV10_knockdown_vs_control",
+  res = res_KD_unshrunken,
+  type="apeglm")
+
+res_KD_df <- res_KD %>%
+  data.frame() %>%
+  rownames_to_column(var = "gene") %>%
+  arrange(padj)
+```
+
+```{r}
+write.table(
+  res_KD_df, 
+  file = file.path(out_dir, "Mov10kd_vs_control_result.tsv"), 
+  sep = "\t", quote = FALSE, row.names = FALSE
+ )
+```
+
+```{r}
+# Significant DE genes
+padj.cutoff <- 0.05
+lfc.cutoff <- log2(2)
+
+sig_KD_df <- res_KD_df %>%
+  filter(padj < padj.cutoff & abs(log2FoldChange) > lfc.cutoff)
+
+head(sig_KD_df)
+```
+
+```{r}
+write.table(
+  sig_KD_df, 
+  file = file.path(out_dir, "Mov10kd_vs_control_result_DE.tsv"), 
+  sep = "\t", quote = FALSE, row.names = FALSE
+ )
+```
+
+## Visualisation
+
+Example: Overexpression vs control
+
+```{r}
+# Add row names to metadata
+metadata <- meta %>%
+  rownames_to_column("sample_name")
+```
+
+```{r}
+# normalized_counts <- counts(dds, normalized = TRUE)
+normalized_counts <- read.table(
+  file.path(out_dir, "normalized_counts.tsv"),
+  sep = "\t", header = T, row.names = 1
+  )
+
+normalized_counts <- normalized_counts %>%
+  as.data.frame() %>%
+  rownames_to_column("gene")
+```
+
+### p-value histogram
+
+```{r}
+hist(res_OE$pvalue, breaks = 100, probability = TRUE,
+main = "p-value histogram", xlab = "p-value")
+abline(h = 1, col = "red", lwd = 2)
+```
+
+Note: A p-value peak close to 0 suggests that there is a biological signal, i.e. there are DE genes
+
+### Count plot
+
+#### A single gene
+
+##### plotCounts()
+
+```{r}
+plotCounts(dds, gene = "MOV10", intgroup = "sampletype")
+```
+
+##### ggplot2
+
+```{r}
+# Save plotCounts to a data frame object
+MOV10_normCount <- plotCounts(dds, gene = "MOV10", intgroup = "sampletype", returnData = TRUE)
+```
+
+
+```{r}
+# Plotting the MOV10 normalized counts
+ggplot(
+  MOV10_normCount,
+  aes(x = sampletype, y = count, color = sampletype)
+) +
+  geom_point(position = position_jitter(width = 0.1), size = 3) +
+  geom_text_repel(
+    aes(label = rownames(MOV10_normCount))
+  ) +
+  labs(
+    x = NULL, y = "Normalized counts", title = "MOV10"
+  ) +
+  theme_classic() +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
+```
+
+#### Top DE genes
+
+```{r}
+# Top 20 DE genes by padj
+top20_sig_OE_genes <- res_OE_df %>%
+  arrange(padj) %>%
+  pull(gene) %>%
+  head(n=20)
+
+top20_sig_OE_genes
+```
+
+```{r}
+# Normalized counts for top 20 DE genes
+top20_sig_OE_norm <- normalized_counts %>%
+  filter(gene %in% top20_sig_OE_genes)
+
+head(top20_sig_OE_norm)
+```
+
+```{r}
+# Convert to long format
+top20_sig_OE_norm <- top20_sig_OE_norm %>%
+  gather(
+    colnames(.)[-1],
+    key = "sample_name",
+    value = "normalized_counts"
+  )
+
+head(top20_sig_OE_norm)
+```
+
+```{r}
+# Merge with metadata
+top20_sig_OE_norm <- inner_join(metadata, top20_sig_OE_norm, by = "sample_name")
+
+head(top20_sig_OE_norm)
+```
+
+```{r}
+# Boxplots
+ggplot(
+  top20_sig_OE_norm,
+  aes(x = gene, y = normalized_counts, color = sampletype)
+) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  scale_y_log10() +
+  scale_color_manual(
+    labels = c("control", "MOV10_overexpression", "MOV10_knockdown"),
+    values = c("gray", "red", "blue")
+  ) +
+  labs(
+    x = NULL, y = "log10 normalized counts", title = "Top 20 Significant DE Genes"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    plot.title = element_text(hjust = 0.5)
+  )
+```
+
+```{r}
+# Facet boxplots
+ggplot(
+  top20_sig_OE_norm,
+  aes(x = sampletype, y = normalized_counts, color = sampletype)
+) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.6) +
+  geom_jitter(height = 0, width = 0.15) +
+  scale_y_continuous(trans = 'log10') +
+  scale_color_manual(
+    labels = c("control", "MOV10_overexpression", "MOV10_knockdown"),
+    values = c("gray", "red", "blue")
+  ) +
+  ylab("log10 normalized expression level") +
+  xlab("condition") +
+  ggtitle("Top 20 Significant DE Genes in MOV10 overexpression vs Control") +
+  facet_wrap(~ gene) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_blank(),
+    plot.title = element_text(hjust = 0.5)
+  )
+```
+
+```{r}
+# Scatter plot
+ggplot(
+  top20_sig_OE_norm
+  ) +
+  geom_point(aes(x = gene, y = normalized_counts, color = sampletype)) +
+  scale_y_log10() +
+  xlab("Genes") +
+  ylab("log10 Normalized Counts") +
+  ggtitle("Top 20 Significant DE Genes") +
+  theme_bw() +
+	theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+	theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Heatmap
+
+```{r}
+# Extract normalized expression for significant genes from the OE and control samples
+sig_OE_norm <- normalized_counts[, c(1, 4:9)] %>%
+  filter(gene %in% sig_OE_df$gene) %>%
+  column_to_rownames("gene")
+```
+
+```{r}
+# Set a color palette
+heat_colors <- brewer.pal(6, "YlOrRd")
+
+# Heatmap
+pheatmap(
+  sig_OE_norm,
+  color = heat_colors,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = FALSE,
+  annotation = meta,
+  fontsize = 10,
+  border_color = NA,
+  scale = "row",
+  fontsize_row = 10,
+  height = 20
+)
+```
+
+Note: Normalized gene counts are scaled by z-score standardization
+
+### Volcano plot
+
+```{r}
+# Specify up/down/ns expressed genes
+padj.cutoff <- 0.05
+lfc.cutoff <- log2(2)
+res_OE_df_annot <- res_OE_df %>%
+  mutate(
+    expression = case_when(
+      padj < padj.cutoff & log2FoldChange > lfc.cutoff ~ "up",
+      padj < padj.cutoff & log2FoldChange < -lfc.cutoff ~ "down",
+      TRUE ~ "ns"
+    )
+  )
+```
+
+```{r}
+# Data range
+range(res_OE_df_annot$log2FoldChange, na.rm = TRUE) # x axis
+max(-log10(range(res_OE_df_annot$padj, na.rm = TRUE))) # y axis
+```
+
+
+```{r}
+# Volcano plot
+res_OE_df_annot %>%
+  ggplot(
+    aes(x = log2FoldChange, y = -log10(padj), color = expression, alpha = 0.5)
+  ) +
+  geom_point(size = 3) +
+  geom_hline(
+    yintercept = -log10(0.05),
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    xintercept = c(-lfc.cutoff, lfc.cutoff),
+    linetype = "dashed"
+  ) +
+  scale_color_manual(
+    breaks = c("up", "down", "ns"),
+    values = c("tomato", "steelblue", "grey")
+  ) +
+  guides(alpha = "none") +
+  coord_cartesian(xlim = c(-6, 6), ylim = c(0, 200)) +
+  labs(
+    title = "Gene expression changes between MOV10 overexpression vs Control",
+    x = "log2(FC)", y = "-log10(padj)", color = "Expression\nchange"
+  ) +
+  theme_classic()
+```
+
+```{r}
+# Select genes to label
+res_OE_df_annot %>%
+  mutate(abs_log2FoldChange = abs(log2FoldChange)) %>%
+  filter(-log10(padj) > 50 | abs(log2FoldChange) > 5) %>%
+  dim()
+```
+
+```{r}
+# Label genes dataframe
+res_OE_df_annot_label <- res_OE_df_annot %>%
+  mutate(abs_log2FoldChange = abs(log2FoldChange)) %>%
+  filter(-log10(padj) > 50 | abs(log2FoldChange) > 5) %>%
+  mutate(label = gene)
+```
+
+```{r}
+# Volcano plot with top genes labeling
+ggplot(
+  data = res_OE_df_annot,
+  aes(x = log2FoldChange, 
+      y = -log10(padj))
+  ) +
+  geom_point(
+    aes(colour = expression),
+    alpha = 0.6,
+    shape = 19,
+    size = 2
+    ) +
+  geom_hline(
+    yintercept = -log10(0.05),
+    linetype = "dashed"
+  ) + 
+  geom_vline(
+    xintercept = c(-lfc.cutoff, lfc.cutoff),
+    linetype = "dashed"
+  ) +
+  geom_label_repel(
+    data = res_OE_df_annot_label,
+    aes(label = label),
+    force = 2
+  ) +
+  scale_color_manual(
+    breaks = c("up", "down", "ns"),
+    values = c("darkred", "darkblue", "grey")
+  ) +
+  scale_x_continuous(
+    breaks = c(seq(-8, 8, 2)),
+    limits = c(-8, 8)
+    ) +
+  coord_cartesian(ylim = c(0, 200)) +
+  labs(
+    title = "Gene expression changes between MOV10 overexpression vs Control",
+    x = "log2(FC)", 
+    y = "-log10(padj)", 
+    color = "Expression\nchange"
+  ) +
+  theme_light()
+```
+
+# Differential expression analysis: Likelihood ratio test (LRT)
+
+LRT is an alternative solution when evaluating expression change across more than two levels.
+
+Genes which are identified as significant, are those that are changing in expression in any direction across the different factor levels.
+
+log2FoldChange in LRT test is an arbitrary coefficient and should not be used
+
+For more details: <https://hbctraining.github.io/Intro-to-DGE/lessons/05a_hypothesis_testing.html#likelihood-ratio-test-lrt>
+
+## LRT
+
+```{r}
+dds <- DESeqDataSetFromMatrix(
+    countData = data,
+    colData = meta,
+    design = ~ sampletype
+)
+
+# Likelihood ratio test
+dds_lrt <- DESeq(dds, test = "LRT", reduced = ~ 1)
+```
+
+```{r}
+# LRT result
+res_lrt <- results(
+  dds_lrt, 
+  alpha = 0.05 # FDR adjusted p-value
+  )
+res_lrt
+```
+
+```{r}
+# LRT result summary
+summary(res_lrt)
+```
+
+```{r}
+# Convert to dataframe, sort by padj
+res_lrt_df <- res_lrt %>%
+  data.frame() %>%
+  rownames_to_column(var = "gene") %>%
+  arrange(padj)
+```
+
+```{r}
+write.table(
+  res_OE_df, 
+  file = file.path(out_dir, "lrt_result.tsv"), 
+  sep = "\t", quote = FALSE, row.names = FALSE
+ )
+```
+
+```{r}
+# Set thresholds
+padj.cutoff <- 0.05
+
+# DE genes
+sig_lrt_df <- res_lrt_df %>%
+  filter(padj < padj.cutoff)
+
+head(sig_lrt_df)
+```
+
+```{r}
+write.table(
+  sig_lrt_df, 
+  file = file.path(out_dir, "lrt_result_DE.tsv"), 
+  sep = "\t", quote = FALSE, row.names = FALSE
+ )
+```
+
+```{r}
+nrow(sig_lrt_df)
+nrow(sig_OE_df)
+nrow(sig_KD_df)
+```
+
+Note: The number of significant genes observed from the LRT is quite high. To reduce the number of significant genes, we can increase the stringency of our FDR threshold
+
+## Significant DE genes clustering
+
+```{r}
+# Significant DE gene list, padj cutoff 1e-7
+sig_lrt_genes <- sig_lrt_df %>%
+  filter(padj < 1e-7) %>%
+  pull(gene)
+```
+
+```{r}
+# Load rlog data
+rld_mat <- read.table(
+  file = file.path(out_dir, "normalized_counts_rlog.tsv"),
+  header = T, row.names = 1
+  )
+```
+
+```{r}
+# Subset rlog data for significant DE genes
+rld_sig_lrt_mat <- rld_mat[sig_lrt_genes, ]
+```
+
+```{r}
+# DE genes clustering
+clusters <- degPatterns(
+   rld_sig_lrt_mat,
+   metadata = meta,
+   time = "sampletype",
+   col = NULL
+)
+
+# Rotate x-axis labels
+clusters$plot +
+  theme(
+    axis.text.x = element_text(
+      angle = 90,
+      vjust = 0.5,
+      hjust = 1
+    )
+  )
+```
+
+```{r}
+# class(clusters)
+# clusters$df
+# Number of genes per cluster
+clusters$df %>%
+  count(cluster)
+```
+
+```{r}
+# Example: Extract genes in cluster 1 where KD ~ CTL < OE
+cluster_1_genes <- clusters$df %>%
+  filter(cluster == 1) %>%
+  pull(genes)
+
+length(cluster_1_genes)
+```
+
+# Functional analysis: Over-representation analysis (ORA)
+
+Example: Overexpression vs control, GO terms
+
+## ORA
+
+```{r}
+# Load DEA data
+res_OE_df <- read.table(
+  file = file.path(out_dir, "Mov10oe_vs_control_result.tsv"),
+  header = T
+  )
+
+res_OE_df %>%
+  dim
+```
+
+```{r}
+# Filter out untested genes, i.e. genes with padj = NA
+res_OE_noNA_df <- res_OE_df %>%
+  filter(padj != "NA")
+
+res_OE_noNA_df %>%
+  dim
+```
+
+```{r}
+# Background genes: All genes tested for significance
+all_OE_genes <- as.character(res_OE_noNA_df$gene)
+
+length(all_OE_genes)
+```
+
+```{r}
+# Significant DE genes
+padj.cutoff <- 0.05
+
+sig_OE_genes <- res_OE_noNA_df %>%
+  filter(padj < padj.cutoff) %>%
+  pull(gene)
+
+length(sig_OE_genes)
+```
+
+```{r}
+# ORA analysis
+ora_res <- enrichGO(
+  gene = sig_OE_genes,     # Gene list of interest
+  universe = all_OE_genes, # Background genes
+  OrgDb = org.Hs.eg.db,    # Organism database
+  keyType = "SYMBOL",      # Key type of gene identifiers in gene list 
+  ont = "BP",              # Oncology: BP (Biological Process)
+  pAdjustMethod = "BH",    # Multiple testing correction
+  pvalueCutoff  = 0.05,    # P-value cutoff
+  qvalueCutoff = 0.05      # Q-value cutoff
+  )
+```
+
+Note: Parameters to consider
+
+- DE thresholds: padj, log2FoldChange
+
+- Gene list: DE genes, Up, Down
+
+- Ontology: "BP", "MF", "CC" or "ALL"
+
+- Ontology pAdjustMethod: "BH", "bonferroni", ... (?enrichGO for more details)
+
+- Ontology pvalueCutoff, qvalueCutoff
+
+```{r}
+# ORA result table
+ora_res_df <- data.frame(ora_res)
+
+head(ora_res_df)
+```
+
+```{r}
+write.table(
+  ora_res_df,
+  file = file.path(out_dir, "Mov10oe_vs_control_result_DE_ORA_BP.tsv"),
+  sep = "\t", quote = FALSE, row.names = FALSE
+  )
+```
+
+```{r}
+range(ora_res_df$p.adjust, na.rm = TRUE)
+```
+
+## Visualisation
+
+### Dotplot
+
+```{r, fig.width=9, fig.height=16}
+# Display gene ratio: Nb of genes related to GO term / total number of significant genes
+dotplot(
+  ora_res, 
+  showCategory=30,
+  title="GO Biological Processes Enrichment in DE genes"
+  )
+```
+
+### Barplot
+
+```{r, fig.width=9, fig.height=16}
+# Display gene count
+barplot(
+  ora_res, 
+  showCategory = 30, 
+  title="GO Biological Processes Enrichment in DE genes"
+  )
+```
+
+### Enrichment GO map
+
+```{r}
+# Add similarity matrix to the termsim slot of enrichment result
+ora_res_sim <- enrichplot::pairwise_termsim(ora_res)
+```
+
+```{r, fig.width=16, fig.height=16}
+# Enrichmap clusters the 50 most significant (by padj) GO terms to visualize relationships between terms
+emapplot(ora_res_sim, showCategory = 50)
+```
+
+### Category netplot
+
+```{r}
+# Extract the log2FoldChange values
+res_OE_LFC <- res_OE_noNA_df$log2FoldChange
+names(res_OE_LFC) <- res_OE_noNA_df$gene
+head(res_OE_LFC)
+```
+
+#### Top significant GO terms 
+
+```{r, fig.width=16, fig.height=16}
+# Cnetplot: genes associated with top 5 significant terms
+cnetplot(
+  ora_res, 
+  showCategory = 5,
+  foldChange = res_OE_LFC
+  )
+```
+
+```{r, fig.width=16, fig.height=16}
+# Set LFC threshold to narrow down the color scale
+res_OE_LFC_cutoff <- ifelse(res_OE_LFC > 2, 2, res_OE_LFC)
+res_OE_LFC_cutoff <- ifelse(res_OE_LFC < -2, -2, res_OE_LFC)
+
+# Set threshold for absolute fold change to filter items
+cnetplot(
+  ora_res, 
+  showCategory = 5,
+  foldChange = res_OE_LFC_cutoff,
+  fc_threshold = 0.5
+  )
+```
+
+#### Selected GO terms
+
+```{r}
+ora_res_df$Description
+```
+
+
+```{r, fig.width=16, fig.height=16}
+# E.g. "RNA splicing", "RNA localization", "RNA transport"
+ora_res_bis <- ora_res
+ora_res_bis@result <- ora_res@result[c(6,7,14),]
+cnetplot(
+  ora_res_bis, 
+  showCategory = 3,
+  foldChange = res_OE_LFC
+  )
+```
+
+# Functional analysis: Gene set enrichment analysis (GSEA)
+
+Example: Overexpression vs control, KEGG pathways
+
+```{r}
+# Load DEA data
+res_OE_df <- read.table(
+  file = file.path(out_dir, "Mov10oe_vs_control_result.tsv"),
+  header = T
+  )
+
+res_OE_df %>%
+  dim
+```
+
+## Data preparation
+
+```{r}
+# Retrieve Entrez IDs
+entrez <- mapIds(
+  org.Hs.eg.db,
+  keys = res_OE_df$gene,
+  column = "ENTREZID",
+  keytype = "SYMBOL",
+  multiVals = "first"
+)
+
+# Convert to dataframe
+entrez_df <- enframe(
+  entrez,
+  name = "SYMBOL",
+  value = "ENTREZID"
+)
+
+head(entrez_df)
+```
+
+```{r}
+# Add Entrez IDs to result table
+colnames(entrez_df) <- c("gene", "entrezid")
+res_OE_entrez_df <- inner_join(
+  res_OE_df, entrez_df, by = "gene"
+  )
+```
+
+```{r}
+# Remove NA values
+res_OE_entrez_df <- res_OE_entrez_df %>%
+  filter(!is.na(entrezid))
+```
+
+```{r}
+# Remove Entrez duplucates
+res_OE_entrez_df <- res_OE_entrez_df[which(duplicated(res_OE_entrez_df$entrezid) == F), ]
+```
+
+```{r}
+# Extract the log2FoldChange values
+res_OE_LFC <- res_OE_entrez_df$log2FoldChange
+names(res_OE_LFC) <- res_OE_entrez_df$entrezid
+
+head(res_OE_LFC)
+```
+
+```{r}
+# Sort the log2FoldChange values in decreasing order
+res_OE_LFC_sorted <- sort(res_OE_LFC, decreasing = TRUE)
+
+head(res_OE_LFC_sorted)
+```
+
+## GSEA
+
+```{r}
+set.seed(42) # reproducibility
+```
+
+```{r}
+# GSEA using gene sets from KEGG pathways
+gsea_kegg <- gseKEGG(
+  geneList = res_OE_LFC_sorted,
+  organism = "hsa",
+  minGSSize = 20, # minimum gene set size
+  pvalueCutoff = 0.05, 
+  verbose = FALSE
+  )
+```
+
+Note: The organisms with available KEGG pathway information are listed in <https://www.genome.jp/kegg/tables/br08606.html>
+
+```{r}
+# GSEA results
+gsea_kegg_res <- gsea_kegg@result
+
+head(gsea_kegg_res)
+```
+
+```{r}
+write.table(
+  gsea_kegg_res,
+  file = file.path(out_dir, "Mov10oe_vs_control_result_DE_GSEA_KEGG.tsv"),
+  sep = "\t", quote = FALSE, row.names = FALSE
+  )
+```
+
+## Visualisation
+
+```{r, fig.width=9, fig.height=12}
+# GSEA plot for a single enriched pathway, e.g. hsa04060
+gseaplot(gsea_kegg, geneSetID = 'hsa04060') # up-regulation
+```
+
+```{r}
+# GSEA plot for a single enriched pathway
+gseaplot(gsea_kegg, geneSetID = 'hsa03008') # down-regulation
+```
+
+```{r}
+# KEGG pathway map
+pathview(
+  gene.data = res_OE_LFC_sorted,
+  pathway.id = "hsa03008",
+  species = "hsa",
+  limit = list(
+    gene = 2, # value gives the max/min limit for foldchanges
+    cpd = 1
+    )
+  )
+
+# Move output files
+files <- list.files(
+  path = ".",
+  pattern = "^hsa03008",
+  full.names = TRUE
+)
+file.rename(files, file.path(out_dir, basename(files)))
+```
+
+```{r}
+knitr::include_graphics(
+  file.path(out_dir, "hsa03008.pathview.png"),
+  )
+```
+
+# References
+
+<https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html>
+
+<https://hbctraining.github.io/Intro-to-DGE/schedule/links-to-lessons.html>
