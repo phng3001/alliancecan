@@ -1,8 +1,8 @@
 # R images
 Container | Source | Description
 ----------|--------|------------
-rocker_verse.sif | docker://rocker/verse | tidyverse, devtools, tex & publishing-related package
-
+rocker_verse.sif | docker://rocker/verse | tidyverse, devtools, tex & publishing-related packages
+rocker_verse_DESeq2_v0.0.3.sif | PNP | docker://rocker/verse + DESeq2 & related packages
 # Launch RStudio in Apptainer image
 
 ## Check if rserver is available in the image (required)
@@ -19,7 +19,7 @@ mkdir -p rstudio/tmp
 
 ## Start an interactive session on a compute node with salloc
 ```bash
-salloc --time=1:0:0 --ntasks=1 --cpus-per-task=2 --mem-per-cpu=4Gb --account=def-someuser
+salloc --time=1:0:0 --ntasks=1 --cpus-per-task=2 --mem-per-cpu=4Gb --account=def-professor
 ```
 
 ## Launch rserver on the compute node
@@ -38,10 +38,13 @@ apptainer exec \
 
 ## SSH tunneling
 ```bash
-ssh -L 8888:rc12601:8888 someuser@rorqual.alliancecan.ca
+ssh -L 8888:somecomputenode:8888 someuser@someserver.alliancecan.ca
 ```
 
 ## Open localhost on web browser
 ```
 http://localhost:8888
 ```
+
+# Ressources
+https://rocker-project.org/images/
