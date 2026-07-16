@@ -1,0 +1,26 @@
+TransTermHP v2.08 (built on Jul 10 2026)
+25 bins; sample size is 20000000
+--pval-conf=expterm.dat
+
+--gc=-2.3 --au=-0.9 --gu=1.3 --mm=3.5 --gap=6
+--max-len=59 --min-stem=4 --max-loop=13 --min-loop=3
+--uwin-length=6 --uwin-require=3 --max-hp-score=-2 --max-tail-score=-2.5
+--loop-penalty=1,2,3,4,5,6,7,8,9,10,11
+--start-cut=0 --end-cut=25
+
+Genes: 0.581489 %AT, 994 nt, 11 terms.
+Intergenic: 0.694805 %AT, H2T: 154 nt, 1 terms; T2T: 0 nt, 0 terms; H2H: 0 nt, 0 terms. 
+
+Each terminator entry starts in column 3 and is of the form:
+  term #       start - end      +/-  regionconf   hp     tail | notes
+Followed by the sequence of the 5' tail, 5' stem, loop, 3' stem, and 3' tail.
+Genes are interspersed, and start the first column.
+
+
+SEQUENCE AE007317.1  (length 1173)
+
+dpr                 1 - 537      + | 
+  TERM 1          560 - 581      + F    95  -8.1 -5.65678 | opp_overlap 560
+  GGAAACATAGATAAA           TCTGTAGGA AATT TCTTACAGA            TTTTTTCTATTTTGT
+folA              667 - 1173     + | 
+
