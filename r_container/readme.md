@@ -43,6 +43,7 @@ apptainer exec \
 ```bash
 ssh -L 8888:somecomputenode:8888 someuser@someserver.alliancecan.ca
 ```
+> **Notes:** Server and localhost ports can be customized.
 
 ### Open localhost on a web browser
 ```
