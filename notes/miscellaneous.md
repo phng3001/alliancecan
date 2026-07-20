@@ -53,3 +53,18 @@ upload = files.upload()
 from google.colab import files
 download = files.download('output.csv')
 ```
+
+# Fasta header formatting
+```bash
+# tritrypdb
+# >LINF_010005000-T1-p1 | transcript=LINF_010005000-T1 | gene=LINF_010005000 | organism=Leishmania_infantum_JPCM5 | gene_product=Protein of unknown function (DUF2946) | transcript_product=Protein of unknown function (DUF2946) | location=LinJ.01:3710-4711(-) | protein_length=333 | sequence_SO=chromosome | SO=protein_coding_gene | is_pseudo=false
+sed -E 's/^>.*gene=([^ ]+).*/>\1/' input.fasta > output.fasta
+# >LINF_010005000
+```
+
+```bash
+# genbank
+# >lcl|CP103914.1_prot_XQJ24122.1_1 [locus_tag=NXY56_000001] [protein=Protein of unknown function (DUF2946), putative] [protein_id=XQJ24122.1] [location=complement(3908..4906)] [gbkey=CDS]
+sed -E 's/^>.*\[locus_tag=([^]]+)\].*/>\1/' input.fasta > output.fasta
+# >NXY56_000001
+```
