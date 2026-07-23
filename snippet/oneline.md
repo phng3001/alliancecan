@@ -1,15 +1,3 @@
-# gff
-## gff to gtf
-### Binary
-```bash
-# -F: keep all GFF attributes, -T: output GTF
-gffread input.gff -F -T -o output.gtf
-```
-### Container
-```bash
-apptainer run gffread_v0.12.7.sif gffread input.gff -F -T -o output.gtf
-```
-
 # Miscellaneous
 ## Replace string in each filename
 ```bash
