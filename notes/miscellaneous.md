@@ -68,3 +68,26 @@ sed -E 's/^>.*gene=([^ ]+).*/>\1/' input.fasta > output.fasta
 sed -E 's/^>.*\[locus_tag=([^]]+)\].*/>\1/' input.fasta > output.fasta
 # >NXY56_000001
 ```
+
+# Parsing GFF/GTF
+## GFF
+```python
+def parse_gff3_attributes(attr_string):
+    """Parse GFF attribute string (9th column of a GFF file) into a dictionary."""
+    attr_dict = {}
+    for item in attr_string.strip().split(";"):
+        if "=" in item:
+            key, value = item.split("=", 1)
+            attr_dict[key] = value
+    return attr_dict
+```
+
+## GTF
+```python
+def parse_gtf_attributes(attr_string):
+    """Parse GTF attribute string (9th column of a GTF file) into a dictionary."""
+    attr_dict = {}
+    for key, value in re.findall(r'\s*([^ ;]+)\s+"([^"]+)"', attr_string):
+        attrs[key] = value
+    return attr_dict
+```
