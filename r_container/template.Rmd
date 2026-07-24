@@ -130,8 +130,8 @@ ggplot(
 
 ```{r}
 # Save plot
-ggsave(
-  file.path(out_dir, "iris_petal_length_width_correlation.pdf"),
-  width = 12, height = 9, dpi = 300
-)
+# ggsave(
+#   file.path(out_dir, "iris_petal_length_width_correlation.pdf"),
+#   width = 12, height = 9, dpi = 300
+# )
 ```
