@@ -1,0 +1,137 @@
+---
+title: "A R Markdown template"
+author: "PNP"
+date: "2026-07-24"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: flatly
+  pdf_document:
+    toc: true
+    latex_engine: xelatex
+params:
+  in_dir: "input"
+  out_dir: "output"
+header-includes:
+  - \let\oldtableofcontents\tableofcontents
+  - \renewcommand{\tableofcontents}{\oldtableofcontents\clearpage}
+---
+
+# Initial setup
+
+```{r Current directory}
+getwd()
+```
+
+```{r Rmd setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.align = "center")
+```
+
+```{r Load libraries, results='hide', warning=FALSE, message=FALSE}
+# Load required packages
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r Input dir}
+# Input directory
+in_dir <- params$in_dir
+print(in_dir)
+dir(in_dir)
+```
+
+```{r Output dir}
+# Output directory
+out_dir <- params$out_dir
+
+if (!dir.exists(out_dir)) {
+  dir.create(out_dir, recursive = TRUE)
+}
+
+print(out_dir)
+```
+
+# Load data
+
+```{r}
+df <- read.table(
+  file.path(in_dir, "iris.tsv"),
+  sep = "\t", header = T,
+  check.names = FALSE
+  )
+```
+
+# Inspect data
+
+```{r}
+head(iris)
+```
+
+```{r}
+str(df)
+```
+
+```{r}
+df %>% glimpse()
+```
+
+```{r}
+df %>% summary()
+```
+
+```{r}
+df_summary <- df %>%
+  group_by(Species) %>%
+  summarize(
+    Avg.Sepal.Length = mean(Sepal.Length, na.rm = TRUE),
+    Avg.Sepal.Width = mean(Sepal.Width, na.rm = TRUE),
+    Avg.Petal.Length = mean(Petal.Length, na.rm = TRUE),
+    Avg.Petal.Width = mean(Petal.Width, na.rm = TRUE)
+    )
+
+df_summary
+```
+
+# Export data
+
+```{r}
+write.table(
+  df_summary,
+  file = file.path(out_dir, "iris_summary.tsv"),
+  sep = "\t", quote = FALSE, row.names = FALSE
+)
+```
+
+# Plot data
+
+```{r}
+ggplot(
+  df, 
+  mapping=aes(x = Petal.Length, y = Petal.Width)
+  )+
+  geom_point(aes(color = Species))+
+  geom_smooth(method = "lm") +
+  ylab("Petal width (cm)") +
+  xlab("Petal length (cm)") +
+  ggtitle(
+    "Iris dataset",
+    subtitle = "Petal length - petal width correlation" 
+    ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    plot.title = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
+```
+
+```{r}
+# Save plot
+ggsave(
+  file.path(out_dir, "iris_petal_length_width_correlation.pdf"),
+  width = 12, height = 9, dpi = 300
+)
+```
