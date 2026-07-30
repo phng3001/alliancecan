@@ -108,11 +108,17 @@ awk -F"\t" '!/^#/ && $3 < 50' genes.tsv
 ```bash
 # Print lines where the 5th column matches the regular expression
 # This regular expression means "start with a lowercase letter a–f"
-awk '$5  ~ /^[a-f]/' file.txt
+awk -F"\t" '$5  ~ /^[a-f]/' file.txt
 ```
 ```bash
 # Print lines where the 5th column does not match the regular expression
-awk '$5  !~ /^[a-f]/' file.txt
+awk -F"\t" '$5  !~ /^[a-f]/' file.txt
+```
+```bash
+# Filter out lines where the 5th column contains foo but does not contain bar
+awk -F"\t" '!($5 ~ /foo/ && $5 !~ /bar/)' file.txt
+# or
+awk -F"\t" '$5 !~ /foo/ || $5 ~ /bar/' file.txt
 ```
 
 ## Duplicate handling 
