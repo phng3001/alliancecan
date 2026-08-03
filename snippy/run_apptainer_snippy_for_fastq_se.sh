@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=4G
-#SBATCH --job-name=run_snippy
+#SBATCH --job-name=run_apptainer_snippy
 
 ######### Preprocessing #########
 
@@ -60,6 +60,6 @@ if [[ -n "$SLURM_JOB_ID" && "$SLURM_JOB_ID" -ne 0 ]]; then
     sacct -j $SLURM_JOB_ID --format=JobID%16,Submit,Start,Elapsed,NCPUS,ExitCode,NodeList%8
     #sacct -j $SLURM_JOB_ID --format=JobID%16,Submit,Start,Elapsed,NCPUS,ExitCode,NodeList%8,MaxRSS    
     if [[ -f "slurm-${SLURM_JOB_ID}.out" ]]; then
-        mv slurm-${SLURM_JOB_ID}.out run_snippy_${sample_name}_mapping_${reference_basename}-${SLURM_JOB_ID}.out
+        mv slurm-${SLURM_JOB_ID}.out run_apptainer_snippy_${sample_name}_mapping_${reference_basename}-${SLURM_JOB_ID}.out
     fi
 fi
