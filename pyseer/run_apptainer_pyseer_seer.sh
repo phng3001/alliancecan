@@ -1,0 +1,166 @@
+#!/bin/bash
+# P=NP
+#SBATCH --account=def-mouellet
+#SBATCH --time=01:00:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=4G
+#SBATCH --job-name=run_apptainer_pyseer_seer
+
+######### Preprocessing #########
+
+# Check if the correct number of arguments is provided
+# Number of mandatory and optional arguments
+MANDATORY_ARGS=5
+TOTAL_ARGS=8
+
+if [ $# -lt $MANDATORY_ARGS ]; then
+	echo "Error: You must provide at least $MANDATORY_ARGS arguments."
+    echo "Usage on terminal: bash $0 <container> <pyseer_script_dir> <genotype_matrix> <phenotype_file> <phylogenetic_tree> [alpha] [max_dimensions] [prefix]"
+    echo "Usage on cluster: sbatch $0 <container> <pyseer_script_dir> <genotype_matrix> <phenotype_file> <phylogenetic_tree> [alpha] [max_dimensions] [prefix]"
+    exit 1
+fi
+
+if [ $# -gt $TOTAL_ARGS ]; then
+	echo "Error: Too many arguments. You can provide a maximum of $TOTAL_ARGS arguments."
+    echo "Usage on terminal: bash $0 <container> <pyseer_script_dir> <genotype_matrix> <phenotype_file> <phylogenetic_tree> [alpha] [max_dimensions] [prefix]"
+    echo "Usage on cluster: sbatch $0 <container> <pyseer_script_dir> <genotype_matrix> <phenotype_file> <phylogenetic_tree> [alpha] [max_dimensions] [prefix]"
+    exit 1
+fi
+
+# Load modules
+module purge
+module load StdEnv/2023 apptainer/1.4.5
+
+# Export variables
+export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-4}
+export TMPDIR=$HOME/scratch/
+
+# Asign arguments to variables
+container="$1"
+pyseer_script_dir="$2"
+genotype_matrix="$3"
+phenotype_file="$4"
+phylogenetic_tree="$5"
+alpha="${6:-0.05}"
+max_dimensions="${7:-10}"
+prefix="${8:-pyseer_seer}"
+
+# Declare variables
+timestamp=$(date +"%Y%m%d_%H%M%S")
+output_dir="pyseer_seer_results_${timestamp}"
+logfile="$output_dir/pyseer_run.log"
+
+# Make output directory
+if [ -d "$output_dir" ]; then
+    mv $output_dir ${output_dir}_old_${timestamp}
+fi
+mkdir -p $output_dir
+
+# List of expected output files
+output_files=(
+    "${prefix}_distance_matrix.tsv"
+    "${prefix}_scree_plot.png"
+    "${prefix}_all_variants.tsv"
+    "${prefix}_patterns.txt"
+    "${prefix}_lineage_effects.txt"
+    "${prefix}_bonferroni_threshold.txt"
+    "${prefix}_significant_variants.tsv"
+    "${prefix}_qq_plot.png"
+)
+
+# Write log file
+exec > >(tee "$logfile") 2>&1
+echo "Working directory: $PWD"
+echo "Command: $0 $*"
+
+
+
+######### Pyseer #########
+# Fixed effects model (SEER)
+
+# Calculate distance matrix from phylogenetic tree
+echo "Calculating distance matrix from phylogenetic tree..."
+apptainer run \
+-W $TMPDIR \
+$container python \
+$pyseer_script_dir/phylogeny_distance.py \
+$phylogenetic_tree \
+> ${prefix}_distance_matrix.tsv
+
+# Draw scree plot from the distance matrix
+echo "Drawing scree plot from distance matrix..."
+apptainer run \
+-W $TMPDIR \
+$container scree_plot_pyseer \
+${prefix}_distance_matrix.tsv
+mv scree_plot.png ${prefix}_scree_plot.png
+
+# Run pyseer with fixed effects model
+echo "Running pyseer with fixed effects model..."
+apptainer run \
+-W $TMPDIR \
+$container pyseer \
+--phenotypes $phenotype_file \
+--pres $genotype_matrix \
+--distances ${prefix}_distance_matrix.tsv \
+--max-dimensions $max_dimensions \
+--output-patterns ${prefix}_patterns.txt \
+--cpu $OMP_NUM_THREADS \
+--lineage \
+> ${prefix}_all_variants.tsv
+sed -i '/^$/d' ${prefix}_all_variants.tsv # remove empty lines
+mv lineage_effects.txt ${prefix}_lineage_effects.txt
+
+# qq-plot
+echo "Generating qq-plot..."
+apptainer run \
+-W $TMPDIR \
+$container python \
+$pyseer_script_dir/qq_plot.py \
+${prefix}_all_variants.tsv
+mv qq_plot.png ${prefix}_qq_plot.png
+
+# Calculate Bonferroni threshold
+echo "Calculating Bonferroni threshold with alpha=$alpha..."
+apptainer run \
+-W $TMPDIR \
+$container python \
+$pyseer_script_dir/count_patterns.py \
+--alpha $alpha \
+${prefix}_patterns.txt \
+> ${prefix}_bonferroni_threshold.txt
+threshold=$(sed -n '2p' ${prefix}_bonferroni_threshold.txt | cut -f2) 
+echo "Bonferroni threshold: $threshold"
+
+# Get significant variants
+echo "Getting significant variants..."
+cat <(head -1 ${prefix}_all_variants.tsv) \
+<(awk -v threshold=$threshold '$4<threshold {print $0}' ${prefix}_all_variants.tsv)\
+> ${prefix}_significant_variants.tsv
+echo "Pyseer with fixed effects model using $max_dimensions dimensions detected $(tail -n +2 ${prefix}_significant_variants.tsv | wc -l) significant variants"
+
+# Sort significant variants by lrt-pvalue
+echo "Sorting significant variants by lrt-pvalue..."
+sort -k4 -g ${prefix}_significant_variants.tsv > ${prefix}_significant_variants_sorted.tsv
+mv ${prefix}_significant_variants_sorted.tsv ${prefix}_significant_variants.tsv
+
+# Move results to output directory
+for file in "${output_files[@]}"
+do
+    if [ -f "$file" ]; then
+        mv $file $output_dir
+    fi
+done
+echo "Output files saved to $output_dir"
+
+
+
+# Save stdout
+if [[ -n "$SLURM_JOB_ID" && "$SLURM_JOB_ID" -ne 0 ]]; then
+    sacct -j $SLURM_JOB_ID --format=JobID%16,Submit,Start,Elapsed,NCPUS,ExitCode,NodeList%8
+    #sacct -j $SLURM_JOB_ID --format=JobID%16,Submit,Start,Elapsed,NCPUS,ExitCode,NodeList%8,MaxRSS    
+    if [[ -f "slurm-${SLURM_JOB_ID}.out" ]]; then
+        mv slurm-${SLURM_JOB_ID}.out run_apptainer_pyseer_seer-${SLURM_JOB_ID}.out
+    fi
+fi
