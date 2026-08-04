@@ -1,0 +1,3 @@
+]633;E;for X in $(cat sample_list.txt);d2ee267d-77eb-4cb9-8f2c-2ef971fce2ff]633;CATCC_700669	input/ATCC_700669.fasta
+R6	input/R6.fasta
+TIGR4	input/TIGR4.fasta
