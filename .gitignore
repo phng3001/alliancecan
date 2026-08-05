@@ -2,10 +2,12 @@
 **/old/**
 **/trash/**
 
-renv.lock.old
-
 # ssh key
 *.openssh
 
-# R
+# deseq2, renv
+renv.lock.old
 .Rproj.user
+
+# pyseer, fsm-lite
+fsm_kmers*
