@@ -1,0 +1,11 @@
+Working directory: /home/phng3001/def-mouellet/Scripts_MOU/PNP/alliancecan/pyseer/test_data
+Command: run_apptainer_pyseer_fsm-lite.sh pyseer_v1.3.11_PNP.sif file_list.txt fsm_kmers_l9-100.txt 9 100 1 3
+Running fsm-lite to count k-mers...
+Reading input files...
+Read 3 input files and 6 sequences of total length 12849256 (includes rev.compl. sequences)
+Constructing the data structures...
+Construction complete, the main index requires 26.6892 MiB plus 4.56502 MiB for labels.
+All done.
+fsm-lite run completed. Number of k-mers detected: 3116542
+Output file: fsm_kmers_l9-100.txt
+Compressed output file: fsm_kmers_l9-100.txt.gz

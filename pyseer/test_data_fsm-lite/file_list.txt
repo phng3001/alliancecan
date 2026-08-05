@@ -1,0 +1,3 @@
+ATCC_700669 ATCC_700669.fasta
+R6  R6.fasta
+TIGR4   TIGR4.fasta
