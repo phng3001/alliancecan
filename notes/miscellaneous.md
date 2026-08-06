@@ -1,5 +1,4 @@
 # Create a shared directory
-
 ```bash
 mkdir shared_dir_name
 chgrp def-mouellet shared_dir_name # def-professor
@@ -7,6 +6,11 @@ chmod -R 2775 shared_dir_name # owner = rwx, group = rwx, others = r-x
 setfacl -R -m g::rwx shared_dir_name
 setfacl -d -m g::rwx shared_dir_name
 setfacl -d -m o::r-x shared_dir_name
+```
+
+# Find files not belonging to specific users
+```bash
+find /path/to/directory -type f ! -user user1 ! -user user2
 ```
 
 # Data stream
@@ -90,4 +94,39 @@ def parse_gtf_attributes(attr_string):
     for key, value in re.findall(r'\s*([^ ;]+)\s+"([^"]+)"', attr_string):
         attrs[key] = value
     return attr_dict
+```
+
+# Replace string in each filename
+```bash
+# Replace 'genes' with 'features' in filenames
+for f in *genes*; do mv -- "$f" "${f//genes/features}"; done
+```
+> Preview before renaming:
+```bash
+for f in *genes*; do echo mv -- "$f" "${f//genes/features}"; done
+```
+
+# Remove the first N lines
+## tail
+```bash
+tail -n +$((N+1)) file.txt
+```
+## sed
+```bash
+sed '1,Nd' file.txt
+```
+## awk
+```bash
+awk 'NR>N' file.txt
+```
+
+# Merge files with the same header
+```bash
+awk 'FNR==1{if(!hdr){hdr=$0; print; next} if($0!=hdr){print "Headers differ!" > "/dev/stderr"; exit}} FNR>1' *.tsv > merged.tsv
+```
+
+# seqkit
+```bash
+# Filter out contigs < 500bp
+seqkit seq -m 500 input.fasta > output.fasta
 ```
