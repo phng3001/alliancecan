@@ -51,7 +51,12 @@ $container phandango_mapper \
 $significant_kmers \
 $reference_fasta \
 $output_file
-echo "Mapping completed. Output saved to $output_file"
+
+if [ -f "$output_file" ]; then
+    echo "Mapping completed. Output saved to $output_file"
+else
+    echo "Problem mapping significant kmers, output file $output_file was not generated."
+fi
 
 
 
