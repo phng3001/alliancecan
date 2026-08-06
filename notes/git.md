@@ -87,6 +87,10 @@ git status
 ```bash
 git add <file>
 ```
+* Remove old file
+```bash
+git rm <file>
+```
 * Adds all modified and new files to the staging area
 ```bash
 git add .
