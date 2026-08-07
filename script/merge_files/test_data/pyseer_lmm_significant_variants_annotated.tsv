@@ -1,0 +1,479 @@
+variant	af	filter-pvalue	lrt-pvalue	beta	beta-std-err	variant_h2	notes	GENE_ID	GENE_NAME	DESCRIPTION	VARIANT_TYPE	SEQ_CHANGE
+id00005	9.02E-01	2.92E-01	2.83E-06	-9.58E-01	1.92E-01	4.66E-01		gene-spr1021	ABC-NBD	ABC transporter ATP-binding protein - unknown substrate	missense_variant	p.Ser311Ala
+id00239	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1031	glgD	Required for glycogen biosynthesis	missense_variant	p.Pro32Ser
+id00773	3.37E-01	2.59E-09	2.68E-06	9.76E-01	1.95E-01	4.67E-01		gene-spr1044	rnh	Ribonuclease H	missense_variant	p.Leu10Phe
+id00849	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1048	acoL	Dihydrolipoamide dehydrogenase	missense_variant	p.Asn349Lys
+id00857	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1048	acoL	Dihydrolipoamide dehydrogenase	missense_variant	p.Ser253Asn
+id00960	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1053	pyrC	Dihydroorotase	missense_variant	p.Val19Ile
+id01067	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1061	phtA	Pneumococcal histidine triad protein A precursor	missense_variant	p.Phe111Ile
+id01366	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1090	udK	Uridine kinase	missense_variant	p.Pro104Ser
+id01443	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1095	-	O-acetylhomoserine sulfhydrylase%2C truncation	missense_variant	p.His349Cys
+id01662	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1106	hk02	Histidine kinase	missense_variant	p.Ile44Val
+id01669	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1108	mutY	Similar to A/G-specific adenine glycosylase	missense_variant	p.Ala380Val
+id01761	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1113	-	Hypothetical protein	missense_variant	p.Val128Ile
+id01764	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1113	-	Hypothetical protein	missense_variant	p.Leu147Val
+id01798	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1115	-	Conserved hypothetical protein	missense_variant	p.Ala39Val
+id01822	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1116	-	Conserved hypothetical protein	missense_variant	p.Ala110Asp
+id01830	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1116	-	Conserved hypothetical protein	missense_variant	p.Phe75Cys
+id01833	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1116	-	Conserved hypothetical protein	missense_variant	p.Val66Ile
+id01847	6.52E-02	9.12E-02	2.69E-06	9.86E-01	1.97E-01	4.67E-01	bad-chisq	gene-spr1116	-	Conserved hypothetical protein	missense_variant	p.Leu19Phe
+id02109	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1126	smc	chromosome condensation and segregation SMC protein	missense_variant	p.Val854Ile
+id02120	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1126	smc	chromosome condensation and segregation SMC protein	missense_variant	p.ThrIleAla775AlaIleSer
+id02149	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1126	smc	chromosome condensation and segregation SMC protein	missense_variant	p.AlaAla696GluThr
+id02241	6.52E-02	9.12E-02	3.39E-06	9.53E-01	1.92E-01	4.63E-01	bad-chisq	gene-spr1128	guaC	GMP reductase	missense_variant	p.Ala112Thr
+id02356	5.33E-01	6.60E-03	7.40E-08	-8.84E-01	1.51E-01	5.26E-01		gene-spr1132	-	Hypothetical protein	frameshift_variant	p.Arg48fs
+id02369	1.09E-01	5.03E-01	1.56E-08	9.64E-01	1.55E-01	5.48E-01		gene-spr1133	-	3-isopropylmalate dehydratase small subunit%2C truncation	missense_variant	p.Gln60His
+id02374	1.09E-01	5.03E-01	1.56E-08	9.64E-01	1.55E-01	5.48E-01		gene-spr1133	-	3-isopropylmalate dehydratase small subunit%2C truncation	missense_variant	p.Ser25Thr
+id02375	1.09E-01	5.03E-01	1.56E-08	9.64E-01	1.55E-01	5.48E-01		gene-spr1133	-	3-isopropylmalate dehydratase small subunit%2C truncation	missense_variant	p.Asp15Asn
+id02376	3.48E-01	1.20E-05	3.56E-08	-9.28E-01	1.54E-01	5.36E-01		gene-spr1133	-	3-isopropylmalate dehydratase small subunit%2C truncation	missense_variant	p.Ala12Val
+id03936	5.54E-01	3.63E-04	6.94E-07	6.65E-01	1.25E-01	4.90E-01		gene-spr1237	-	Hypothetical protein	missense_variant	p.Leu100Phe
+id03937	5.22E-01	2.99E-05	6.39E-07	6.66E-01	1.24E-01	4.92E-01		gene-spr1237	-	Hypothetical protein	missense_variant	p.Ile94Leu
+id04244	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1250	-	Conserved hypothetical protein	stop_gained	p.Glu71*
+id04543	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1274	-	Choline binding protein	missense_variant	p.Tyr81Cys
+id05218	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1324	apbE	Thiamine biosynthesis lipoprotein	frameshift_variant	p.Ser103fs
+id05342	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1331	-	Hypothetical protein	missense_variant	p.Pro50Ser
+id05998	8.37E-01	4.82E-02	2.73E-07	8.49E-01	1.53E-01	5.06E-01		gene-spr1379	-	ABC transporter%2C truncation	missense_variant	p.Gln49Arg
+id06000	2.61E-01	1.54E-01	3.42E-07	8.37E-01	1.52E-01	5.02E-01		gene-spr1379	-	ABC transporter%2C truncation	frameshift_variant	p.Ile30fs
+id06004	7.50E-01	3.02E-02	3.51E-07	8.20E-01	1.49E-01	5.02E-01		gene-spr1380	-	ABC transporter%2C truncation	stop_lost&splice_region_variant	p.Ter208Glyext*?
+id06005	2.83E-01	1.65E-01	8.26E-07	8.03E-01	1.52E-01	4.88E-01		gene-spr1380	-	ABC transporter%2C truncation	missense_variant	p.Glu196Asp
+id06011	4.89E-01	1.61E-06	1.39E-08	9.32E-01	1.49E-01	5.50E-01		gene-spr1380	-	ABC transporter%2C truncation	missense_variant	p.Ala141Val
+id06035	7.07E-01	1.18E-02	6.59E-08	-9.00E-01	1.53E-01	5.27E-01		gene-spr1381	-	ABC transporter%2C truncation	missense_variant	p.Phe18Leu
+id06043	1.96E-01	1.15E-01	3.30E-08	9.23E-01	1.53E-01	5.38E-01		gene-spr1382	aliB	ABC transporter substrate-binding protein - oligopeptide transport	missense_variant	p.Ala538Glu
+id06045	7.72E-01	2.14E-01	1.21E-07	8.66E-01	1.51E-01	5.18E-01		gene-spr1382	aliB	ABC transporter substrate-binding protein - oligopeptide transport	missense_variant	p.Phe521Val
+id06824	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1427	clpX	ATP-dependent Clp protease ATP-binding subunit (class III heat-shock protein)	missense_variant	p.Val51Ala
+id06825	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1427	clpX	ATP-dependent Clp protease ATP-binding subunit (class III heat-shock protein)	missense_variant	p.Asn19Ser
+id06826	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1427	clpX	ATP-dependent Clp protease ATP-binding subunit (class III heat-shock protein)	missense_variant	p.AsnArgLys4ThrArgAsn
+id06827	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1427	clpX	ATP-dependent Clp protease ATP-binding subunit (class III heat-shock protein)	missense_variant	p.Ser2Pro
+id06828	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1428	-	Hypothetical protein	missense_variant	p.Ile34Val
+id06831	3.26E-01	7.36E-09	5.20E-09	9.83E-01	1.52E-01	5.63E-01		gene-spr1428	-	Hypothetical protein	missense_variant	p.Phe18Leu
+id06832	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1428	-	Hypothetical protein	missense_variant	p.PheIle15LeuVal
+id06833	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1428	-	Hypothetical protein	missense_variant	p.Phe12Met
+id06834	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1428	-	Hypothetical protein	missense_variant	p.Leu8Phe
+id06835	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1428	-	Hypothetical protein	missense_variant	p.Leu5Ile
+id06836	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.PheTyrAla147SerTyrThr
+id06837	3.26E-01	7.36E-09	5.20E-09	9.83E-01	1.52E-01	5.63E-01		gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.Leu135Phe
+id06839	6.52E-02	3.98E-01	7.35E-09	9.83E-01	1.54E-01	5.58E-01	bad-chisq	gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.His120Gln
+id06843	3.04E-01	2.23E-10	3.67E-09	9.97E-01	1.52E-01	5.67E-01	bad-chisq	gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.Ile100Leu
+id06849	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.Ala78Thr
+id06853	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.Pro70Ser
+id06854	5.43E-02	6.46E-01	9.69E-09	9.83E-01	1.56E-01	5.55E-01	bad-chisq	gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.Lys60Gln
+id06855	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.Met53Ile
+id06858	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1429	dfr	Dihydrofolate reductase	missense_variant	p.His26Tyr
+id06869	5.43E-02	6.46E-01	9.69E-09	9.83E-01	1.56E-01	5.55E-01	bad-chisq	gene-spr1430	dpr	DNA binding protein starved cells-like peroxide resistance protein	missense_variant	p.Glu74Asp
+id06870	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1430	dpr	DNA binding protein starved cells-like peroxide resistance protein	missense_variant	p.Leu63Met
+id06872	4.35E-02	3.07E-01	9.57E-09	9.85E-01	1.56E-01	5.55E-01	bad-chisq	gene-spr1430	dpr	DNA binding protein starved cells-like peroxide resistance protein	missense_variant	p.His58Arg
+id07691	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1491	pepO	Endopeptidase O	missense_variant	p.Leu406Ile
+id07955	3.80E-01	4.50E-05	2.45E-08	9.45E-01	1.55E-01	5.42E-01		gene-spr1502	ileS	Isoleucyl-tRNA synthetase	missense_variant	p.Ile796Val
+id07958	4.24E-01	6.11E-05	2.95E-08	9.28E-01	1.53E-01	5.39E-01		gene-spr1502	ileS	Isoleucyl-tRNA synthetase	missense_variant	p.Thr775Ala
+id07996	3.80E-01	4.50E-05	2.45E-08	9.45E-01	1.55E-01	5.42E-01		gene-spr1502	ileS	Isoleucyl-tRNA synthetase	missense_variant	p.Gly258Ser
+id08084	3.15E-01	4.34E-02	3.46E-08	-9.13E-01	1.51E-01	5.37E-01		gene-spr1508	-	Conserved hypothetical protein	missense_variant	p.Pro34Ser
+id08123	5.43E-02	2.15E-02	7.01E-09	-9.88E-01	1.54E-01	5.59E-01	bad-chisq	gene-spr1512	-	Hypothetical protein	missense_variant	p.Ile126Val
+id08153	5.54E-01	1.65E-03	4.22E-08	-9.27E-01	1.55E-01	5.34E-01		gene-spr1513	mutT	Mutator protein	missense_variant	p.Leu58Val
+id08155	1.52E-01	3.70E-03	1.35E-08	-9.64E-01	1.54E-01	5.50E-01		gene-spr1513	mutT	Mutator protein	missense_variant	p.AlaAsp52ValGlu
+id08157	4.02E-01	5.71E-03	5.87E-08	-8.97E-01	1.52E-01	5.29E-01		gene-spr1513	mutT	Mutator protein	missense_variant	p.Val47Gly
+id08164	1.96E-01	8.59E-03	1.56E-08	-9.59E-01	1.54E-01	5.48E-01		gene-spr1513|gene-spr1514	-	-	missense_variant	p.Thr3Pro|p.Asp456Ala
+id08184	6.52E-02	1.13E-02	7.64E-09	-9.80E-01	1.54E-01	5.58E-01	bad-chisq	gene-spr1514	murF	UDP-N-acetylmuramoylalanine-D-glutamyl-lysine-D-alanyl-D-alanine ligase	missense_variant	p.Ala315Val
+id08204	6.52E-02	1.13E-02	7.64E-09	-9.80E-01	1.54E-01	5.58E-01	bad-chisq	gene-spr1514	murF	UDP-N-acetylmuramoylalanine-D-glutamyl-lysine-D-alanyl-D-alanine ligase	missense_variant	p.Leu215Phe
+id08209	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1514	murF	UDP-N-acetylmuramoylalanine-D-glutamyl-lysine-D-alanyl-D-alanine ligase	missense_variant	p.Ala179Val
+id08233	6.09E-01	1.20E-04	3.05E-08	-9.38E-01	1.55E-01	5.39E-01		gene-spr1515	ddl	D-alanine-D-alanine ligase	missense_variant	p.Glu318Asp
+id08234	5.00E-01	8.49E-04	7.37E-08	-8.85E-01	1.51E-01	5.26E-01		gene-spr1515	ddl	D-alanine-D-alanine ligase	missense_variant	p.Val251Ile
+id08253	3.37E-01	3.91E-07	1.70E-08	9.59E-01	1.55E-01	5.47E-01		gene-spr1515	ddl	D-alanine-D-alanine ligase	missense_variant	p.Phe48Ser
+id08254	6.85E-01	2.01E-05	6.26E-08	8.86E-01	1.50E-01	5.28E-01		gene-spr1515	ddl	D-alanine-D-alanine ligase	missense_variant	p.Asp31Asn
+id08256	3.37E-01	3.91E-07	1.70E-08	9.59E-01	1.55E-01	5.47E-01		gene-spr1516	recR	Recombination protein RecR	missense_variant	p.Pro75Ser
+id08287	3.37E-01	8.05E-12	5.87E-09	9.65E-01	1.50E-01	5.61E-01	bad-chisq	gene-spr1517	pbp2b	Penicillin-binding protein 2B	missense_variant	p.Glu338Gly
+id08289	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1517	pbp2b	Penicillin-binding protein 2B	missense_variant	p.Ala256Ser
+id08291	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1517	pbp2b	Penicillin-binding protein 2B	missense_variant	p.Ala198Val
+id08293	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1517	pbp2b	Penicillin-binding protein 2B	missense_variant	p.Gln166Pro
+id08299	6.74E-01	3.73E-04	2.91E-08	9.06E-01	1.49E-01	5.39E-01		gene-spr1517	pbp2b	Penicillin-binding protein 2B	missense_variant	p.Ile135Thr
+id08302	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1517	pbp2b	Penicillin-binding protein 2B	missense_variant	p.Thr101Ile
+id08311	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1518	-	Conserved hypothetical protein	missense_variant	p.Gln76Glu
+id08315	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1518	-	Conserved hypothetical protein	missense_variant	p.Ile112Val
+id08317	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1518	-	Conserved hypothetical protein	missense_variant	p.Ile127Val
+id08321	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1518	-	Conserved hypothetical protein	missense_variant	p.Thr205Ser
+id08323	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1518	-	Conserved hypothetical protein	missense_variant	p.Thr214Ala
+id08332	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1519	glk	Glucokinase	missense_variant	p.His275Lys
+id08339	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1519	glk	Glucokinase	missense_variant	p.Ile208Phe
+id08368	5.11E-01	3.92E-04	3.46E-08	-9.25E-01	1.53E-01	5.37E-01		gene-spr1521	-	N-acetylneuraminate lyase subunit%2C truncation	missense_variant	p.Glu20Asp
+id08397	3.26E-01	9.42E-08	1.13E-08	9.73E-01	1.55E-01	5.53E-01		gene-spr1523	-	Hypothetical protein	missense_variant	p.Ala46Val
+id08402	3.04E-01	3.84E-09	7.81E-09	9.89E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr1523	-	Hypothetical protein	missense_variant	p.AsnGly32ThrAla
+id08405	3.37E-01	4.14E-03	8.89E-08	-8.69E-01	1.49E-01	5.23E-01		gene-spr1523	-	Hypothetical protein	missense_variant	p.Ala24Ser
+id08415	7.61E-02	4.93E-02	1.24E-08	-9.72E-01	1.55E-01	5.51E-01	bad-chisq	gene-spr1524	-	Conserved hypothetical protein	missense_variant	p.His107Tyr
+id08417	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1524	-	Conserved hypothetical protein	missense_variant	p.Asp90Glu
+id08422	3.26E-01	9.42E-08	1.13E-08	9.73E-01	1.55E-01	5.53E-01		gene-spr1524	-	Conserved hypothetical protein	missense_variant	p.Gln62Arg
+id08426	5.43E-02	1.68E-01	1.65E-08	-9.66E-01	1.56E-01	5.47E-01	bad-chisq	gene-spr1524	-	Conserved hypothetical protein	missense_variant	p.Lys31Arg
+id08434	3.04E-01	3.84E-09	7.81E-09	9.89E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr1526	ABC-MSP	ABC transporter membrane-spanning permease - sugar transport	missense_variant	p.Val279Ile
+id09403	6.41E-01	1.68E-02	3.62E-07	-8.28E-01	1.51E-01	5.01E-01		gene-spr1590	-	Conserved hypothetical protein	missense_variant	p.Gly26Glu
+id09406	5.76E-01	6.09E-03	1.92E-07	-8.46E-01	1.50E-01	5.11E-01		gene-spr1591	-	Conserved hypothetical protein	missense_variant	p.Asn197Asp
+id09407	1.09E-01	1.80E-01	8.87E-09	9.73E-01	1.53E-01	5.56E-01		gene-spr1591	-	Conserved hypothetical protein	missense_variant	p.Ser154Asn
+id09409	9.78E-02	1.40E-02	8.61E-08	-8.82E-01	1.51E-01	5.23E-01	bad-chisq	gene-spr1591	-	Conserved hypothetical protein	missense_variant	p.Ala142Ser
+id09411	4.35E-01	3.24E-03	8.71E-07	7.98E-01	1.51E-01	4.87E-01		gene-spr1591	-	Conserved hypothetical protein	missense_variant	p.Ile116Val
+id09422	1.63E-01	7.78E-01	2.83E-08	9.17E-01	1.51E-01	5.40E-01		gene-spr1591	-	Conserved hypothetical protein	missense_variant	p.Leu21Phe
+id09429	3.15E-01	1.36E-02	1.34E-07	-8.62E-01	1.51E-01	5.17E-01		gene-spr1592	-	Conserved hypothetical protein	missense_variant	p.Leu185Ile
+id09432	3.70E-01	5.48E-04	4.04E-08	-8.84E-01	1.47E-01	5.35E-01		gene-spr1592	-	Conserved hypothetical protein	missense_variant	p.Val160Ala
+id09437	1.63E-01	1.58E-01	6.45E-08	-8.91E-01	1.51E-01	5.28E-01		gene-spr1592	-	Conserved hypothetical protein	missense_variant	p.LysAsn117GlnHis
+id09463	1.41E-01	3.62E-02	7.31E-08	-8.95E-01	1.53E-01	5.26E-01		gene-spr1594	-	Conserved hypothetical protein	missense_variant	p.Asp73Asn
+id09688	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1606	pepF	Similar to oligoendopeptidase	missense_variant	p.Val312Ala
+id09697	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1606	pepF	Similar to oligoendopeptidase	missense_variant	p.Ala148Val
+id09821	5.43E-01	8.11E-04	6.82E-08	8.77E-01	1.49E-01	5.27E-01		gene-spr1611	-	Hypothetical protein	missense_variant	p.Val116Thr
+id09827	5.76E-01	1.55E-03	9.50E-08	8.66E-01	1.49E-01	5.22E-01		gene-spr1611	-	Hypothetical protein	missense_variant	p.Glu79Ala
+id09831	6.52E-01	6.62E-01	1.67E-08	-9.20E-01	1.48E-01	5.47E-01		gene-spr1611	-	Hypothetical protein	missense_variant	p.Val9Ile
+id09843	1.85E-01	1.79E-01	6.49E-08	8.84E-01	1.50E-01	5.28E-01		gene-spr1613	-	Hypothetical protein	missense_variant	p.Arg63Gly
+id09845	5.00E-01	3.04E-05	5.88E-07	-8.15E-01	1.51E-01	4.93E-01		gene-spr1613	-	Hypothetical protein	missense_variant	p.Leu50Pro
+id09852	1.74E-01	2.71E-01	9.19E-08	8.67E-01	1.49E-01	5.22E-01		gene-spr1613	-	Hypothetical protein	missense_variant	p.Met10Ile
+id09857	6.85E-01	1.36E-02	3.40E-07	-8.32E-01	1.51E-01	5.02E-01		gene-spr1614	-	Hypothetical protein	missense_variant	p.Gly23Val
+id09862	4.13E-01	1.38E-04	3.39E-08	-9.07E-01	1.50E-01	5.37E-01		gene-spr1615	-	Hypothetical protein	missense_variant	p.Tyr69His
+id09887	2.07E-01	4.40E-01	5.66E-08	8.90E-01	1.50E-01	5.30E-01		gene-spr1616	cshA	Chromosome segregation helicase	missense_variant	p.Lys306Arg
+id09901	3.80E-01	1.28E-03	4.05E-08	-9.15E-01	1.53E-01	5.35E-01		gene-spr1617	sacA	Sucrose-6-phosphate hydrolase	missense_variant	p.Asp289Asn
+id09902	7.28E-01	4.39E-04	1.83E-08	9.14E-01	1.48E-01	5.46E-01		gene-spr1617	sacA	Sucrose-6-phosphate hydrolase	missense_variant	p.Cys265Arg
+id09907	6.96E-01	4.53E-05	1.95E-08	9.01E-01	1.46E-01	5.45E-01		gene-spr1617	sacA	Sucrose-6-phosphate hydrolase	missense_variant	p.Asn185Asp
+id09910	1.63E-01	7.78E-01	2.88E-08	9.13E-01	1.50E-01	5.39E-01		gene-spr1617	sacA	Sucrose-6-phosphate hydrolase	missense_variant	p.Ala181Thr
+id10907	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1681	-	Hypothetical protein	missense_variant	p.Asn18Ser
+id11219	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1706	amiC	ABC transporter membrane-spanning permease - oligopeptide transport	missense_variant	p.Ala47Val
+id12082	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1762	-	Hypothetical protein	missense_variant	p.Arg57Cys
+id12314	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1782	-	Conserved hypothetical protein	missense_variant	p.Gly209Asp
+id12550	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1801	ABC-NBD	ABC transporter ATP-binding protein - unknown substrate	missense_variant	p.Gly79Ser
+id13136	2.17E-02	1.53E-01	2.20E-06	9.91E-01	1.96E-01	4.71E-01	bad-chisq	gene-spr1828	-	Transposase	missense_variant	p.Arg23Gln
+id13991	3.04E-01	6.20E-07	1.65E-06	7.26E-01	1.42E-01	4.76E-01		gene-spr1880	-	Conserved hypothetical protein	stop_gained	p.Arg144*
+id13993	9.78E-02	1.59E-03	1.05E-08	-9.66E-01	1.53E-01	5.53E-01	bad-chisq	gene-spr1880	-	Conserved hypothetical protein	missense_variant	p.Ala126Ser
+id13997	3.15E-01	2.45E-06	2.16E-06	7.15E-01	1.41E-01	4.71E-01		gene-spr1880	-	Conserved hypothetical protein	missense_variant	p.Ala61Thr
+id14011	7.50E-01	1.75E-03	1.62E-06	7.19E-01	1.40E-01	4.76E-01		gene-spr1881	gltX	Glutamyl-tRNA synthetase (glutamate--tRNA ligase)	missense_variant	p.Ala203Val
+id14012	7.61E-01	3.36E-03	1.70E-06	7.18E-01	1.40E-01	4.75E-01		gene-spr1881	gltX	Glutamyl-tRNA synthetase (glutamate--tRNA ligase)	missense_variant	p.Ile188Val
+id14018	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1881	gltX	Glutamyl-tRNA synthetase (glutamate--tRNA ligase)	missense_variant	p.His77Tyr
+id14026	3.26E-01	8.67E-06	1.97E-06	7.19E-01	1.41E-01	4.73E-01		gene-spr1882	gpi	Glucose-6-phosphate isomerase	missense_variant	p.Ala256Val
+id15335	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1953	-	Conserved hypothetical protein	missense_variant	p.Lys296Asn
+id15459	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1957	arcB	Ornithine transcarbamoylase	missense_variant	p.Val147Ile
+id15640	3.91E-01	2.79E-08	2.87E-06	7.10E-01	1.42E-01	4.66E-01		gene-spr1966	-	Conserved hypothetical protein	missense_variant	p.Asp284Gly
+id15642	3.15E-01	2.02E-08	2.45E-06	7.34E-01	1.46E-01	4.69E-01		gene-spr1966	-	Conserved hypothetical protein	missense_variant	p.Tyr100Cys
+id15655	4.78E-01	4.40E-06	9.82E-09	9.50E-01	1.50E-01	5.54E-01		gene-spr1972	fucA	L-fuculose phosphate aldolase	missense_variant	p.Glu204Asp
+id15674	3.70E-01	1.56E-05	9.19E-08	8.87E-01	1.53E-01	5.22E-01		gene-spr1973	fcsK	Fucose kinase	missense_variant	p.Val300Glu
+id15686	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1973	fcsK	Fucose kinase	missense_variant	p.Ala183Ser
+id15691	3.04E-01	1.51E-03	9.70E-08	-8.52E-01	1.47E-01	5.22E-01		gene-spr1973	fcsK	Fucose kinase	missense_variant	p.Leu107Ser
+id15700	4.35E-01	2.60E-05	2.52E-08	-8.87E-01	1.45E-01	5.41E-01		gene-spr1974	fcsR	Regulator of fucose operon	missense_variant	p.Leu236Val
+id15701	3.48E-01	1.47E-06	1.74E-08	9.43E-01	1.52E-01	5.47E-01		gene-spr1974	fcsR	Regulator of fucose operon	missense_variant	p.Asp238Asn
+id15762	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1979	dltD	D-alanine transfer from undecaprenol-phosphate to the poly(glycerophosphate) chain	missense_variant	p.Asp284Asn
+id15771	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1979	dltD	D-alanine transfer from undecaprenol-phosphate to the poly(glycerophosphate) chain	stop_gained	p.Gln172*
+id15915	4.57E-01	4.13E-06	1.10E-08	8.72E-01	1.39E-01	5.53E-01		gene-spr1988	glpF	Glycerol uptake facilitator protein	missense_variant	p.Ala111Val
+id15922	4.24E-01	9.41E-06	2.35E-08	8.48E-01	1.39E-01	5.42E-01		gene-spr1989	-	Glycerol-3-phosphate dehydrogenase%2C truncation	missense_variant	p.Asn157Gln
+id15925	4.57E-01	4.13E-06	2.87E-08	8.39E-01	1.38E-01	5.40E-01		gene-spr1989	-	Glycerol-3-phosphate dehydrogenase%2C truncation	missense_variant	p.Glu152Lys
+id15962	5.43E-02	2.15E-02	7.79E-09	-9.88E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr1991	glpK	Glycerol kinase	missense_variant	p.Val262Ile
+id15966	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1991	glpK	Glycerol kinase	missense_variant	p.Ser118Asn
+id16032	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1994	-	Conserved hypothetical protein	missense_variant	p.Ala227Thr
+id16173	3.91E-01	2.94E-07	8.27E-10	8.80E-01	1.28E-01	5.86E-01		gene-spr1995	pspC	Choline binding protein A	missense_variant	p.Ala46Val
+id16176	3.91E-01	2.61E-06	3.26E-08	9.16E-01	1.51E-01	5.38E-01		gene-spr1995	pspC	Choline binding protein A	missense_variant	p.GlySer42ValThr
+id16214	1.52E-01	2.02E-02	5.53E-11	-9.32E-01	1.25E-01	6.17E-01		gene-spr1997	hk06	Histidine kinase	missense_variant	p.His217Tyr
+id16226	5.54E-01	6.74E-05	4.45E-08	-9.08E-01	1.52E-01	5.33E-01		gene-spr1999	-	Class III stress response-related ATPase%2C truncation	missense_variant	p.Ile32Thr
+id16255	3.80E-01	6.49E-06	3.95E-08	9.15E-01	1.52E-01	5.35E-01		gene-spr2000	-	Class III stress response-related ATPase%2C truncation	missense_variant	p.Leu109Phe
+id16306	3.26E-01	9.42E-08	1.23E-08	9.63E-01	1.54E-01	5.51E-01		gene-spr2005	-	Conserved hypothetical protein	missense_variant	p.Thr35Pro
+id16320	9.78E-02	2.92E-01	1.44E-08	9.58E-01	1.54E-01	5.49E-01		gene-spr2006	cbpD	Choline binding protein D	missense_variant	p.Ala285Gly
+id16617	3.70E-01	1.96E-08	8.16E-09	9.78E-01	1.54E-01	5.57E-01		gene-spr2035	ABC-NBD	ABC transporter ATP-binding protein - unknown substrate	missense_variant	p.Glu412Asp
+id16631	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr2036	-	Conserved hypothetical protein	missense_variant	p.Ser147Gly
+id16633	3.70E-01	1.56E-05	1.49E-08	9.55E-01	1.53E-01	5.49E-01		gene-spr2036	-	Conserved hypothetical protein	missense_variant	p.Leu244Ile
+id16636	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr2036	-	Conserved hypothetical protein	missense_variant	p.Lys313Arg
+id16638	6.52E-02	1.13E-02	8.89E-09	-9.78E-01	1.54E-01	5.56E-01	bad-chisq	gene-spr2036	-	Conserved hypothetical protein	missense_variant	p.Val321Ile
+id17276	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0238	ruvB	Branch migration of Holliday structures	missense_variant	p.Leu223Phe
+id17422	2.83E-01	1.19E-03	1.57E-06	-8.58E-01	1.67E-01	4.77E-01		gene-spr0246	-	Conserved hypothetical protein	missense_variant	p.Ser107Ala
+id17472	1.09E-01	4.45E-02	3.00E-06	9.49E-01	1.90E-01	4.65E-01		gene-spr0247	pulA	Alkaline amylopullulanase	missense_variant	p.Val745Ile
+id17488	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0247	pulA	Alkaline amylopullulanase	missense_variant	p.Gly361Asp
+id17737	7.61E-02	5.91E-03	5.35E-07	-9.41E-01	1.74E-01	4.95E-01	bad-chisq	gene-spr0262	adhP	Alcohol dehydrogenase%2C propanol-preferring	missense_variant	p.Met267Thr
+id17759	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0263	-	Conserved hypothetical protein	missense_variant	p.Ala163Ser
+id17772	7.61E-02	4.93E-02	6.92E-08	-8.60E-01	1.46E-01	5.27E-01	bad-chisq	gene-spr0264	-	Conserved hypothetical protein	missense_variant	p.Asn135Lys
+id17832	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant&conservative_inframe_insertion	p.Gly60_Ser61insArg
+id17835	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Asp85Asn
+id17843	4.35E-02	4.09E-02	5.17E-09	9.97E-01	1.54E-01	5.63E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.GluAlaArg127LysAlaGly
+id17846	6.74E-01	1.85E-03	2.69E-06	8.44E-01	1.68E-01	4.67E-01		gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Gln131Lys
+id17848	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Met140Ile
+id17866	3.15E-01	1.37E-09	4.92E-09	9.85E-01	1.52E-01	5.64E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Ala179Thr
+id17867	4.35E-02	4.09E-02	5.94E-09	9.93E-01	1.54E-01	5.61E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Glu182Asp
+id17869	3.15E-01	1.37E-09	4.92E-09	9.85E-01	1.52E-01	5.64E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Ala189Glu
+id17875	3.26E-01	4.75E-10	4.18E-09	9.81E-01	1.51E-01	5.66E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Pro195Gln
+id17881	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Ala274Val
+id17883	8.70E-02	1.39E-01	3.71E-08	-9.34E-01	1.55E-01	5.36E-01		gene-spr0266	sulA	Dihydropteroate synthase	missense_variant	p.Ala298Thr
+id17887	4.35E-02	3.07E-01	9.18E-09	9.86E-01	1.56E-01	5.55E-01	bad-chisq	gene-spr0267	sulB	Dihydrofolate synthetase	missense_variant	p.Ile4Phe
+id17902	1.09E-01	5.03E-01	2.09E-08	9.45E-01	1.54E-01	5.44E-01		gene-spr0267	sulB	Dihydrofolate synthetase	missense_variant	p.Ala93Val
+id17941	3.91E-01	2.94E-07	1.30E-15	9.52E-01	9.83E-02	7.14E-01		gene-spr0267	sulB	Dihydrofolate synthetase	missense_variant	p.Ser377Asn
+id17943	7.61E-02	5.91E-03	5.96E-16	-9.81E-01	9.96E-02	7.20E-01	bad-chisq	gene-spr0267	sulB	Dihydrofolate synthetase	missense_variant	p.Ser385Ala
+id17952	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0267|gene-spr0268	-	-	stop_gained|missense_variant	p.Tyr437*|p.Thr3Arg
+id17982	4.35E-02	4.09E-02	5.55E-07	-9.55E-01	1.77E-01	4.94E-01	bad-chisq	gene-spr0271	rplM	50S Ribosomal protein L13	missense_variant	p.Gly146Glu
+id17984	3.80E-01	7.85E-07	9.42E-07	9.09E-01	1.73E-01	4.85E-01		gene-spr0272	rpsI	30S Ribosomal protein S9	missense_variant	p.Val68Ile
+id18136	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0282	PTS-EII	Phosphotransferase system sugar-specific EII component	missense_variant	p.Gly162Val
+id18189	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0284	xylS	Alpha-xylosidase	missense_variant	p.Asp500Asn
+id18195	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0284	xylS	Alpha-xylosidase	missense_variant	p.Glu548Asp
+id18213	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0284	xylS	Alpha-xylosidase	missense_variant	p.Arg727Ser
+id18217	8.70E-02	1.39E-01	2.93E-08	-9.34E-01	1.54E-01	5.39E-01		gene-spr0285	basA	Gluthatione peroxidase	missense_variant	p.Ala127Ser
+id18218	4.78E-01	2.99E-05	1.48E-07	8.39E-01	1.47E-01	5.15E-01		gene-spr0285	basA	Gluthatione peroxidase	missense_variant	p.Ile122Val
+id18234	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0286	hysA	Hyaluronate lyase precursor (hyaluronidase/hyase)	missense_variant	p.Gly73Ser
+id18243	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0286	hysA	Hyaluronate lyase precursor (hyaluronidase/hyase)	missense_variant	p.Ala126Val
+id18263	5.00E-01	4.49E-06	9.65E-08	8.61E-01	1.48E-01	5.22E-01		gene-spr0286	hysA	Hyaluronate lyase precursor (hyaluronidase/hyase)	missense_variant	p.Asp305Ala
+id18268	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0286	hysA	Hyaluronate lyase precursor (hyaluronidase/hyase)	stop_gained	p.Gln348*
+id18278	3.26E-01	7.36E-09	1.54E-08	9.46E-01	1.52E-01	5.48E-01		gene-spr0286	hysA	Hyaluronate lyase precursor (hyaluronidase/hyase)	missense_variant	p.Ser412Arg
+id18300	9.78E-02	1.40E-02	1.16E-08	-7.05E-01	1.12E-01	5.52E-01	bad-chisq	gene-spr0286	hysA	Hyaluronate lyase precursor (hyaluronidase/hyase)	missense_variant	p.Arg714His
+id18317	1.96E-01	3.55E-02	4.25E-08	-9.01E-01	1.50E-01	5.34E-01		gene-spr0286	hysA	Hyaluronate lyase precursor (hyaluronidase/hyase)	missense_variant	p.Asp931Gly
+id18365	6.30E-01	1.56E-05	1.40E-09	7.00E-01	1.04E-01	5.80E-01		gene-spr0289	-	Hypothetical protein	missense_variant	p.Asp30Gly
+id18369	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0290	gno	5-keto-D-gluconate 5-reductase	missense_variant	p.Pro233Thr
+id18406	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0292	ugl	Unsaturated glucuronyl hydrolase	missense_variant	p.Asp348Asn
+id18419	3.04E-01	2.23E-10	3.22E-09	9.93E-01	1.51E-01	5.69E-01	bad-chisq	gene-spr0293	PTS-EII	Phosphotransferase system sugar-specific EII component	missense_variant	p.Ser135Asn
+id18462	6.63E-01	3.91E-07	1.97E-08	-9.47E-01	1.54E-01	5.45E-01		gene-spr0297	-	Hypothetical protein	missense_variant	p.Ile40Met
+id18473	5.43E-01	1.65E-04	1.10E-06	-5.41E-01	1.04E-01	4.83E-01		gene-spr0297	-	Hypothetical protein	missense_variant	p.Gly100Asp
+id18482	5.22E-01	2.99E-05	1.21E-06	5.44E-01	1.05E-01	4.81E-01		gene-spr0297	-	Hypothetical protein	missense_variant	p.His196Tyr
+id18489	5.22E-01	2.99E-05	1.21E-06	5.44E-01	1.05E-01	4.81E-01		gene-spr0297	-	Hypothetical protein	missense_variant	p.Gln259Arg
+id18506	7.17E-01	5.46E-03	7.30E-10	7.78E-01	1.13E-01	5.88E-01		gene-spr0297	-	Hypothetical protein	missense_variant	p.Met448Val
+id18545	3.15E-01	1.37E-09	1.08E-08	9.60E-01	1.52E-01	5.53E-01	bad-chisq	gene-spr0301	yorfE	Transcription regulator	missense_variant	p.Glu61Lys
+id18553	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0302	yllC	YllC protein	missense_variant	p.Ala94Thr
+id18648	2.72E-01	4.66E-09	6.95E-07	7.57E-01	1.42E-01	4.90E-01	bad-chisq	gene-spr0305	mraY	Undecaprenyl-phosphate-UDP-MurNAc-pentapeptide phospho-MurNAc-pentapeptide transferase	missense_variant	p.Phe151Ile
+id19038	5.87E-01	1.11E-02	1.04E-07	8.74E-01	1.51E-01	5.21E-01		gene-spr0327	aliA	ABC transporter substrate-binding protein - oligopeptide transport	missense_variant	p.Val616Ile
+id19043	3.15E-01	2.02E-08	1.62E-08	9.50E-01	1.53E-01	5.48E-01		gene-spr0327	aliA	ABC transporter substrate-binding protein - oligopeptide transport	missense_variant	p.Ala651Thr
+id19052	3.04E-01	3.84E-09	1.17E-08	9.64E-01	1.53E-01	5.52E-01	bad-chisq	gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Pro110His
+id19055	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Pro118Leu
+id19067	7.17E-01	2.06E-02	3.39E-07	8.34E-01	1.51E-01	5.02E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Lys205Asn
+id19069	1.96E-01	8.59E-03	6.91E-07	-7.15E-01	1.34E-01	4.91E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Ser223Thr
+id19071	2.07E-01	4.61E-03	6.52E-07	-7.16E-01	1.34E-01	4.92E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.ThrThr225GlyAsn
+id19073	2.07E-01	4.61E-03	6.52E-07	-7.16E-01	1.34E-01	4.92E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.ArgGlySer231LysGlyAsn
+id19102	3.37E-01	2.59E-09	6.10E-08	8.87E-01	1.50E-01	5.29E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Lys583Asn
+id19164	5.11E-01	1.61E-06	1.71E-08	8.40E-01	1.36E-01	5.47E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Leu1516Val
+id19167	4.89E-01	7.41E-05	1.36E-07	-8.59E-01	1.50E-01	5.17E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Ala1540Pro
+id19168	3.26E-01	7.36E-09	6.67E-09	9.74E-01	1.52E-01	5.60E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Val1549Ile
+id19170	3.26E-01	7.36E-09	6.67E-09	9.74E-01	1.52E-01	5.60E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Thr1577Ala
+id19188	3.37E-01	2.59E-09	5.96E-09	9.72E-01	1.51E-01	5.61E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Pro1696Ser
+id19200	4.46E-01	1.57E-07	1.08E-08	9.52E-01	1.51E-01	5.53E-01		gene-spr0328	-	Conserved hypothetical protein	missense_variant	p.Ala1726Asp
+id19231	3.04E-01	2.23E-10	3.67E-09	9.97E-01	1.52E-01	5.67E-01	bad-chisq	gene-spr0329	pbpA	Penicillin-binding protein 1A	missense_variant	p.Thr103Ser
+id19238	3.15E-01	1.37E-09	4.16E-09	9.92E-01	1.52E-01	5.66E-01	bad-chisq	gene-spr0330	recU	Recombination protein U	missense_variant	p.Glu165Gly
+id19244	3.26E-01	4.75E-10	3.58E-09	9.87E-01	1.51E-01	5.68E-01	bad-chisq	gene-spr0330	recU	Recombination protein U	missense_variant	p.Val97Ala
+id19246	3.04E-01	3.84E-09	5.49E-09	9.93E-01	1.54E-01	5.62E-01	bad-chisq	gene-spr0330	recU	Recombination protein U	missense_variant	p.Gln60Arg
+id19248	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0330	recU	Recombination protein U	missense_variant	p.Thr15Pro
+id19250	3.04E-01	3.84E-09	5.49E-09	9.93E-01	1.54E-01	5.62E-01	bad-chisq	gene-spr0330	recU	Recombination protein U	missense_variant	p.Val8Leu
+id19260	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0332	-	Conserved hypothetical protein	missense_variant	p.Ala6Thr
+id19269	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0333	-	Conserved hypothetical protein	missense_variant	p.Ala50Thr
+id19277	4.46E-01	6.74E-05	2.89E-08	9.13E-01	1.50E-01	5.39E-01		gene-spr0333	-	Conserved hypothetical protein	missense_variant	p.Ala217Ser
+id19281	3.26E-02	7.82E-02	2.77E-06	-7.37E-01	1.47E-01	4.67E-01	bad-chisq	gene-spr0333	-	Conserved hypothetical protein	missense_variant	p.Met273Val
+id19289	5.33E-01	3.82E-04	1.00E-07	-8.63E-01	1.49E-01	5.21E-01		gene-spr0334	-	Conserved hypothetical protein	missense_variant	p.Ala13Gly
+id19304	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0334	-	Conserved hypothetical protein	missense_variant	p.Ser104Phe
+id19306	6.52E-02	1.13E-02	7.47E-09	-9.88E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0334	-	Conserved hypothetical protein	missense_variant	p.Asp127Glu
+id19315	5.00E-01	3.04E-05	1.07E-09	-8.66E-01	1.27E-01	5.83E-01		gene-spr0334	-	Conserved hypothetical protein	missense_variant	p.Asn216Asp
+id19334	4.78E-01	5.75E-08	1.14E-08	9.20E-01	1.46E-01	5.52E-01		gene-spr0335	gnd	6-phosphogluconate dehydrogenase	missense_variant	p.Ala153Ser
+id19338	4.13E-01	2.29E-05	3.64E-08	9.13E-01	1.52E-01	5.36E-01		gene-spr0335	gnd	6-phosphogluconate dehydrogenase	missense_variant	p.Gly247Asp
+id19355	7.61E-02	4.93E-02	1.56E-08	-9.55E-01	1.54E-01	5.48E-01	bad-chisq	gene-spr0336	csrR	Response regulator	missense_variant	p.Met227Ile
+id19386	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0337	cbpF	Choline-binding protein F	missense_variant	p.Lys309Asn
+id19389	1.20E-01	1.08E-01	3.34E-08	-9.33E-01	1.54E-01	5.37E-01		gene-spr0337	cbpF	Choline-binding protein F	missense_variant	p.Gln338Arg
+id19430	1.96E-01	2.93E-01	1.80E-06	8.83E-01	1.73E-01	4.74E-01		gene-spr0339	mvd1	diphosphomevalonate decarboxylase	missense_variant	p.Asp286Ala
+id19450	3.48E-01	2.18E-03	1.04E-06	-8.81E-01	1.68E-01	4.84E-01		gene-spr0340	mvaK2	Phosphomevalonate kinase	missense_variant	p.Ala90Lys
+id19451	5.98E-01	5.35E-05	9.55E-07	8.79E-01	1.67E-01	4.85E-01		gene-spr0340	mvaK2	Phosphomevalonate kinase	missense_variant	p.Ala90Glu
+id19467	7.72E-01	4.56E-01	2.75E-06	-8.48E-01	1.69E-01	4.67E-01		gene-spr0340	mvaK2	Phosphomevalonate kinase	missense_variant	p.Thr230Ser
+id19472	4.89E-01	1.19E-05	1.13E-06	-8.76E-01	1.68E-01	4.82E-01		gene-spr0340	mvaK2	Phosphomevalonate kinase	missense_variant	p.Ile251Val
+id19506	6.52E-02	9.12E-02	2.22E-06	9.80E-01	1.94E-01	4.70E-01	bad-chisq	gene-spr0342	-	Conserved hypothetical protein	missense_variant	p.Thr188Ile
+id19563	8.70E-02	1.39E-01	2.15E-06	9.75E-01	1.92E-01	4.71E-01		gene-spr0345	-	DNA alkylation repair enzyme%2C truncation	frameshift_variant&stop_lost&missense_variant&splice_region_variant	p.Asn46fs
+id20551	8.70E-02	4.59E-01	2.88E-06	9.61E-01	1.92E-01	4.66E-01	bad-chisq	gene-spr0419	-	Hypothetical protein	missense_variant	p.Thr55Ser
+id20556	8.70E-02	4.59E-01	2.88E-06	9.61E-01	1.92E-01	4.66E-01	bad-chisq	gene-spr0419	-	Hypothetical protein	missense_variant	p.IleGlu52SerLys
+id20575	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0421	PTS-EII	Phosphotransferase system sugar-specific EII component	missense_variant	p.Pro192Ser
+id20627	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0424	lacG	Phospho-beta-D-galactosidase	missense_variant	p.Ala74Thr
+id20890	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0440	-	Hypothetical protein	missense_variant	p.Met25Ile
+id20891	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0440	-	Hypothetical protein	missense_variant	p.Val29Ile
+id20898	3.04E-01	5.85E-06	7.76E-08	-8.72E-01	1.49E-01	5.25E-01		gene-spr0440	-	Hypothetical protein	missense_variant	p.Ala73Thr
+id20899	2.72E-01	8.15E-01	1.22E-07	8.62E-01	1.50E-01	5.18E-01		gene-spr0440	-	Hypothetical protein	missense_variant	p.Thr86Ile
+id20900	3.80E-01	6.49E-06	6.74E-08	-8.84E-01	1.50E-01	5.27E-01		gene-spr0440	-	Hypothetical protein	disruptive_inframe_deletion	p.Ser92_Ala104del
+id20902	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0440	-	Hypothetical protein	missense_variant	p.Val119Ala
+id21560	9.78E-02	1.40E-02	8.16E-09	-9.73E-01	1.53E-01	5.57E-01	bad-chisq	gene-spr0472	blpY	BlpY protein	missense_variant	p.Thr99Ile
+id21564	3.80E-01	7.93E-08	1.20E-08	9.59E-01	1.53E-01	5.52E-01		gene-spr0472	blpY	BlpY protein	missense_variant	p.Val128Ile
+id21572	6.52E-02	1.13E-02	7.60E-09	-9.81E-01	1.54E-01	5.58E-01	bad-chisq	gene-spr0472	blpY	BlpY protein	missense_variant	p.Leu161Phe
+id21577	3.59E-01	5.50E-08	9.04E-09	9.66E-01	1.52E-01	5.56E-01		gene-spr0472	blpY	BlpY protein	missense_variant	p.Val183Ile
+id21579	3.80E-01	7.93E-08	1.19E-08	9.55E-01	1.52E-01	5.52E-01		gene-spr0472	blpY	BlpY protein	missense_variant	p.Phe187Ser
+id21580	3.59E-01	5.74E-07	2.04E-08	9.50E-01	1.54E-01	5.44E-01		gene-spr0472	blpY	BlpY protein	missense_variant	p.Gly193Ser
+id21582	3.70E-01	2.17E-07	1.37E-08	9.60E-01	1.54E-01	5.50E-01		gene-spr0472	blpY	BlpY protein	missense_variant	p.ValAlaThrPhe214PheAlaThrLeu
+id21589	5.43E-02	2.15E-02	7.79E-09	-9.88E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0473	blpZ	Hypothetical protein	missense_variant	p.Ala24Ser
+id21598	7.28E-01	9.94E-03	3.09E-08	9.16E-01	1.51E-01	5.38E-01		gene-spr0474	pncP	ABC transporter ATP binding protein - unknown substrate	missense_variant	p.Ile41Leu
+id21599	5.43E-02	2.15E-02	7.79E-09	-9.88E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0474	pncP	ABC transporter ATP binding protein - unknown substrate	missense_variant	p.Ala75Val
+id21607	6.63E-01	9.38E-04	2.34E-08	9.32E-01	1.52E-01	5.42E-01		gene-spr0474	pncP	ABC transporter ATP binding protein - unknown substrate	missense_variant	p.Leu176Phe
+id21626	4.35E-01	3.71E-06	3.52E-08	-9.05E-01	1.50E-01	5.37E-01		gene-spr0477	-	Conserved hypothetical protein	missense_variant	p.Ile60Met
+id21657	3.70E-01	2.02E-06	2.05E-08	9.49E-01	1.54E-01	5.44E-01		gene-spr0481	infB	Initiation factor IF2	missense_variant	p.Ala103Val
+id22175	3.37E-01	4.14E-03	9.70E-08	-8.78E-01	1.51E-01	5.22E-01		gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Arg451Ser
+id22180	3.15E-01	3.53E-03	5.75E-08	-8.73E-01	1.47E-01	5.29E-01		gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Ala494Val
+id22184	4.89E-01	1.61E-06	1.28E-08	-9.27E-01	1.48E-01	5.51E-01		gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Thr518Ala
+id22186	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Arg567His
+id22191	1.63E-01	1.11E-02	4.14E-08	-9.14E-01	1.52E-01	5.34E-01		gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Gln637Glu
+id22195	1.85E-01	1.56E-02	7.70E-08	-8.90E-01	1.52E-01	5.25E-01		gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Ser644Ala
+id22198	3.04E-01	3.84E-09	7.81E-09	9.89E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Leu659Phe
+id22199	6.52E-02	1.13E-02	9.61E-09	-9.78E-01	1.55E-01	5.55E-01	bad-chisq	gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Ala692Val
+id22202	1.52E-01	2.02E-02	1.25E-07	-8.79E-01	1.53E-01	5.18E-01		gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Thr701Ala
+id22205	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Ala717Ser
+id22208	5.43E-02	2.15E-02	7.37E-09	-9.92E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Glu723Ala
+id22209	5.43E-02	2.15E-02	7.37E-09	-9.92E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0509	pheT	Phenylalanyl-tRNA synthetase beta chain	missense_variant	p.Val730Ile
+id22242	6.30E-01	9.54E-03	1.18E-07	8.78E-01	1.53E-01	5.19E-01		gene-spr0510	-	Hypothetical protein	missense_variant	p.Arg36Gln
+id22246	5.98E-01	5.71E-03	1.46E-07	8.59E-01	1.51E-01	5.15E-01		gene-spr0510	-	Hypothetical protein	missense_variant	p.Val15Ser
+id22250	3.91E-01	2.61E-06	6.58E-08	9.03E-01	1.53E-01	5.27E-01		gene-spr0512	-	Degenerate transposase	missense_variant	p.Ser39Ala
+id22262	3.59E-01	5.74E-07	5.46E-08	9.15E-01	1.54E-01	5.30E-01		gene-spr0513	-	Conserved hypothetical protein	missense_variant	p.LysThr59GluSer
+id22263	3.59E-01	5.74E-07	5.46E-08	9.15E-01	1.54E-01	5.30E-01		gene-spr0513	-	Conserved hypothetical protein	missense_variant	p.Pro62Leu
+id22265	3.59E-01	5.74E-07	5.46E-08	9.15E-01	1.54E-01	5.30E-01		gene-spr0513	-	Conserved hypothetical protein	missense_variant	p.Ala72Thr
+id22282	7.72E-01	8.21E-02	1.45E-07	8.72E-01	1.53E-01	5.16E-01		gene-spr0514	metE	Tetrahydropteroyltriglutamate methyltransferase	missense_variant	p.Phe231Leu
+id22283	1.09E-01	1.80E-01	9.65E-08	-8.98E-01	1.55E-01	5.22E-01		gene-spr0514	metE	Tetrahydropteroyltriglutamate methyltransferase	missense_variant	p.PheValAla231LeuValSer
+id22285	3.26E-01	9.42E-08	1.09E-08	9.75E-01	1.55E-01	5.53E-01		gene-spr0514	metE	Tetrahydropteroyltriglutamate methyltransferase	missense_variant	p.Ala233Val
+id22294	8.48E-01	2.02E-02	1.05E-07	8.84E-01	1.53E-01	5.20E-01		gene-spr0514	metE	Tetrahydropteroyltriglutamate methyltransferase	missense_variant	p.Thr353Ala
+id22305	3.04E-01	3.84E-09	7.81E-09	9.89E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0514	metE	Tetrahydropteroyltriglutamate methyltransferase	missense_variant	p.Pro573Ser
+id22314	1.09E-01	1.80E-01	9.65E-08	-8.98E-01	1.55E-01	5.22E-01		gene-spr0514	metE	Tetrahydropteroyltriglutamate methyltransferase	missense_variant	p.Ala753Val
+id22318	6.96E-01	6.55E-03	8.05E-08	8.67E-01	1.48E-01	5.24E-01		gene-spr0515	metF	5%2C10-methylenetetrahydrofolate reductase	missense_variant	p.Asp22Gly
+id22327	4.24E-01	6.11E-05	1.14E-07	8.88E-01	1.54E-01	5.19E-01		gene-spr0515	metF	5%2C10-methylenetetrahydrofolate reductase	missense_variant	p.Arg128Gln
+id22328	4.78E-01	8.40E-04	3.20E-07	-8.38E-01	1.52E-01	5.03E-01		gene-spr0515	metF	5%2C10-methylenetetrahydrofolate reductase	missense_variant	p.ArgAla128GlnThr
+id22372	1.30E-01	1.96E-03	1.48E-08	-9.55E-01	1.53E-01	5.49E-01	bad-chisq	gene-spr0518	-	Hypothetical protein	missense_variant	p.Pro144Gln
+id22374	1.30E-01	1.96E-03	1.48E-08	-9.55E-01	1.53E-01	5.49E-01	bad-chisq	gene-spr0518	-	Hypothetical protein	missense_variant	p.AsnVal147LysLeu
+id22375	1.30E-01	1.96E-03	1.48E-08	-9.55E-01	1.53E-01	5.49E-01	bad-chisq	gene-spr0518	-	Hypothetical protein	missense_variant	p.His150Asn
+id22379	1.30E-01	1.96E-03	1.48E-08	-9.55E-01	1.53E-01	5.49E-01	bad-chisq	gene-spr0518	-	Hypothetical protein	missense_variant	p.Asp162Glu
+id22380	1.30E-01	1.96E-03	1.48E-08	-9.55E-01	1.53E-01	5.49E-01	bad-chisq	gene-spr0518	-	Hypothetical protein	missense_variant	p.Glu174Gly
+id22388	1.85E-01	3.13E-03	4.08E-08	-9.12E-01	1.52E-01	5.34E-01		gene-spr0518	-	Hypothetical protein	missense_variant	p.ThrAsn216SerAsp
+id22412	3.04E-01	3.84E-09	7.81E-09	9.89E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0520	-	Conserved hypothetical protein	missense_variant	p.Val64Ile
+id22413	5.43E-01	4.13E-06	4.20E-08	8.94E-01	1.49E-01	5.34E-01		gene-spr0521	-	Conserved hypothetical protein	missense_variant	p.Glu3Ala
+id22678	1.09E-01	5.03E-01	2.23E-08	9.43E-01	1.54E-01	5.43E-01		gene-spr0539	estA	tributyrin esterase	missense_variant	p.Val19Met
+id22682	2.83E-01	6.43E-01	1.08E-07	8.76E-01	1.52E-01	5.20E-01		gene-spr0539	estA	tributyrin esterase	missense_variant	p.Thr133Ala
+id22709	5.43E-02	2.15E-02	7.79E-09	-9.88E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr0540	murM	Serine/alanine adding enzyme	missense_variant	p.Pro382Ser
+id22715	7.61E-02	2.38E-01	8.92E-09	9.86E-01	1.55E-01	5.56E-01	bad-chisq	gene-spr0541	murN	Alanine adding enzyme	missense_variant	p.Thr142Ile
+id22724	1.63E-01	4.82E-02	3.86E-08	9.24E-01	1.54E-01	5.35E-01		gene-spr0541	murN	Alanine adding enzyme	missense_variant	p.Asn256Lys
+id23268	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0562	PTS-EII	Phosphotransferase system sugar-specific EII component	missense_variant	p.His151Tyr
+id24366	2.17E-02	1.53E-01	2.06E-07	9.97E-01	1.77E-01	5.10E-01	bad-chisq	gene-spr0613	pyrF	Orotidine-5'-decarboxylase	stop_gained	p.Gln230*
+id24633	3.48E-01	1.49E-07	1.17E-08	9.53E-01	1.52E-01	5.52E-01		gene-spr0630	thiE	Thiamin-phosphate pyrophosphorylase	missense_variant	p.LeuGlu153ValLys
+id24634	3.15E-01	2.02E-08	8.74E-09	9.75E-01	1.54E-01	5.56E-01		gene-spr0630	thiE	Thiamin-phosphate pyrophosphorylase	missense_variant	p.Ile180Met
+id24639	4.89E-01	7.41E-05	2.84E-06	6.81E-01	1.36E-01	4.66E-01		gene-spr0631	-	Conserved hypothetical protein	frameshift_variant	p.Leu6fs
+id24671	4.35E-01	4.55E-08	7.85E-07	7.36E-01	1.39E-01	4.88E-01		gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.IleAla69ValGlu
+id24672	3.37E-01	1.59E-10	4.87E-09	9.85E-01	1.52E-01	5.64E-01	bad-chisq	gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.Lys74Thr
+id24673	4.78E-01	5.10E-09	8.22E-09	9.23E-01	1.45E-01	5.57E-01		gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.Phe79Leu
+id24677	3.48E-01	8.83E-10	1.58E-08	9.49E-01	1.53E-01	5.48E-01		gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.Ile96Val
+id24679	3.48E-01	8.83E-10	1.58E-08	9.49E-01	1.53E-01	5.48E-01		gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.Leu99Met
+id24681	3.48E-01	8.83E-10	8.76E-09	9.68E-01	1.53E-01	5.56E-01		gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.GluAla123LysAsp
+id24682	3.59E-01	2.90E-10	7.68E-09	9.67E-01	1.52E-01	5.58E-01		gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.Pro129Leu
+id24691	3.80E-01	4.74E-10	5.51E-09	9.53E-01	1.48E-01	5.62E-01		gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.His201Tyr
+id24692	5.43E-02	1.68E-01	1.19E-08	-9.78E-01	1.56E-01	5.52E-01	bad-chisq	gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.ValPhe213IleAsn
+id24694	3.91E-01	2.79E-08	7.12E-09	9.46E-01	1.48E-01	5.59E-01		gene-spr0632	ABC-NBD	ABC transporter ATP-binding protein - cobalt or other cation transport	missense_variant	p.Ser231Ala
+id24731	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0633	-	Conserved hypothetical protein	missense_variant	p.Leu43Phe
+id24749	3.26E-01	7.36E-09	6.61E-09	9.76E-01	1.52E-01	5.60E-01		gene-spr0634	tenA	Transcriptional regulator of extracellular enzyme genes	missense_variant	p.Ala50Val
+id24767	5.11E-01	3.92E-04	1.70E-06	7.04E-01	1.38E-01	4.75E-01		gene-spr0635	-	Hypothetical protein	missense_variant	p.Ser170Ala
+id24769	5.11E-01	3.92E-04	1.70E-06	7.04E-01	1.38E-01	4.75E-01		gene-spr0635	-	Hypothetical protein	missense_variant	p.Asp174Glu
+id24770	5.11E-01	3.92E-04	1.70E-06	7.04E-01	1.38E-01	4.75E-01		gene-spr0636	thiM	Hydroxyethylthiazole kinase	missense_variant	p.GluPhe3AlaLeu
+id24777	4.78E-01	1.72E-04	1.47E-06	7.10E-01	1.38E-01	4.78E-01		gene-spr0636	thiM	Hydroxyethylthiazole kinase	missense_variant	p.Ser78Leu
+id24809	5.11E-01	1.79E-08	1.82E-08	-9.10E-01	1.47E-01	5.46E-01		gene-spr0637	thiE	Thiamine phosphate pyrophosphorylase	missense_variant	p.Lys98Gln
+id24814	4.67E-01	1.54E-06	9.12E-08	-8.67E-01	1.49E-01	5.23E-01		gene-spr0637	thiE	Thiamine phosphate pyrophosphorylase	missense_variant	p.Val160Ile
+id24816	3.04E-01	3.84E-09	6.67E-09	9.86E-01	1.54E-01	5.60E-01	bad-chisq	gene-spr0637	thiE	Thiamine phosphate pyrophosphorylase	missense_variant	p.Gly176Asp
+id26519	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0750	ABC-MSP	ABC transporter membrane-spanning permease - ribose/galactose transport	missense_variant	p.Leu179Phe
+id26558	1.63E-01	2.30E-05	5.89E-20	7.49E-01	6.35E-02	7.79E-01	bad-chisq	gene-spr0757	parC	Topoisomerase IV subunit A	missense_variant	p.Ser82Phe
+id27837	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0823	but	Beta-alanine synthase or beta-ureidopropionase	missense_variant	p.Leu173Phe
+id28828	1.30E-01	5.36E-01	8.01E-08	4.87E-01	8.34E-02	5.25E-01		gene-spr0885	-	Degenerate transposase (orf2)	stop_lost&splice_region_variant	p.Ter81Glnext*?
+id29171	1.30E-01	2.16E-01	2.08E-07	-8.88E-01	1.58E-01	5.10E-01		gene-spr0907	phtD	Pneumococcal histidine triad protein D precursor	missense_variant	p.Pro248Thr
+id29838	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0948	nplT	Neopullulanase	missense_variant	p.Ala23Asp
+id29845	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0948	nplT	Neopullulanase	stop_gained	p.Tyr129*
+id30047	2.07E-01	7.14E-02	3.58E-08	-9.32E-01	1.55E-01	5.36E-01		gene-spr0958	-	Tn5252%2C relaxase%2C truncation	missense_variant	p.Thr86Ile
+id30100	7.61E-02	2.38E-01	1.36E-08	-9.53E-01	1.53E-01	5.50E-01	bad-chisq	gene-spr0960	mutR	Similar to positive transcriptional regulator MutR	missense_variant	p.Asn108Asp
+id30470	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0995	pcrA	ATP-dependent DNA helicase	missense_variant	p.Glu412Asp
+id30581	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1006	rluD	23S rRNA pseudouridine synthase	missense_variant	p.Lys157Gln
+id30597	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1008	-	Degenerate transposase (orf2)	missense_variant	p.Thr165Met
+id31036	7.50E-01	4.70E-01	5.68E-08	-9.01E-01	1.52E-01	5.30E-01		gene-spr1049-gene-spr1050	acoC|acoB	Dihydrolipoamide S-acetyltransferase|TPP-dependent acetoin dehydrogenase beta chain	intergenic_region	n.1045172T>G
+id31120	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1057-gene-spr1058	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.1053153delGinsATA
+id31473	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1115-gene-spr1116	-|-	Conserved hypothetical protein|Conserved hypothetical protein	intergenic_region	n.1115412_1115415delAGAG
+id31478	1.09E-01	5.03E-01	3.39E-06	9.81E-01	1.98E-01	4.63E-01		gene-spr1115-gene-spr1116	-|-	Conserved hypothetical protein|Conserved hypothetical protein	intergenic_region	n.1115422T>G
+id31482	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1115-gene-spr1116	-|-	Conserved hypothetical protein|Conserved hypothetical protein	intergenic_region	n.1115434_1115437delTTAAinsGAG
+id31614	1.74E-01	5.82E-01	9.31E-08	8.89E-01	1.53E-01	5.22E-01		gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136605A>G
+id31617	5.98E-01	1.43E-03	9.92E-08	8.72E-01	1.50E-01	5.21E-01		gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136708A>G
+id31619	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136760T>C
+id31621	1.41E-01	7.65E-01	3.20E-08	9.32E-01	1.54E-01	5.38E-01		gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136788C>T
+id31622	2.28E-01	8.21E-02	4.08E-08	-9.21E-01	1.54E-01	5.34E-01		gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136796A>G
+id31624	6.20E-01	1.28E-03	5.15E-08	8.97E-01	1.51E-01	5.31E-01		gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136796_1136799delATCAinsGTTG
+id31627	7.61E-02	2.38E-01	8.92E-09	9.86E-01	1.55E-01	5.56E-01	bad-chisq	gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136836A>G
+id31632	5.33E-01	1.72E-03	5.93E-08	8.93E-01	1.51E-01	5.29E-01		gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136969A>T
+id31633	4.46E-01	3.63E-04	6.58E-08	-8.92E-01	1.51E-01	5.27E-01		gene-spr1132-gene-spr1133	-|-	Hypothetical protein|3-isopropylmalate dehydratase small subunit%2C truncation	intergenic_region	n.1136969_1136971delACCinsTCT
+id31751	9.78E-02	7.93E-02	9.04E-09	8.88E-01	1.40E-01	5.56E-01		gene-spr1158-gene-spr1159	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.1162295A>G
+id31763	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1158-gene-spr1159	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.1162319_1162325delTAGTTTTinsCATTTTC
+id32319	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1249-gene-spr1250	aldB|-	Alpha-acetolactate decarboxylase|Conserved hypothetical protein	intergenic_region	n.1249215C>T
+id32833	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1293-gene-spr1294	ABC-NBD|-	ABC transporter ATP-binding protein - unknown substrate|Hypothetical protein	intergenic_region	n.1290369C>T
+id33212	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1350-gene-spr1351	-|pgm	Degenerative transposase|Phosphoglucomutase	intergenic_region	n.1333592A>T
+id33380	5.87E-01	1.11E-02	8.26E-08	-8.65E-01	1.48E-01	5.24E-01		gene-spr1382-gene-spr1383	aliB|-	ABC transporter substrate-binding protein - oligopeptide transport|Polysaccharide transporter	intergenic_region	n.1365595G>T
+id33614	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1429-gene-spr1430	dfr|dpr	Dihydrofolate reductase|DNA binding protein starved cells-like peroxide resistance protein	intergenic_region	n.1413398T>C
+id33628	2.72E-01	2.41E-01	4.35E-08	8.96E-01	1.50E-01	5.34E-01		gene-spr1430-gene-spr1431	dpr|lytC	DNA binding protein starved cells-like peroxide resistance protein|1%2C4-beta-N-acetylmuramidase	intergenic_region	n.1414160_1414161insA
+id33638	7.61E-02	6.94E-01	1.77E-08	9.61E-01	1.55E-01	5.46E-01	bad-chisq	gene-spr1430-gene-spr1431	dpr|lytC	DNA binding protein starved cells-like peroxide resistance protein|1%2C4-beta-N-acetylmuramidase	intergenic_region	n.1414382_1414386delATTTGinsCTTTA
+id33839	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1460-gene-spr1461	galE|-	UDP-glucose 4-epimerase|Conserved hypothetical protein	intergenic_region	n.1441889G>T
+id34187	5.87E-01	1.38E-04	2.31E-08	9.31E-01	1.52E-01	5.43E-01		gene-spr1502-gene-spr1503	ileS|-	Isoleucyl-tRNA synthetase|Hypothetical protein	intergenic_region	n.1483399A>C
+id34196	1.09E-01	8.09E-04	6.11E-09	-9.72E-01	1.51E-01	5.61E-01	bad-chisq	gene-spr1512-gene-spr1513	-|mutT	Hypothetical protein|Mutator protein	intergenic_region	n.1490301T>C
+id34204	3.26E-01	1.82E-01	5.35E-08	-9.07E-01	1.53E-01	5.31E-01		gene-spr1514-gene-spr1515	murF|ddl	UDP-N-acetylmuramoylalanine-D-glutamyl-lysine-D-alanyl-D-alanine ligase|D-alanine-D-alanine ligase	intergenic_region	n.1492352T>G
+id34217	3.26E-01	9.42E-08	1.35E-08	9.68E-01	1.55E-01	5.50E-01		gene-spr1515-gene-spr1516	ddl|recR	D-alanine-D-alanine ligase|Recombination protein RecR	intergenic_region	n.1493512_1493513delGCinsTT
+id34253	1.30E-01	2.16E-01	6.04E-08	-9.08E-01	1.54E-01	5.29E-01		gene-spr1517-gene-spr1518	pbp2b|-	Penicillin-binding protein 2B|Conserved hypothetical protein	intergenic_region	n.1496428C>T
+id34258	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1518-gene-spr1519	-|glk	Conserved hypothetical protein|Glucokinase	intergenic_region	n.1497332G>A
+id34261	6.52E-02	1.13E-02	8.89E-09	-9.78E-01	1.54E-01	5.56E-01	bad-chisq	gene-spr1522-gene-spr1523	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1499860G>A
+id34283	3.04E-01	3.84E-09	7.81E-09	9.89E-01	1.55E-01	5.58E-01	bad-chisq	gene-spr1522-gene-spr1523	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1499984T>G
+id34284	4.78E-01	5.47E-07	2.26E-08	9.28E-01	1.51E-01	5.43E-01		gene-spr1522-gene-spr1523	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1499991_1499994delATGCinsGTGT
+id34286	5.11E-01	1.61E-06	4.96E-08	8.98E-01	1.51E-01	5.32E-01		gene-spr1522-gene-spr1523	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1499999T>C
+id34288	3.04E-01	6.55E-03	7.84E-08	-8.80E-01	1.50E-01	5.25E-01		gene-spr1522-gene-spr1523	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1500021_1500023delGACinsAAT
+id34289	5.98E-01	3.01E-04	4.03E-08	9.09E-01	1.51E-01	5.35E-01		gene-spr1522-gene-spr1523	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1500023C>T
+id34291	4.78E-01	5.47E-07	2.26E-08	9.28E-01	1.51E-01	5.43E-01		gene-spr1522-gene-spr1523	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1500056T>A
+id34298	5.43E-02	1.68E-01	1.65E-08	-9.66E-01	1.56E-01	5.47E-01	bad-chisq	gene-spr1524-gene-spr1525	-|ABC-MSP	Conserved hypothetical protein|ABC transporter membrane-spanning permease - sugar transport	intergenic_region	n.1501009G>A
+id34299	5.43E-02	1.68E-01	1.65E-08	-9.66E-01	1.56E-01	5.47E-01	bad-chisq	gene-spr1524-gene-spr1525	-|ABC-MSP	Conserved hypothetical protein|ABC transporter membrane-spanning permease - sugar transport	intergenic_region	n.1501020C>T
+id34300	3.70E-01	9.54E-03	1.70E-07	-8.51E-01	1.50E-01	5.13E-01		gene-spr1524-gene-spr1525	-|ABC-MSP	Conserved hypothetical protein|ABC transporter membrane-spanning permease - sugar transport	intergenic_region	n.1501033T>G
+id34301	1.74E-01	2.78E-02	3.97E-08	-9.23E-01	1.54E-01	5.35E-01		gene-spr1524-gene-spr1525	-|ABC-MSP	Conserved hypothetical protein|ABC transporter membrane-spanning permease - sugar transport	intergenic_region	n.1501097C>T
+id34306	3.70E-01	2.02E-06	3.50E-08	9.30E-01	1.54E-01	5.37E-01		gene-spr1524-gene-spr1525	-|ABC-MSP	Conserved hypothetical protein|ABC transporter membrane-spanning permease - sugar transport	intergenic_region	n.1501224A>C
+id34307	5.22E-01	8.40E-04	1.08E-07	8.64E-01	1.50E-01	5.20E-01		gene-spr1524-gene-spr1525	-|ABC-MSP	Conserved hypothetical protein|ABC transporter membrane-spanning permease - sugar transport	intergenic_region	n.1501239_1501243delCATTCinsAAGA
+id34308	3.70E-01	2.02E-06	3.50E-08	9.30E-01	1.54E-01	5.37E-01		gene-spr1524-gene-spr1525	-|ABC-MSP	Conserved hypothetical protein|ABC transporter membrane-spanning permease - sugar transport	intergenic_region	n.1501251G>T
+id34860	4.67E-01	1.54E-06	9.35E-09	-9.32E-01	1.47E-01	5.55E-01		gene-spr1611-gene-spr1612	-|-	Hypothetical protein|Conserved hypothetical protein	intergenic_region	n.1587248G>T
+id34866	1.63E-01	7.78E-01	1.66E-07	-8.69E-01	1.53E-01	5.13E-01		gene-spr1612-gene-spr1613	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.1587820G>A
+id34868	2.17E-01	1.29E-01	5.40E-08	8.95E-01	1.51E-01	5.30E-01		gene-spr1612-gene-spr1613	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.1587826G>A
+id34871	1.41E-01	7.65E-01	5.73E-08	8.85E-01	1.49E-01	5.30E-01		gene-spr1613-gene-spr1614	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1588126G>A
+id34878	5.43E-02	2.15E-02	8.05E-09	-9.87E-01	1.55E-01	5.57E-01	bad-chisq	gene-spr1614-gene-spr1615	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.1588478delA
+id34906	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-sprt11-gene-spr1617	-|sacA	tRNA-Lys|Sucrose-6-phosphate hydrolase	intergenic_region	n.1590636_1590647delATAATATAGGGCinsGGAACCAAGGT
+id36735	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr1900-gene-spr1901	-|-	Transposase%2C IS1380-Spn1 related%2C truncation|Hypothetical protein	intergenic_region	n.1878991G>A
+id37280	5.33E-01	1.14E-05	1.13E-08	9.29E-01	1.48E-01	5.53E-01		gene-spr1972-gene-spr1973	fucA|fcsK	L-fuculose phosphate aldolase|Fucose kinase	intergenic_region	n.1962563_1962566delCTGCinsTTGT
+id37281	5.33E-01	1.14E-05	1.13E-08	9.29E-01	1.48E-01	5.53E-01		gene-spr1972-gene-spr1973	fucA|fcsK	L-fuculose phosphate aldolase|Fucose kinase	intergenic_region	n.1962573_1962574delGCinsCT
+id37283	3.26E-02	7.82E-02	2.77E-06	-7.37E-01	1.47E-01	4.67E-01	bad-chisq	gene-spr1973-gene-spr1974	fcsK|fcsR	Fucose kinase|Regulator of fucose operon	intergenic_region	n.1964084_1964086delGTGinsATT
+id37289	4.35E-02	4.09E-02	2.28E-06	-7.37E-01	1.46E-01	4.70E-01	bad-chisq	gene-spr1973-gene-spr1974	fcsK|fcsR	Fucose kinase|Regulator of fucose operon	intergenic_region	n.1964113G>A
+id37389	6.20E-01	2.62E-04	4.92E-07	6.23E-01	1.15E-01	4.96E-01		gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1977467_1977472delACAGACinsTCAAAG
+id37393	5.98E-01	5.35E-05	1.31E-08	8.49E-01	1.36E-01	5.51E-01		gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1977490_1977494delTCTCGinsACTCA
+id37394	6.20E-01	4.50E-05	1.27E-08	8.53E-01	1.36E-01	5.51E-01		gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1977527A>G
+id37396	4.35E-01	1.53E-04	3.16E-08	9.15E-01	1.51E-01	5.38E-01		gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1977613_1977617delTTACGinsCTACA
+id37407	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1977724T>G
+id37414	7.72E-01	1.24E-03	1.72E-06	6.67E-01	1.30E-01	4.75E-01		gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1977807_1977808insT
+id37416	7.07E-01	9.93E-05	1.34E-06	6.70E-01	1.29E-01	4.79E-01		gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1977854G>A
+id37436	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1978107_1978109delTGCinsCGA
+id37450	3.26E-01	7.36E-09	5.93E-09	9.71E-01	1.51E-01	5.61E-01		gene-spr1985-gene-spr1986	-|-	Transposase%2C uncharacterized%2C truncation|Hypothetical protein	intergenic_region	n.1978125_1978126delTT
+id37513	4.67E-01	1.54E-06	1.01E-10	9.12E-01	1.25E-01	6.11E-01		gene-spr1994-gene-spr1995	-|pspC	Conserved hypothetical protein|Choline binding protein A	intergenic_region	n.1987345T>C
+id37538	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr1996-gene-spr1997	-|hk06	Conserved hypothetical protein|Histidine kinase	intergenic_region	n.1990337T>G
+id37541	3.59E-01	4.38E-09	6.10E-10	8.90E-01	1.28E-01	5.90E-01		gene-spr1998-gene-spr1999	rr06|-	Response regulator|Class III stress response-related ATPase%2C truncation	intergenic_region	n.1992390C>T
+id38076	1.20E-01	1.08E-01	3.23E-06	9.45E-01	1.90E-01	4.64E-01		gene-spr0247-gene-spr0248	pulA|rpsL	Alkaline amylopullulanase|30S Ribosomal protein S12	intergenic_region	n.247314A>G
+id38079	1.20E-01	1.08E-01	3.23E-06	9.45E-01	1.90E-01	4.64E-01		gene-spr0247-gene-spr0248	pulA|rpsL	Alkaline amylopullulanase|30S Ribosomal protein S12	intergenic_region	n.247337C>T
+id38211	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0265-gene-spr0266	-|sulA	Conserved hypothetical protein|Dihydropteroate synthase	intergenic_region	n.267930T>C
+id38215	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0265-gene-spr0266	-|sulA	Conserved hypothetical protein|Dihydropteroate synthase	intergenic_region	n.267950C>T
+id38222	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0265-gene-spr0266	-|sulA	Conserved hypothetical protein|Dihydropteroate synthase	intergenic_region	n.267995A>G
+id38288	1.52E-01	4.96E-04	7.47E-07	-9.13E-01	1.72E-01	4.89E-01	bad-chisq	gene-spr0277-gene-spr0278	-|PTS-EII	Conserved hypothetical protein|Phosphotransferase system sugar-specific EII component	intergenic_region	n.276303A>G
+id38289	1.52E-01	4.96E-04	7.47E-07	-9.13E-01	1.72E-01	4.89E-01	bad-chisq	gene-spr0277-gene-spr0278	-|PTS-EII	Conserved hypothetical protein|Phosphotransferase system sugar-specific EII component	intergenic_region	n.276309C>T
+id38356	7.61E-02	4.93E-02	1.97E-06	9.47E-01	1.86E-01	4.73E-01	bad-chisq	gene-spr0283-gene-spr0284	-|xylS	Hypothetical protein|Alpha-xylosidase	intergenic_region	n.281875_281878delACATinsGCA
+id38380	4.13E-01	7.04E-04	5.25E-08	-8.93E-01	1.50E-01	5.31E-01		gene-spr0285-gene-spr0286	basA|hysA	Gluthatione peroxidase|Hyaluronate lyase precursor (hyaluronidase/hyase)	intergenic_region	n.285066T>A
+id38400	6.52E-01	4.61E-04	1.61E-06	4.17E-01	8.13E-02	4.76E-01		gene-spr0286-gene-spr0287	hysA|kdgA	Hyaluronate lyase precursor (hyaluronidase/hyase)|2-keto-3-deoxy-6-phosphogluconate aldolase	intergenic_region	n.288594_288603delACCTCACGGAinsTCCGTGAGGT
+id38403	3.59E-01	4.38E-09	1.09E-15	9.60E-01	9.87E-02	7.16E-01		gene-spr0286-gene-spr0287	hysA|kdgA	Hyaluronate lyase precursor (hyaluronidase/hyase)|2-keto-3-deoxy-6-phosphogluconate aldolase	intergenic_region	n.288629G>A
+id38435	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0286-gene-spr0287	hysA|kdgA	Hyaluronate lyase precursor (hyaluronidase/hyase)|2-keto-3-deoxy-6-phosphogluconate aldolase	intergenic_region	n.289041T>A
+id38478	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	gene-spr0286-gene-spr0287	hysA|kdgA	Hyaluronate lyase precursor (hyaluronidase/hyase)|2-keto-3-deoxy-6-phosphogluconate aldolase	intergenic_region	n.289420_289421insT
+id38528	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0290-gene-spr0291	gno|PTS-EII	5-keto-D-gluconate 5-reductase|Phosphotransferase system sugar-specific EII component	intergenic_region	n.292884delC
+id38533	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0292-gene-spr0293	ugl|PTS-EII	Unsaturated glucuronyl hydrolase|Phosphotransferase system sugar-specific EII component	intergenic_region	n.294542G>T
+id38536	4.13E-01	2.29E-05	7.76E-08	8.80E-01	1.50E-01	5.25E-01		gene-spr0298-gene-spr0299	regR|-	Transcription regulator%2C member of GalR family|Hypothetical protein%2C truncation	intergenic_region	n.299938C>T
+id38785	1.96E-01	1.61E-03	3.12E-06	-9.44E-01	1.90E-01	4.64E-01		gene-spr0325-gene-spr0326	-|-	Hypothetical protein|Hypothetical protein	intergenic_region	n.324708A>G
+id38804	3.15E-01	2.02E-08	1.62E-08	9.50E-01	1.53E-01	5.48E-01		gene-spr0327-gene-spr0328	aliA|-	ABC transporter substrate-binding protein - oligopeptide transport|Conserved hypothetical protein	intergenic_region	n.327195G>A
+id38823	3.26E-02	7.82E-02	2.77E-06	-7.37E-01	1.47E-01	4.67E-01	bad-chisq	gene-spr0328-gene-spr0329	-|pbpA	Conserved hypothetical protein|Penicillin-binding protein 1A	intergenic_region	n.332710C>A
+id38834	3.04E-01	3.84E-09	5.49E-09	9.93E-01	1.54E-01	5.62E-01	bad-chisq	gene-spr0330-gene-spr0331	recU|-	Recombination protein U|Conserved hypothetical protein	intergenic_region	n.335657_335658insA
+id38843	2.93E-01	6.34E-10	4.84E-09	9.98E-01	1.54E-01	5.64E-01	bad-chisq	GENE_exon-sprs02-1|gene-sprs02	-|rnpB|-	-|Ribonuclease P - RNA component|-	non_coding_transcript_exon_variant|intragenic_variant	n.319T>C|n.336938T>C
+id38858	4.35E-02	4.09E-02	7.15E-09	-9.95E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0337-gene-spr0338	cbpF|mvk	Choline-binding protein F|Mevalonate kinase	intergenic_region	n.342982C>T
+id38863	1.41E-01	1.35E-01	3.44E-08	-9.60E-01	1.59E-01	5.37E-01		gene-spr0033-gene-spr0034	-|-	Conserved hypothetical protein|Conserved hypothetical protein	intergenic_region	n.34515_34522delAGCACACT
+id39307	4.35E-02	3.07E-01	1.99E-06	7.14E-01	1.40E-01	4.72E-01	bad-chisq	gene-spr0414-gene-spr0415	dinP|pfl	DNA-damage-inducible protein P|Pyruvate formate-lyase	intergenic_region	n.412037G>A
+id39559	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0438-gene-spr0439	pyrG|-	CTP synthetase|Conserved hypothetical protein	intergenic_region	n.438755C>T
+id39597	3.48E-01	1.47E-06	6.88E-08	-8.71E-01	1.48E-01	5.27E-01		gene-spr0439-gene-spr0440	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.440977C>A
+id39598	3.48E-01	1.47E-06	6.88E-08	-8.71E-01	1.48E-01	5.27E-01		gene-spr0439-gene-spr0440	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.440984T>C
+id39601	1.96E-01	2.61E-05	1.44E-08	-9.48E-01	1.52E-01	5.49E-01	bad-chisq	gene-spr0439-gene-spr0440	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.441044_441047delTTGA
+id39602	9.78E-02	1.40E-02	2.14E-08	-9.39E-01	1.53E-01	5.44E-01	bad-chisq	gene-spr0439-gene-spr0440	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.441056T>C
+id39604	8.70E-02	2.64E-02	9.57E-09	-9.77E-01	1.54E-01	5.55E-01	bad-chisq	gene-spr0439-gene-spr0440	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.441079G>A
+id39860	5.87E-01	3.19E-06	2.49E-08	-9.37E-01	1.53E-01	5.42E-01		gene-spr0472-gene-spr0473	blpY|blpZ	BlpY protein|Hypothetical protein	intergenic_region	n.476916A>G
+id39862	3.70E-01	2.17E-07	1.37E-08	9.60E-01	1.54E-01	5.50E-01		gene-spr0472-gene-spr0473	blpY|blpZ	BlpY protein|Hypothetical protein	intergenic_region	n.476918C>T
+id39876	3.15E-01	2.02E-08	1.09E-08	9.77E-01	1.55E-01	5.53E-01		gene-spr0474-gene-spr0475	pncP|-	ABC transporter ATP binding protein - unknown substrate|Conserved hypothetical protein	intergenic_region	n.477943C>T
+id40002	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0493-gene-spr0494	-|-	Conserved hypothetical protein|Hypothetical protein	intergenic_region	n.495341_495342insTA
+id40118	2.93E-01	2.52E-01	5.15E-07	-8.31E-01	1.54E-01	4.95E-01		gene-spr0512-gene-spr0513	-|-	Degenerate transposase|Conserved hypothetical protein	intergenic_region	n.511318G>A
+id40148	6.52E-02	9.12E-02	2.02E-08	-9.57E-01	1.55E-01	5.44E-01	bad-chisq	gene-spr0515-gene-spr0516	metF|pnpA	5%2C10-methylenetetrahydrofolate reductase|Polyribonucleotide nucleotidyltransferase	intergenic_region	n.515338G>A
+id40157	1.30E-01	1.96E-03	2.22E-08	-9.42E-01	1.53E-01	5.43E-01	bad-chisq	gene-spr0515-gene-spr0516	metF|pnpA	5%2C10-methylenetetrahydrofolate reductase|Polyribonucleotide nucleotidyltransferase	intergenic_region	n.515404delGinsTTA
+id40160	1.30E-01	1.96E-03	2.22E-08	-9.42E-01	1.53E-01	5.43E-01	bad-chisq	gene-spr0515-gene-spr0516	metF|pnpA	5%2C10-methylenetetrahydrofolate reductase|Polyribonucleotide nucleotidyltransferase	intergenic_region	n.515423T>C
+id40165	1.41E-01	9.94E-04	1.31E-08	-9.40E-01	1.50E-01	5.50E-01	bad-chisq	gene-spr0515-gene-spr0516	metF|pnpA	5%2C10-methylenetetrahydrofolate reductase|Polyribonucleotide nucleotidyltransferase	intergenic_region	n.515515G>A
+id40167	2.72E-01	4.39E-04	1.87E-08	-9.15E-01	1.48E-01	5.46E-01		gene-spr0515-gene-spr0516	metF|pnpA	5%2C10-methylenetetrahydrofolate reductase|Polyribonucleotide nucleotidyltransferase	intergenic_region	n.515525_515528delTGACinsGTAA
+id40179	7.61E-02	5.91E-03	8.05E-09	-9.81E-01	1.54E-01	5.57E-01	bad-chisq	gene-spr0518-gene-spr0519	-|cysS	Hypothetical protein|Cysteinyl-tRNA synthetase	intergenic_region	n.519621C>T
+id40193	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0522-gene-spr0523	-|-	Hypothetical protein|Transposase%2C uncharacterized%2C truncation	intergenic_region	n.523031C>T
+id40213	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr0523-gene-spr0524	-|vex1	Transposase%2C uncharacterized%2C truncation|ABC transporter membrane-spanning permease - Pep export	intergenic_region	n.523601C>T
+id40222	4.46E-01	3.63E-04	9.56E-07	-8.25E-01	1.57E-01	4.85E-01		gene-spr0526-gene-spr0527	vex3|pep27	ABC transporter membrane-spanning permease - Pep export|A secreted peptide which is the signal sensed by VncR/S	intergenic_region	n.527113C>T
+id40312	1.09E-02	3.15E-01	3.15E-06	9.98E-01	2.01E-01	4.64E-01	bad-chisq	gene-spr0536-gene-spr0537	-|recJ	ABC transporter ATP-binding protein - glutamine%2C truncation|Single-stranded DNA-specific exonuclease%2C 5'-3'	intergenic_region	n.535220delA
+id41097	4.89E-01	7.41E-05	2.84E-06	6.81E-01	1.36E-01	4.66E-01		gene-spr0630-gene-spr0631	thiE|-	Thiamin-phosphate pyrophosphorylase|Conserved hypothetical protein	intergenic_region	n.639494T>C
+id41107	6.96E-01	1.51E-03	7.12E-08	8.85E-01	1.51E-01	5.26E-01		gene-spr0634-gene-spr0635	tenA|-	Transcriptional regulator of extracellular enzyme genes|Hypothetical protein	intergenic_region	n.642888G>A
+id41256	3.26E-02	7.82E-02	6.79E-09	9.98E-01	1.56E-01	5.59E-01	bad-chisq	gene-spr0654-gene-spr0655	comEB|upp	dCMP deaminase|Uracil phosphoribosyltransferase	intergenic_region	n.660602G>A
+id43389	5.00E-01	4.49E-06	4.22E-07	8.59E-01	1.57E-01	4.99E-01		gene-spr1007-gene-spr1008	pta|-	Phosphate acetyltransferase|Degenerate transposase (orf2)	intergenic_region	n.990606G>A
+id43492	3.26E-02	7.82E-02	2.82E-06	9.94E-01	1.99E-01	4.66E-01	bad-chisq	gene-spr1020-gene-spr1021	hlpA|ABC-NBD	Histone-like DNA-binding protein|ABC transporter ATP-binding protein - unknown substrate	intergenic_region	n.999259G>T
