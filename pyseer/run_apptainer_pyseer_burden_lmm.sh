@@ -16,15 +16,15 @@ TOTAL_ARGS=8
 
 if [ $# -lt $MANDATORY_ARGS ]; then
 	echo "Error: You must provide at least $MANDATORY_ARGS arguments."
-    echo "Usage on terminal: bash $0 <container> <pyseer_script_dir> <vcf_file> <burden_file> <phenotype_file> <phylogenetic_tree> [alpha] [prefix]"
-    echo "Usage on cluster: sbatch $0 <container> <pyseer_script_dir> <vcf_file> <burden_file> <phenotype_file> <phylogenetic_tree> [alpha] [prefix]"
+    echo "Usage on terminal: bash $0 <container> <pyseer_script_dir> <vcf_file> <vcf_region> <phenotype_file> <phylogenetic_tree> [alpha] [prefix]"
+    echo "Usage on cluster: sbatch $0 <container> <pyseer_script_dir> <vcf_file> <vcf_region> <phenotype_file> <phylogenetic_tree> [alpha] [prefix]"
     exit 1
 fi
 
 if [ $# -gt $TOTAL_ARGS ]; then
 	echo "Error: Too many arguments. You can provide a maximum of $TOTAL_ARGS arguments."
-    echo "Usage on terminal: bash $0 <container> <pyseer_script_dir> <vcf_file> <burden_file> <phenotype_file> <phylogenetic_tree> [alpha] [prefix]"
-    echo "Usage on cluster: sbatch $0 <container> <pyseer_script_dir> <vcf_file> <burden_file> <phenotype_file> <phylogenetic_tree> [alpha] [prefix]"
+    echo "Usage on terminal: bash $0 <container> <pyseer_script_dir> <vcf_file> <vcf_region> <phenotype_file> <phylogenetic_tree> [alpha] [prefix]"
+    echo "Usage on cluster: sbatch $0 <container> <pyseer_script_dir> <vcf_file> <vcf_region> <phenotype_file> <phylogenetic_tree> [alpha] [prefix]"
     exit 1
 fi
 
@@ -40,7 +40,7 @@ export TMPDIR=$HOME/scratch/
 container="$1"
 pyseer_script_dir="$2"
 vcf_file="$3"
-burden_file="$4"
+vcf_region="$4"
 phenotype_file="$5"
 phylogenetic_tree="$6"
 alpha="${7:-0.05}"
@@ -99,7 +99,7 @@ apptainer run \
 $container pyseer --lmm \
 --phenotypes $phenotype_file \
 --vcf $vcf_file \
---burden $burden_file \
+--burden $vcf_region \
 --similarity ${prefix}_similarity_matrix.tsv \
 --output-patterns ${prefix}_patterns.txt \
 --cpu $OMP_NUM_THREADS \
