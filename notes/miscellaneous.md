@@ -8,9 +8,11 @@ setfacl -d -m g::rwx shared_dir_name
 setfacl -d -m o::r-x shared_dir_name
 ```
 
-# Find files not belonging to specific users
+# Bash script: disable block
 ```bash
-find /path/to/directory -type f ! -user user1 ! -user user2
+: <<'END'
+echo "This line will not be executed"
+END
 ```
 
 # Data stream
@@ -43,6 +45,21 @@ E.g.
 ```bash
 # ⚠ in yellow
 echo -e "\e[33m\u26A0" 
+```
+
+# Find files not belonging to specific users
+```bash
+find /path/to/directory -type f ! -user user1 ! -user user2
+```
+
+# Find files belonging to specific group
+```bash
+find /path/to/directory -group somegroupname
+```
+
+# Change group ownership recursively
+```bash
+chown -h -R owner:groupname /path/to/directory
 ```
 
 # Google Colab
