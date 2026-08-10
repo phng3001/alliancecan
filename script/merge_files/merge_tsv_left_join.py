@@ -1,5 +1,4 @@
 # P=NP
-from html import parser
 import sys
 import argparse
 import csv
