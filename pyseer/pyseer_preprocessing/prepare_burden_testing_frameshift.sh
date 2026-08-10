@@ -1,6 +1,8 @@
 #!/bin/bash
 # P=NP
-# VCF files annotated with SnpEff are required for this script to work properly
+# Prerequisites
+## Merged (multi-sample) VCF file annotated with SnpEff
+## NCBI GFF3 file
 
 ######### Preprocessing #########
 
@@ -28,8 +30,7 @@ output_prefix="$4"
 bcftools view \
 -i 'ANN[*] ~ "frameshift_variant"' "$merged_vcf" \
 | bgzip -c > ${output_prefix}.tmp0.vcf.gz
-
-tabix -p vcf ${output_prefix}.tmp0.vcf.gz # indexing
+# tabix -p vcf ${output_prefix}.tmp0.vcf.gz # indexing
 
 # Fix the genotype field from ./. (absence) to 0/0 (reference)
 bcftools +setGT \
@@ -37,16 +38,14 @@ ${output_prefix}.tmp0.vcf.gz \
 -Oz -o ${output_prefix}.tmp1.vcf.gz \
 -- -t q -n 0 \
 -i 'GT="./."'
-
-tabix -p vcf ${output_prefix}.tmp1.vcf.gz # indexing
+# tabix -p vcf ${output_prefix}.tmp1.vcf.gz # indexing
 
 # Only keep GT among the FORMAT fields
 bcftools annotate \
 -x FORMAT/DP,FORMAT/RO,FORMAT/QR,FORMAT/AO,FORMAT/QA,FORMAT/GL \
 ${output_prefix}.tmp1.vcf.gz \
 -Oz -o ${output_prefix}.tmp2.vcf.gz
-
-tabix -p vcf ${output_prefix}.tmp2.vcf.gz # indexing
+# tabix -p vcf ${output_prefix}.tmp2.vcf.gz # indexing
 
 # Split multiallelic variants into multiple biallelic variants
 # E.g. A/C,G -> A/C and A/G
@@ -61,11 +60,8 @@ tabix -p vcf ${output_prefix}.vcf.gz # indexing
 # Remove temporary files
 rm \
 ${output_prefix}.tmp0.vcf.gz \
-${output_prefix}.tmp0.vcf.gz.tbi \
 ${output_prefix}.tmp1.vcf.gz \
-${output_prefix}.tmp1.vcf.gz.tbi \
-${output_prefix}.tmp2.vcf.gz \
-${output_prefix}.tmp2.vcf.gz.tbi
+${output_prefix}.tmp2.vcf.gz
 
 if [ -s "${output_prefix}.vcf.gz" ]; then
     echo "Frameshift variant filtering completed. Output files:"
@@ -104,6 +100,9 @@ cut -f1 ${output_prefix}_variant_positions.txt \
 # Get gene regions from GFF
 grep -F -f ${output_prefix}_variant_genes.txt "$reference_gff" \
 > ${output_prefix}_variant_genes.gff
+
+# AE007317.1	Genbank	gene	1	1362	.	+	.	ID=gene-spr0001;Name=dnaA;gbkey=Gene;gene=dnaA;gene_biotype=protein_coding;locus_tag=spr0001
+# AE007317.1	Genbank	CDS	1	1362	.	+	0	ID=cds-AAK98805.1;Parent=gene-spr0001;Dbxref=NCBI_GP:AAK98805.1;Name=AAK98805.1;gbkey=CDS;gene=dnaA;locus_tag=spr0001;product=DNA biosynthesis%2C initiation%2C binding protein;protein_id=AAK98805.1;transl_table=11
 
 awk -F'\t' '
 BEGIN{OFS="\t"}
