@@ -22,6 +22,8 @@ reference_fasta="$2"
 reference_gff="$3"
 output_prefix="$4"
 
+echo "Preparing frameshift variant burden testing files for pyseer..."
+
 
 
 ######### Variant filtering #########
@@ -92,14 +94,14 @@ awk -F'\t' '
             print locus_tag "\t" $1 ":" $2 "-" $2
         }
     }
-}' > ${output_prefix}_variant_positions.txt
+}' > ${output_prefix}_positions.txt
 
-cut -f1 ${output_prefix}_variant_positions.txt \
-| sort | uniq > ${output_prefix}_variant_genes.txt
+cut -f1 ${output_prefix}_positions.txt \
+| sort | uniq > ${output_prefix}_genes.txt
 
 # Get gene regions from GFF
-grep -F -f ${output_prefix}_variant_genes.txt "$reference_gff" \
-> ${output_prefix}_variant_genes.gff
+grep -F -f ${output_prefix}_genes.txt "$reference_gff" \
+> ${output_prefix}_genes.gff
 
 # AE007317.1	Genbank	gene	1	1362	.	+	.	ID=gene-spr0001;Name=dnaA;gbkey=Gene;gene=dnaA;gene_biotype=protein_coding;locus_tag=spr0001
 # AE007317.1	Genbank	CDS	1	1362	.	+	0	ID=cds-AAK98805.1;Parent=gene-spr0001;Dbxref=NCBI_GP:AAK98805.1;Name=AAK98805.1;gbkey=CDS;gene=dnaA;locus_tag=spr0001;product=DNA biosynthesis%2C initiation%2C binding protein;protein_id=AAK98805.1;transl_table=11
@@ -111,7 +113,7 @@ $3=="gene" {
     if(a[1]!="")
         print a[1], $1":"$4"-"$5
 }
-' ${output_prefix}_variant_genes.gff > ${output_prefix}_variant_gene_regions.txt
+' ${output_prefix}_genes.gff > ${output_prefix}_gene_regions.txt
 
 # Pad gene regions by 5 bp on each side as variants may occur at the edges of genes
 awk -F'\t' '
@@ -124,18 +126,18 @@ $3=="gene" {
         print a[1], $1 ":" start "-" end
     }
 }
-' ${output_prefix}_variant_genes.gff > ${output_prefix}_variant_gene_regions_padded_5bp.txt
+' ${output_prefix}_genes.gff > ${output_prefix}_gene_regions_padded_5bp.txt
 
 # Remove temporary files
 rm \
-${output_prefix}_variant_positions.txt \
-${output_prefix}_variant_genes.txt \
-${output_prefix}_variant_genes.gff 
+${output_prefix}_positions.txt \
+${output_prefix}_genes.txt \
+${output_prefix}_genes.gff 
 
-if [[ -s "${output_prefix}_variant_gene_regions.txt" && -s "${output_prefix}_variant_gene_regions_padded_5bp.txt" ]]; then
-    echo "Variant region extraction completed. Output files:"
-    echo "${output_prefix}_variant_gene_regions.txt"
-    echo "${output_prefix}_variant_gene_regions_padded_5bp.txt"
+if [[ -s "${output_prefix}_gene_regions.txt" && -s "${output_prefix}_gene_regions_padded_5bp.txt" ]]; then
+    echo "Frameshift variant region extraction completed. Output files:"
+    echo "${output_prefix}_gene_regions.txt"
+    echo "${output_prefix}_gene_regions_padded_5bp.txt"
 else
-    echo "Problem extracting variant regions, output files were not generated."
+    echo "Problem extracting frameshift variant regions, output files were not generated."
 fi
