@@ -62,11 +62,11 @@ def main():
         """
     )
 
-    parser.add_argument("--file1",required=True, help="First TSV file (rows to keep)")
-    parser.add_argument("--file2",required=True, help="Second TSV file")
+    parser.add_argument("--file1", required=True, help="First TSV file (rows to keep)")
+    parser.add_argument("--file2", required=True, help="Second TSV file")
     parser.add_argument("--key1", required=True, help="Key column in the first file")
     parser.add_argument("--key2", required=True, help="Key column in the second file")
-    parser.add_argument("--output",required=True, help="Output TSV file")
+    parser.add_argument("--output", required=True, help="Output TSV file")
 
     # Parse arguments
     args = parser.parse_args()
