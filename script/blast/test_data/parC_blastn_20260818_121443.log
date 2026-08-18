@@ -1,0 +1,14 @@
+Working directory: /home/phng3001/def-mouellet/Scripts_MOU/PNP/alliancecan/script/blast/test_data
+Command: run_blastn.sh parC_ref.fasta contigs_500bp subject_list.txt parC
+The following modules were not unloaded:
+  (Use "module --force purge" to unload all):
+
+  1) CCconfig      3) gcccore/.12.3   5) hwloc/2.9.1   7) libfabric/1.18.0   9)  ucc/1.2.0       11) flexiblas/3.3.1   13) StdEnv/2023
+  2) gentoo/2023   4) gcc/12.3        6) ucx/1.14.1    8) pmix/4.2.4         10) openmpi/4.1.5   12) imkl/2023.2.0
+Performing BLASTN of parC_ref.fasta vs ATCC_700669.fasta
+Warning: [blastn] Examining 5 or more matches is recommended
+Performing BLASTN of parC_ref.fasta vs CCRI13102.fasta
+Warning: [blastn] Examining 5 or more matches is recommended
+Performing BLASTN of parC_ref.fasta vs TIGR4.fasta
+Warning: [blastn] Examining 5 or more matches is recommended
+BLASTN completed. Total hits found: 3
