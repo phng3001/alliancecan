@@ -4,7 +4,7 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=4G
-#SBATCH --job-name=run_tar
+#SBATCH --job-name=run_tar_compress
 
 # stop on errors, stop on undefined variables, stop on broken pipelines
 set -euo pipefail
@@ -26,7 +26,7 @@ fi
 
 # Assign arguments to variables
 target_archive=$1
-compression=$2
+compression_method=$2
 
 # Remove all trailing slashes if exist
 target_archive_clean=${target_archive%%+(/)}
@@ -43,12 +43,12 @@ archive_basename=$(basename "$target_archive_clean")
 
 
 # Pick compression options
-case "$compression" in
+case "$compression_method" in
     gz)   ext="tar.gz";  tar_opts="-cvzf" ;;
     bz2)  ext="tar.bz2"; tar_opts="-cvjf" ;;
     xz)   ext="tar.xz";  tar_opts="-cvJf" ;;
     none) ext="tar";     tar_opts="-cvf"  ;;
-    *)    echo "Error: Unknown compression method '$compression'"; usage ;;
+    *)    echo "Error: Unknown compression method '$compression_method'"; usage ;;
 esac
 
 # Define output archive name
