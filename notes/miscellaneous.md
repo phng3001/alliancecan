@@ -147,3 +147,8 @@ awk 'FNR==1{if(!hdr){hdr=$0; print; next} if($0!=hdr){print "Headers differ!" > 
 # Filter out contigs < 500bp
 seqkit seq -m 500 input.fasta > output.fasta
 ```
+
+```bash
+# Get summary statistics
+seqkit stats input.fasta
+```
