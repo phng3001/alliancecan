@@ -57,41 +57,26 @@ def parse_gff_line(line):
 def parse_attributes(attr_str, file_format="GFF3"):
     attrs = {}
 
-    parts = [
-        p.strip()
-        for p in attr_str.split(";")
-        if p.strip()
-    ]
+    parts = [p.strip() for p in attr_str.split(";") if p.strip()]
 
     if file_format == "GFF3":
 
         for part in parts:
-
             if "=" in part:
-
                 k, v = part.split("=", 1)
-
-                attrs[k.strip()] = (
-                    v.strip().strip('"')
-                )
+                attrs[k.strip()] = v.strip().strip('"')
 
     elif file_format == "GTF":
 
         for part in parts:
-
             if " " in part:
-
                 k, v = part.split(" ", 1)
-
-                attrs[k.strip()] = (
-                    v.strip().strip('"')
-                )
+                attrs[k.strip()] = v.strip().strip('"')
 
     return attrs
 
 
 def pack_intervals(intervals):
-
     sorted_intervals = sorted(
         intervals,
         key=lambda x: (x[0], x[1])
@@ -111,12 +96,7 @@ def pack_intervals(intervals):
                 track_ends[idx] = end
 
                 packed_intervals.append(
-                    (
-                        start,
-                        end,
-                        payload,
-                        idx
-                    )
+                    (start, end, payload, idx)
                 )
 
                 placed = True
@@ -127,24 +107,13 @@ def pack_intervals(intervals):
             track_ends.append(end)
 
             packed_intervals.append(
-                (
-                    start,
-                    end,
-                    payload,
-                    len(track_ends) - 1
-                )
+                (start, end, payload, len(track_ends) - 1)
             )
 
-    return (
-        packed_intervals,
-        len(track_ends)
-    )
+    return packed_intervals, len(track_ends)
 
 
-def attr_hover_text(
-    attr_dict,
-    file_format="GFF3"
-):
+def attr_hover_text(attr_dict, file_format="GFF3"):
 
     hover_lines = []
 
@@ -155,9 +124,7 @@ def attr_hover_text(
     )
 
     if feature_id:
-        hover_lines.append(
-            f"Feature: {feature_id}"
-        )
+        hover_lines.append(f"Feature: {feature_id}")
 
     gene_name = (
         attr_dict.get("gene")
@@ -167,9 +134,7 @@ def attr_hover_text(
     )
 
     if gene_name:
-        hover_lines.append(
-            f"Gene: {gene_name}"
-        )
+        hover_lines.append(f"Gene: {gene_name}")
 
     product = (
         attr_dict.get("product")
@@ -178,9 +143,7 @@ def attr_hover_text(
     )
 
     if product:
-        hover_lines.append(
-            f"Description: {product}"
-        )
+        hover_lines.append(f"Description: {product}")
 
     if not hover_lines:
 
@@ -192,9 +155,7 @@ def attr_hover_text(
             ]
 
             if kv_pairs:
-                hover_lines.append(
-                    "; ".join(kv_pairs)
-                )
+                hover_lines.append("; ".join(kv_pairs))
 
         elif file_format.upper() == "GTF":
 
@@ -204,9 +165,7 @@ def attr_hover_text(
             ]
 
             if kv_pairs:
-                hover_lines.append(
-                    "; ".join(kv_pairs)
-                )
+                hover_lines.append("; ".join(kv_pairs))
 
     return "<br>".join(hover_lines)
 
@@ -232,46 +191,22 @@ def find_overlaps(intervals):
         key=lambda x: (x[0], x[1])
     )
 
-    for i in range(
-        len(intervals_sorted)
-    ):
+    for i in range(len(intervals_sorted)):
 
-        s1, e1, p1 = (
-            intervals_sorted[i]
-        )
+        s1, e1, p1 = intervals_sorted[i]
 
-        (
-            chrom1,
-            start1,
-            end1,
-            strand1,
-            attrs1
-        ) = p1
+        chrom1, start1, end1, strand1, attrs1 = p1
 
-        for j in range(
-            i + 1,
-            len(intervals_sorted)
-        ):
+        for j in range(i + 1, len(intervals_sorted)):
 
-            s2, e2, p2 = (
-                intervals_sorted[j]
-            )
+            s2, e2, p2 = intervals_sorted[j]
 
-            (
-                chrom2,
-                start2,
-                end2,
-                strand2,
-                attrs2
-            ) = p2
+            chrom2, start2, end2, strand2, attrs2 = p2
 
             if s2 > e1:
                 break
 
-            if (
-                chrom1 == chrom2
-                and s2 <= e1
-            ):
+            if chrom1 == chrom2 and s2 <= e1:
 
                 id1 = (
                     attrs1.get("locus_tag")
@@ -287,8 +222,7 @@ def find_overlaps(intervals):
 
                 print(
                     f"Overlap on {chrom1}: "
-                    f"{id1} ({start1}-{end1}) "
-                    f"overlaps "
+                    f"{id1} ({start1}-{end1}) overlaps "
                     f"{id2} ({start2}-{end2})"
                 )
 
@@ -302,10 +236,7 @@ def find_overlaps(intervals):
 def main():
 
     p = argparse.ArgumentParser(
-        description=(
-            "Interactive genome plot: "
-            "value panel + feature panel"
-        )
+        description="Interactive genome plot: value panel + feature panel"
     )
 
     p.add_argument(
@@ -365,16 +296,14 @@ def main():
     # Detect file format
     # ------------------------------------------------------------
 
-    file_format = detect_gff_gtf(
-        args.features_gff
-    )
+    file_format = detect_gff_gtf(args.features_gff)
 
     if file_format == "GTF":
 
         print(
             "Warning: Detected GTF. "
-            "Consider adding '##sequence-region' "
-            "lines to determine chromosome lengths.",
+            "Consider adding '##sequence-region' lines "
+            "to determine chromosome lengths.",
             file=sys.stderr
         )
 
@@ -390,51 +319,37 @@ def main():
 
         for line in fh:
 
-            if line.startswith(
-                "##sequence-region"
-            ):
+            if line.startswith("##sequence-region"):
 
                 parts = line.strip().split()
 
                 if len(parts) >= 4:
 
                     chrom = parts[1]
-
                     end = int(parts[3])
 
-                    chrom_lengths[
-                        chrom
-                    ] = end
+                    chrom_lengths[chrom] = end
 
                     if chrom not in chrom_order:
-
-                        chrom_order.append(
-                            chrom
-                        )
+                        chrom_order.append(chrom)
 
 
     if not chrom_order:
 
         print(
-            "No chromosomes found in "
-            "##sequence-region. Exiting.",
+            "No chromosomes found in ##sequence-region. Exiting.",
             file=sys.stderr
         )
 
         sys.exit(1)
 
 
-    print()
     print("Chromosome order:")
 
     for chrom in chrom_order:
-
         print(
-            f"  {chrom}: "
-            f"{chrom_lengths[chrom]:,} bp"
+            f"  {chrom}: {chrom_lengths[chrom]:,} bp"
         )
-
-    print()
 
 
     # ------------------------------------------------------------
@@ -447,22 +362,15 @@ def main():
 
         for line in fh:
 
-            if (
-                line.startswith("#")
-                or not line.strip()
-            ):
+            if line.startswith("#") or not line.strip():
                 continue
 
-            parsed = parse_gff_line(
-                line
-            )
+            parsed = parse_gff_line(line)
 
             if (
                 parsed
-                and parsed["type"]
-                == args.feature_type
-                and parsed["seqid"]
-                in chrom_order
+                and parsed["type"] == args.feature_type
+                and parsed["seqid"] in chrom_order
             ):
 
                 chrom_feature_map[
@@ -486,60 +394,33 @@ def main():
         "end"
     }
 
-    missing = (
-        mandatory_cols
-        - set(df_vals.columns)
-    )
+    missing = mandatory_cols - set(df_vals.columns)
 
     if missing:
 
         print(
-            "Missing mandatory column(s): "
-            + ", ".join(missing),
+            f"Missing mandatory column(s): "
+            f"{', '.join(missing)}",
             file=sys.stderr
         )
 
         sys.exit(1)
 
 
-    # Keep only chromosomes defined in GFF
+    # Keep only chromosomes present in the GFF
     df_vals = df_vals[
-        df_vals["chr"].isin(
-            chrom_order
-        )
+        df_vals["chr"].isin(chrom_order)
     ].copy()
 
 
     if df_vals.empty:
 
         print(
-            "No values for chromosomes "
-            "in ##sequence-region. Exiting.",
+            "No values for chromosomes in ##sequence-region. Exiting.",
             file=sys.stderr
         )
 
         sys.exit(1)
-
-
-    # ------------------------------------------------------------
-    # Make sure coordinates are numeric
-    # ------------------------------------------------------------
-
-    df_vals["start"] = pd.to_numeric(
-        df_vals["start"],
-        errors="coerce"
-    )
-
-    df_vals["end"] = pd.to_numeric(
-        df_vals["end"],
-        errors="coerce"
-    )
-
-
-    # Remove rows with invalid coordinates
-    df_vals = df_vals.dropna(
-        subset=["start", "end"]
-    ).copy()
 
 
     # ------------------------------------------------------------
@@ -547,8 +428,7 @@ def main():
     # ------------------------------------------------------------
 
     df_vals["mid"] = (
-        df_vals["start"]
-        + df_vals["end"]
+        df_vals["start"] + df_vals["end"]
     ) / 2.0
 
 
@@ -564,22 +444,49 @@ def main():
 
         offsets[chrom] = cum
 
-        cum += chrom_lengths[
-            chrom
-        ]
+        cum += chrom_lengths[chrom]
 
     total_length = cum
 
 
     # ------------------------------------------------------------
-    # Calculate concatenated x coordinate
+    # IMPORTANT:
+    # Sort values according to chromosome order and genomic
+    # position BEFORE plotting.
+    # ------------------------------------------------------------
+
+    chrom_rank = {
+        chrom: i
+        for i, chrom in enumerate(chrom_order)
+    }
+
+    df_vals["_chrom_order"] = (
+        df_vals["chr"].map(chrom_rank)
+    )
+
+    df_vals = df_vals.sort_values(
+        [
+            "_chrom_order",
+            "start",
+            "end"
+        ]
+    ).reset_index(drop=True)
+
+
+    # Remove helper column
+    df_vals.drop(
+        columns="_chrom_order",
+        inplace=True
+    )
+
+
+    # ------------------------------------------------------------
+    # Convert genomic coordinates to concatenated coordinates
     # ------------------------------------------------------------
 
     df_vals["x"] = (
         df_vals["mid"]
-        + df_vals["chr"].map(
-            offsets
-        )
+        + df_vals["chr"].map(offsets)
     )
 
 
@@ -606,29 +513,6 @@ def main():
             df_vals[col],
             errors="coerce"
         )
-
-
-    # ------------------------------------------------------------
-    # Diagnostic information
-    # ------------------------------------------------------------
-
-    print(
-        "Value points by chromosome:"
-    )
-
-    for chrom in chrom_order:
-
-        n = (
-            df_vals["chr"]
-            .eq(chrom)
-            .sum()
-        )
-
-        print(
-            f"  {chrom}: {n} points"
-        )
-
-    print()
 
 
     # ------------------------------------------------------------
@@ -675,7 +559,7 @@ def main():
 
 
     # ------------------------------------------------------------
-    # Pack feature intervals
+    # Pack feature intervals into tracks
     # ------------------------------------------------------------
 
     packed, n_tracks = pack_intervals(
@@ -687,17 +571,15 @@ def main():
         args.max_feature_tracks
     )
 
+
+    # Avoid division by zero
     if n_tracks == 0:
         n_tracks = 1
 
 
     track_y = lambda track: (
-        -0.95
-        + track * (1.9 / n_tracks),
-
-        -0.95
-        + (track + 1)
-        * (1.9 / n_tracks)
+        -0.95 + track * (1.9 / n_tracks),
+        -0.95 + (track + 1) * (1.9 / n_tracks)
     )
 
 
@@ -714,44 +596,22 @@ def main():
     )
 
 
-    for (
-        s,
-        e,
-        payload,
-        track
-    ) in packed:
+    for s, e, payload, track in packed:
 
         if track >= args.max_feature_tracks:
+            track = args.max_feature_tracks - 1
 
-            track = (
-                args.max_feature_tracks
-                - 1
-            )
+        chrom, start_, end_, strand, attrs = payload
 
-        (
-            chrom,
-            start_,
-            end_,
-            strand,
-            attrs
-        ) = payload
-
-        y0, y1 = track_y(
-            track
-        )
+        y0, y1 = track_y(track)
 
         y_mid = (
             y0 + y1
         ) / 2
 
 
-        color = strand_color(
-            strand
-        )
-
-
         lines_by_color[
-            color
+            strand_color(strand)
         ]["x"] += [
             s,
             e,
@@ -759,7 +619,7 @@ def main():
         ]
 
         lines_by_color[
-            color
+            strand_color(strand)
         ]["y"] += [
             y_mid,
             y_mid,
@@ -769,11 +629,7 @@ def main():
 
         hover_text = "<br>".join(
             [
-                (
-                    f"<b>{chrom}:"
-                    f"{start_}-{end_}</b>"
-                ),
-
+                f"<b>{chrom}:{start_}-{end_}</b>",
                 attr_hover_text(
                     attrs,
                     file_format
@@ -783,7 +639,7 @@ def main():
 
 
         lines_by_color[
-            color
+            strand_color(strand)
         ]["hover"] += [
             hover_text,
             hover_text,
@@ -791,9 +647,7 @@ def main():
         ]
 
 
-    print(
-        "Checking overlaps..."
-    )
+    print("Checking overlaps...")
 
     nb_overlaps = find_overlaps(
         all_feature_intervals
@@ -818,14 +672,11 @@ def main():
         rows=2,
         cols=1,
         shared_xaxes=True,
-
         row_heights=[
             1 - args.feature_height,
             args.feature_height
         ],
-
         vertical_spacing=0.02,
-
         specs=[
             [{"type": "xy"}],
             [{"type": "xy"}]
@@ -835,114 +686,99 @@ def main():
 
     # ============================================================
     # VALUE PANEL
-    #
-    # IMPORTANT:
-    # Each chromosome is a separate Plotly trace.
-    #
-    # Therefore Plotly cannot connect:
-    #
-    # LR697137.1 -> LinJ.01
-    #
-    # even if there are no NaN values.
     # ============================================================
 
     for col in sample_cols:
 
-        first_chromosome_trace = True
-
-        for chrom in chrom_order:
-
-            valid = df_vals[
-                (
-                    df_vals["chr"]
-                    == chrom
-                )
-                &
-                (
-                    ~df_vals[col].isna()
-                )
-            ].copy()
+        valid = df_vals[
+            ~df_vals[col].isna()
+        ].copy()
 
 
-            # No values for this chromosome
-            if valid.empty:
-                continue
+        # --------------------------------------------------------
+        # IMPORTANT FIX:
+        #
+        # Insert NaN between chromosomes.
+        #
+        # Plotly will NOT connect points across a NaN.
+        # --------------------------------------------------------
+
+        x_values = []
+        y_values = []
+        text_values = []
+
+        previous_chrom = None
 
 
-            # Sort by genomic coordinates
-            valid = valid.sort_values(
-                [
-                    "start",
-                    "end"
-                ]
+        for _, r in valid.iterrows():
+
+            chrom = r["chr"]
+
+
+            # Break the line when chromosome changes
+            if (
+                previous_chrom is not None
+                and chrom != previous_chrom
+            ):
+
+                x_values.append(np.nan)
+                y_values.append(np.nan)
+                text_values.append("")
+
+
+            x_values.append(
+                r["x"]
+            )
+
+            y_values.append(
+                r[col]
+            )
+
+            text_values.append(
+                f"{chrom}:"
+                f"{int(r['start'])}-"
+                f"{int(r['end'])}"
             )
 
 
-            print(
-                f"Plotting value trace: "
-                f"{col} / {chrom} "
-                f"({len(valid)} points)"
-            )
+            previous_chrom = chrom
 
 
-            fig.add_trace(
+        fig.add_trace(
 
-                go.Scatter(
+            go.Scatter(
 
-                    x=valid["x"],
+                x=x_values,
 
-                    y=valid[col],
+                y=y_values,
 
-                    mode="lines+markers",
+                mode="lines+markers",
 
-                    # Only one legend entry per sample
-                    name=(
-                        col
-                        if first_chromosome_trace
-                        else None
-                    ),
+                name=col,
 
-                    legendgroup=col,
+                connectgaps=False,
 
-                    showlegend=(
-                        first_chromosome_trace
-                    ),
-
-                    connectgaps=False,
-
-                    hovertemplate=(
-                        "<b>%{text}</b>"
-                        "<br>x: %{x}"
-                        "<br>y: %{y}"
-                        "<extra></extra>"
-                    ),
-
-                    text=valid.apply(
-                        lambda r:
-                        (
-                            f"{r['chr']}:"
-                            f"{int(r['start'])}-"
-                            f"{int(r['end'])}"
-                        ),
-                        axis=1
-                    )
+                hovertemplate=(
+                    "<b>%{text}</b>"
+                    "<br>x: %{x}"
+                    "<br>y: %{y}"
+                    "<extra></extra>"
                 ),
 
-                row=1,
-                col=1
-            )
+                text=text_values
 
+            ),
 
-            first_chromosome_trace = False
+            row=1,
+            col=1
+        )
 
 
     # ============================================================
     # FEATURE PANEL
     # ============================================================
 
-    for color, d in (
-        lines_by_color.items()
-    ):
+    for color, d in lines_by_color.items():
 
         fig.add_trace(
 
@@ -966,6 +802,7 @@ def main():
                 connectgaps=False,
 
                 showlegend=False
+
             ),
 
             row=2,
@@ -978,7 +815,6 @@ def main():
     # ------------------------------------------------------------
 
     chrom_midpoints = []
-
     chrom_ranges = {}
 
 
@@ -989,114 +825,82 @@ def main():
         if i > 0:
 
             fig.add_vline(
-
                 x=offsets[chrom],
-
                 line=dict(
                     dash="dash",
                     width=1
                 ),
-
                 row=1,
                 col=1
             )
 
-
             fig.add_vline(
-
                 x=offsets[chrom],
-
                 line=dict(
                     dash="dash",
                     width=1
                 ),
-
                 row=2,
                 col=1
             )
 
 
         chrom_midpoints.append(
-
             offsets[chrom]
-            + chrom_lengths[chrom]
-            / 2.0
+            + chrom_lengths[chrom] / 2.0
         )
 
 
         chrom_ranges[chrom] = (
-
             offsets[chrom],
-
             offsets[chrom]
             + chrom_lengths[chrom]
         )
 
 
     # ------------------------------------------------------------
-    # Y axes
+    # Axes
     # ------------------------------------------------------------
 
     fig.update_yaxes(
-
         title_text=args.value_ytitle,
-
         row=1,
         col=1
     )
 
 
     fig.update_yaxes(
-
         title_text=args.feature_ytitle,
-
         row=2,
         col=1,
-
         showticklabels=False,
-
-        range=[
-            -1,
-            1
-        ]
+        range=[-1, 1]
     )
 
 
-    # ------------------------------------------------------------
-    # X axes
-    # ------------------------------------------------------------
-
     fig.update_xaxes(
-
         tickmode="array",
-
         tickvals=chrom_midpoints,
-
         ticktext=chrom_order,
-
         row=2,
         col=1
     )
 
 
     fig.update_xaxes(
-
         title_text=(
             "Genomic position "
             "(concatenated chromosomes)"
         ),
-
         row=2,
         col=1
     )
 
 
     fig.update_xaxes(
-
         rangeslider=dict(
             visible=True
         ),
-
         row=2,
         col=1
     )
@@ -1109,11 +913,8 @@ def main():
     buttons = [
 
         dict(
-
             label="All",
-
             method="relayout",
-
             args=[
                 {
                     "xaxis.range": [
@@ -1128,6 +929,7 @@ def main():
                 }
             ]
         )
+
     ]
 
 
@@ -1136,9 +938,8 @@ def main():
         x1
     ) in chrom_ranges.items():
 
-        buf = (
-            0.01
-            * (x1 - x0)
+        buf = 0.01 * (
+            x1 - x0
         )
 
 
@@ -1163,7 +964,9 @@ def main():
                         ]
                     }
                 ]
+
             )
+
         )
 
 
@@ -1186,8 +989,11 @@ def main():
                 xanchor="left",
 
                 yanchor="top"
+
             )
+
         ]
+
     )
 
 
@@ -1214,7 +1020,9 @@ def main():
             xanchor="left",
 
             yanchor="top"
+
         )
+
     )
 
 
@@ -1223,14 +1031,11 @@ def main():
     # ------------------------------------------------------------
 
     fig.write_html(
-
         args.output,
-
         include_plotlyjs=True
     )
 
 
-    print()
     print(
         f"Plot saved to {args.output}"
     )
