@@ -72,7 +72,8 @@ def main():
 
     # Expand file list
     if "*" in args.inputs or "?" in args.inputs:
-        input_files = glob.glob(args.inputs)
+        # input_files = glob.glob(args.inputs)
+        input_files = sorted(glob.glob(args.inputs))
     else:
         input_files = args.inputs.split()
 
