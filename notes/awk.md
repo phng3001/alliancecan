@@ -174,6 +174,23 @@ awk 'NR==1 || FNR > 1' *.txt
 awk 'FNR==1{if(!hdr){hdr=$0; print; next} if($0!=hdr){print "Headers differ!" > "/dev/stderr"; exit}} FNR>1' *.tsv > merged.tsv
 ```
 
+## Add a string to a specific column
+```bash
+awk -F',' 'BEGIN { OFS="," } { $2 = $2 "_suffix"; print }' input.txt
+```
+### Modify file in place
+```bash
+awk -F',' 'BEGIN { OFS="," } { $2 = $2 "_suffix"; print }' input.txt > tmp && mv tmp input.txt
+```
+### Skip the header
+```bash
+awk -F',' 'BEGIN { OFS="," } NR == 1 { print; next } { $2 = $2 "_suffix"; print }' input.txt
+```
+or
+```bash
+awk -F',' 'BEGIN { OFS="," } NR > 1 { $2 = $2 "_suffix" } { print }' input.txt
+```
+
 ## Calculate the length of each sequence in a fasta file
 ```bash
 awk 'BEGIN {OFS="\t"} 
