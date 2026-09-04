@@ -142,7 +142,7 @@ awk 'NR>N' file.txt
 awk 'FNR==1{if(!hdr){hdr=$0; print; next} if($0!=hdr){print "Headers differ!" > "/dev/stderr"; exit}} FNR>1' *.tsv > merged.tsv
 ```
 
-# seqkit
+# SeqKit
 ```bash
 # Filter out contigs < 500bp
 seqkit seq -m 500 input.fasta > output.fasta
@@ -151,4 +151,59 @@ seqkit seq -m 500 input.fasta > output.fasta
 ```bash
 # Get summary statistics
 seqkit stats input.fasta
+```
+
+# Jupyter notebook
+## Convert notebook to python script
+```bash
+jupyter nbconvert --to python notebook.ipynb
+# output: notebook.py
+```
+
+# Python virtual environment
+## Create a virtual environment
+```bash
+# Load python
+module load python/3.11.5
+# Create the environment, e.g. named ENV
+virtualenv --no-download ENV
+# Activate the environment
+source ENV/bin/activate
+# Upgrade pip
+pip install --no-index --upgrade pip
+# Install cluster-provided packages with --no-index option
+pip install numpy --no-index
+# Exit the environment
+deactivate
+```
+
+## Check available wheels
+```bash
+# Exact name
+avail_wheels numpy
+# Name containing "num"
+avail_wheels "*num*"
+# List all available versions
+avail_wheels numpy --all-version
+# Specify package with/without python version
+avail_wheels 'numpy<2' --python 3.11
+```
+
+## Replicate environment
+### On the original machine
+```bash
+# Activate the environment
+source ENV/bin/activate
+# Export installed packages 
+pip freeze > requirements.txt
+```
+
+### On the new machine
+```bash
+# Create the environment
+virtualenv --no-download ENV
+# Activate the environment
+source ENV/bin/activate
+# Install the same packages
+pip install -r requirements.txt
 ```
