@@ -1,0 +1,3 @@
+strain1
+strain2
+strain3

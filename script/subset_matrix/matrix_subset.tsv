@@ -1,0 +1,5 @@
+SNP	strain1	strain2	strain3
+snp1	1	0	1
+snp2	1	1	0
+snp3	0	1	1
+snp4	1	1	1
