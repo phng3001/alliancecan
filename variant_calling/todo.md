@@ -1,4 +1,7 @@
 # Fix snp_analysis/*/run_snp_analysis.sh
+## Add gene description
+Handle gene_id missing values
+
 ## Combine GATK, FreeBayes and Bcftools variant information: 
 key_columns="#CHROM POS GENOTYPE GENE_ID GENE_NAME DESCRIPTION FEATURE_ID VARIANT_TYPE NU_CHANGE AA_CHANGE CDS_POS/CDS_LENGTH AA_POS/AA_LENGTH SAMPLE"
 * Remove GENOTYPE from key_columns
