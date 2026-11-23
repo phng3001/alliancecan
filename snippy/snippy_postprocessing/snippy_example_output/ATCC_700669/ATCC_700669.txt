@@ -1,0 +1,10 @@
+DateTime	2025-02-26T15:06:35
+ReadFiles	fake_reads.fq
+Reference	/lustre07/scratch/phng3001/playground/snippy/CP027540.1.gb
+ReferenceSize	2046572
+Software	snippy 4.6.0
+Variant-COMPLEX	2161
+Variant-DEL	132
+Variant-INS	130
+Variant-SNP	10984
+VariantTotal	13407

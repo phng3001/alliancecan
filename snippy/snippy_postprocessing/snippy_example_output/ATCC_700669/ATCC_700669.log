@@ -1,0 +1,132 @@
+### echo snippy 4.6.0
+### cd /lustre07/scratch/phng3001/playground/snippy
+
+### /opt/conda/envs/snippy/bin/snippy --reference CP027540.1.gb --ctgs ../assembly_examples//ATCC_700669/ATCC_700669.fasta --outdir ATCC_700669 --prefix ATCC_700669 --minfrac 0.9 --cpus 4 --force
+
+### samtools faidx reference/ref.fa
+
+
+### bwa index reference/ref.fa
+
+[bwa_index] Pack FASTA... 0.01 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.33 seconds elapse.
+[bwa_index] Update BWT... 0.01 sec
+[bwa_index] Pack forward-only FASTA... 0.01 sec
+[bwa_index] Construct SA from BWT and Occ... 0.12 sec
+[main] Version: 0.7.18-r1243-dirty
+[main] CMD: bwa index reference/ref.fa
+[main] Real time: 43.166 sec; CPU: 0.478 sec
+
+### mkdir -p reference/genomes && cp -f reference/ref.fa reference/genomes/ref.fa
+
+
+### ln -sf reference/ref.fa .
+
+
+### ln -sf reference/ref.fa.fai .
+
+
+### mkdir -p reference/ref && gzip -c reference/ref.gff > reference/ref/genes.gff.gz
+
+
+### snpEff build -c reference/snpeff.config -dataDir . -gff3 ref
+
+WARNING: All frames are zero! This seems rather odd, please check that 'frame' information in your 'genes' file is accurate.
+
+### bwa mem  -Y -M -R '@RG\tID:ATCC_700669\tSM:ATCC_700669' -t 4 reference/ref.fa fake_reads.fq | samclip --max 10 --ref reference/ref.fa.fai | samtools sort -n -l 0 -T /lustre07/scratch/phng3001 --threads 1 -m 4000M | samtools fixmate -m --threads 1 - - | samtools sort -l 0 -T /lustre07/scratch/phng3001 --threads 1 -m 4000M | samtools markdup -T /lustre07/scratch/phng3001 --threads 1 -r -s - - > ATCC_700669.bam
+
+samtools markdup: warning, unable to calculate estimated library size. Read pairs 0 should be greater than duplicate pairs 0, which should both be non zero.
+
+COMMAND: samtools markdup -T /lustre07/scratch/phng3001 --threads 1 -r -s - -
+READ: 170312
+WRITTEN: 170133
+EXCLUDED: 20477
+EXAMINED: 149835
+PAIRED: 0
+SINGLE: 149835
+DUPLICATE PAIR: 0
+DUPLICATE SINGLE: 179
+DUPLICATE PAIR OPTICAL: 0
+DUPLICATE SINGLE OPTICAL: 0
+DUPLICATE NON PRIMARY: 0
+DUPLICATE NON PRIMARY OPTICAL: 0
+DUPLICATE PRIMARY TOTAL: 179
+DUPLICATE TOTAL: 179
+ESTIMATED_LIBRARY_SIZE: 0
+
+
+### samtools index ATCC_700669.bam
+
+
+### fasta_generate_regions.py reference/ref.fa.fai 297251 > reference/ref.txt
+
+
+### freebayes-parallel reference/ref.txt 4 -p 2 -P 0 -C 2 -F 0.05 --min-coverage 10 --min-repeat-entropy 1.0 -q 13 -m 60 --strict-vcf   -f reference/ref.fa ATCC_700669.bam > ATCC_700669.raw.vcf
+
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LANG = "en_CA.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+
+### bcftools view --include 'FMT/GT="1/1" && QUAL>=100 && FMT/DP>=10 && (FMT/AO)/(FMT/DP)>=0.9' ATCC_700669.raw.vcf  | vt normalize -r reference/ref.fa - | bcftools annotate --remove '^INFO/TYPE,^INFO/DP,^INFO/RO,^INFO/AO,^INFO/AB,^FORMAT/GT,^FORMAT/DP,^FORMAT/RO,^FORMAT/AO,^FORMAT/QR,^FORMAT/QA,^FORMAT/GL' > ATCC_700669.filt.vcf
+
+
+### snpEff ann -noLog -noStats -no-downstream -no-upstream -no-utr -c reference/snpeff.config -dataDir . ref ATCC_700669.filt.vcf > ATCC_700669.vcf
+
+
+### /opt/conda/envs/snippy/bin/snippy-vcf_to_tab --gff reference/ref.gff --ref reference/ref.fa --vcf ATCC_700669.vcf > ATCC_700669.tab
+
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LANG = "en_CA.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+Loading reference: reference/ref.fa
+Loaded 1 sequences.
+Loading features: reference/ref.gff
+Parsing variants: ATCC_700669.vcf
+Converted 13407 SNPs to TAB format.
+
+### /opt/conda/envs/snippy/bin/snippy-vcf_extract_subs ATCC_700669.filt.vcf > ATCC_700669.subs.vcf
+
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LANG = "en_CA.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+
+### bcftools convert -Oz -o ATCC_700669.vcf.gz ATCC_700669.vcf
+
+
+### bcftools index -f ATCC_700669.vcf.gz
+
+
+### bcftools consensus --sample ATCC_700669 -f reference/ref.fa -o ATCC_700669.consensus.fa ATCC_700669.vcf.gz
+
+Note: applying IUPAC codes based on FORMAT/GT in sample ATCC_700669
+Applied 13407 variants
+
+### bcftools convert -Oz -o ATCC_700669.subs.vcf.gz ATCC_700669.subs.vcf
+
+
+### bcftools index -f ATCC_700669.subs.vcf.gz
+
+
+### bcftools consensus --sample ATCC_700669 -f reference/ref.fa -o ATCC_700669.consensus.subs.fa ATCC_700669.subs.vcf.gz
+
+Note: applying IUPAC codes based on FORMAT/GT in sample ATCC_700669
+Applied 16488 variants
+
+### rm -f ATCC_700669.subs.vcf.gz ATCC_700669.subs.vcf.gz.csi ATCC_700669.subs.vcf.gz.tbi
+
+
+### rm -f fake_reads\.fq
+
